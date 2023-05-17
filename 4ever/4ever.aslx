@@ -89,7 +89,8 @@
     <description type="script"><![CDATA[
       msg ("I saw no one at the entrance door. I arrived earlier than expected, it seems. It’s probably because of the anxiety I am feeling right now. <br/>I must not disappoint my coach or my family. <br/>My teammates. <br/>They are all believing in me. ")
       msg ("")
-      msg ("There is a digital clock on the wall on the right side that, behind it, hides steep, old and deformed stairs that seem to lead to a sinister place with poor light.")
+      msg ("There is a digital clock on the wall on the right side that, behind it, hides steep, old and deformed stairs that seem to lead to a sinister place with poor light.<br/>")
+      msg ("In front of me, another wall makes it possible to traverse to another room. It looks like it houses a large, although odd sports field. ")
     ]]></description>
     <beforeenter type="script">
     </beforeenter>
@@ -105,6 +106,8 @@
         <value>watch</value>
         <value>timer</value>
       </alt>
+      <alias>time; timer; wall clock</alias>
+      <check>It's 8:20 am. Something's off, only forty minutes left until the beginning of the relay race and I barely see anyone. </check>
     </object>
     <command>
       <pattern>climb</pattern>
@@ -113,6 +116,10 @@
         MoveObject (player, inside of the sports hall)
       </script>
     </command>
+    <exit name="exit_goto_sports_field" to="sports field">
+      <visible />
+      <scenery />
+    </exit>
   </object>
   <command>
     <pattern>climb</pattern>
@@ -133,4 +140,13 @@
       msg ("Nothing to look at.")
     </script>
   </command>
+  <verb>
+    <property>check</property>
+    <pattern>check</pattern>
+    <defaultexpression>"You can't check " + object.article + "."</defaultexpression>
+  </verb>
+  <object name="sports field">
+    <inherit name="editor_room" />
+    <descprefix>I'm in</descprefix>
+  </object>
 </asl>
