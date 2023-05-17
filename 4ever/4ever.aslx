@@ -6,33 +6,65 @@
     <gameid>9521ab6e-e2ac-438b-9689-e3378facbcd3</gameid>
     <version>1.0</version>
     <firstpublished>2023</firstpublished>
+    <defaultbackground>White</defaultbackground>
   </game>
-  <object name="lounge">
+  <object name="outside of the sports hall">
     <inherit name="editor_room" />
     <isroom />
-    <description>This is quite a plain lounge with an old beige carpet and peeling wallpaper. </description>
+    <description type="string"></description>
+    <beforefirstenter type="script">
+      msg ("Today is the big day. A day that will be remembered by a lot of people. Forever.")
+    </beforefirstenter>
+    <descprefix>I'm on the</descprefix>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <prefix type="string"></prefix>
+    <exitslistprefix type="string"></exitslistprefix>
+    <firstenter type="script">
+      msg ("I should go inside to prepare myself for what it is to come, but I still have some time to look around if I want to. ")
+    </firstenter>
     <object name="player">
       <inherit name="editor_object" />
       <inherit name="editor_player" />
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+        <value>Take</value>
+      </displayverbs>
     </object>
-    <exit alias="south" to="kitchen">
-      <inherit name="southdirection" />
+    <exit name="exit_goto_inside_sports_hall" to="inside of the sports hall">
+      <visible />
+      <runscript type="boolean">false</runscript>
+      <script type="script">
+        UnlockExit (exit_goto_inside_sports_hall)
+      </script>
+      <scenery />
     </exit>
-    <object name="TV">
+    <object name="environment">
       <inherit name="editor_object" />
-      <alt type="stringlist">
-        <value>television</value>
-        <value>telly</value>
-        <value>magic box</value>
-      </alt>
-      <look>The TV is an old model, possibly 20 years old. It is currently showing an old western.</look>
-      <watch>You watch for a few minutes. As your will to live slowly ebbs away, you remember that you’ve always hated watching westerns.</watch>
+      <lookaround type="script">
+        msg ("It's so quiet right now. ")
+        msg ("The athletics track is already signposted, with crosses drawn in white chalk on a tarmac floor dyed red, demarcating the positions of each element from all four teams that will compete.")
+        msg ("There will be four of us in total, and I will be the last one on the route to receive the testimony. I just hope I won't disappoint anyone.")
+        msg ("Anyway, there's no point in daydreaming, I have to go inside.")
+      </lookaround>
+      <usestandardverblist type="boolean">false</usestandardverblist>
+      <drop type="boolean">false</drop>
+      <scenery />
+      <can_environment_look_around />
+      <displayverbs type="stringlist" />
     </object>
+    <command>
+      <pattern>look around; look; look at environment; look outside</pattern>
+      <script>
+        msg ("The athletics track is already signposted, with crosses drawn in white chalk on a tarmac floor dyed red, demarcating the positions of each element from all four teams that will compete. ")
+        MoveObject (player, outside of the sports hall)
+      </script>
+      <scope type="string"></scope>
+    </command>
   </object>
   <object name="kitchen">
     <inherit name="editor_room" />
     <description>A kitchen that seems ordinary at first sight, but in fact it looks like of abandoned, full of dust and dirt on the floor and furniture, in addition to smelling of rotting flesh. </description>
-    <exit alias="north" to="lounge">
+    <exit alias="north" to="outside of the sports hall">
       <inherit name="northdirection" />
     </exit>
   </object>
@@ -41,4 +73,64 @@
     <pattern>watch</pattern>
     <defaultexpression>"You can't watch " + object.article + "."</defaultexpression>
   </verb>
+  <object name="shower room">
+    <inherit name="editor_room" />
+    <isroom />
+    <description>This is quite a plain lounge with an old beige carpet and peeling wallpaper. </description>
+    <beforefirstenter type="script">
+      msg ("Today is the big day. A day that will be remembered by a lot of people. Forever.")
+    </beforefirstenter>
+    <exit alias="south" to="kitchen">
+      <inherit name="southdirection" />
+    </exit>
+  </object>
+  <object name="inside of the sports hall">
+    <inherit name="editor_room" />
+    <description type="script"><![CDATA[
+      msg ("I saw no one at the entrance door. I arrived earlier than expected, it seems. It’s probably because of the anxiety I am feeling right now. <br/>I must not disappoint my coach or my family. <br/>My teammates. <br/>They are all believing in me. ")
+      msg ("")
+      msg ("There is a digital clock on the wall on the right side that, behind it, hides steep, old and deformed stairs that seem to lead to a sinister place with poor light.")
+    ]]></description>
+    <beforeenter type="script">
+    </beforeenter>
+    <descprefix>I'm</descprefix>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <object name="clock">
+      <inherit name="editor_object" />
+      <scenery />
+      <displayverbs type="stringlist">
+        <value>Look at</value>
+      </displayverbs>
+      <alt type="stringlist">
+        <value>watch</value>
+        <value>timer</value>
+      </alt>
+    </object>
+    <command>
+      <pattern>climb</pattern>
+      <script>
+        msg ("You climb the drainpipe, and go in through the window.")
+        MoveObject (player, inside of the sports hall)
+      </script>
+    </command>
+  </object>
+  <command>
+    <pattern>climb</pattern>
+    <script>
+      msg ("Nothing to climb here.")
+    </script>
+  </command>
+  <command>
+    <pattern>look around</pattern>
+    <script>
+      msg ("Nothing to look around.")
+    </script>
+    <scope type="string"></scope>
+  </command>
+  <command>
+    <pattern>look; look at</pattern>
+    <script>
+      msg ("Nothing to look at.")
+    </script>
+  </command>
 </asl>
