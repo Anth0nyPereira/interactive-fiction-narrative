@@ -7,6 +7,7 @@
     <version>1.0</version>
     <firstpublished>2023</firstpublished>
     <defaultbackground>White</defaultbackground>
+    <showpanes type="boolean">false</showpanes>
   </game>
   <object name="outside of the sports hall">
     <inherit name="editor_room" />
@@ -126,8 +127,8 @@
       <attr name="corridor_counter" type="int">0</attr>
       <fuck type="string"></fuck>
     </object>
-    <exit alias="men room, men shower room" to="men shower room">
-      <scenery type="boolean">false</scenery>
+    <exit alias="men room, men shower room, men shower rooms" to="men shower room">
+      <scenery />
       <runscript />
       <script type="script">
         if (GetInt(corridor, "corridor_counter") = 0) {
@@ -139,7 +140,7 @@
       </script>
       <visible />
     </exit>
-    <exit alias="shower room" to="inside of the sports hall">
+    <exit alias="shower room, shower rooms" to="inside of the sports hall">
       <message>Which one?</message>
       <scenery />
       <runscript />
@@ -149,6 +150,20 @@
         }
         else {
           msg ("Which one?")
+        }
+      </script>
+    </exit>
+    <exit alias="women shower room, women, girls room, women shower rooms, women room, girl room" to="inside of the sports hall">
+      <scenery />
+      <message type="string"></message>
+      <suffix type="string"></suffix>
+      <runscript />
+      <script type="script">
+        if (GetInt(corridor, "corridor_counter") = 0) {
+          msg ("I must go there first.")
+        }
+        else {
+          msg ("Even if there are no girls inside, it's better not to go inside the women shower room. I don't want to get in trouble.")
         }
       </script>
     </exit>
