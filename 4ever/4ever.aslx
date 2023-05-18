@@ -9,17 +9,52 @@
     <defaultbackground>White</defaultbackground>
     <showpanes type="boolean">false</showpanes>
   </game>
+  <command name="go">
+    <pattern type="string"><![CDATA[^go to (?<exit>.*)$|^go (?<exit>.*)$|^(?<exit>north|east|south|west|northeast|northwest|southeast|southwest|in|out|up|down|n|e|s|w|ne|nw|se|sw|o|u|d)$]]></pattern>
+    <unresolved>I don't believe that place exists.</unresolved>
+    <script>
+      if (exit.visible) {
+        if (exit.locked) {
+          msg (exit.lockmessage)
+        }
+        else if (exit.runscript) {
+          if (HasScript(exit, "script")) {
+            do (exit, "script")
+          }
+        }
+        else if (exit.lookonly) {
+          msg ("I can't go there.")
+        }
+        else {
+          if (HasString(exit, "message")) {
+            if (not exit.message = "") {
+              if (game.clearscreenonroomenter) {
+                game.currentexitmessage = exit.message
+              }
+              else {
+                msg (exit.message)
+              }
+            }
+          }
+          game.pov.parent = exit.to
+        }
+      }
+      else {
+        msg ("I don't believe that place exists.")
+      }
+    </script>
+  </command>
   <object name="outside of the sports hall">
     <inherit name="editor_room" />
     <isroom />
     <description type="string"></description>
-    <beforefirstenter type="script">
-      msg ("Today is the big day. A day that will be remembered by a lot of people. Forever.")
-    </beforefirstenter>
     <descprefix>I'm on the</descprefix>
     <usedefaultprefix type="boolean">false</usedefaultprefix>
     <prefix type="string"></prefix>
     <exitslistprefix type="string"></exitslistprefix>
+    <beforefirstenter type="script">
+      msg ("Today is the big day. A day that will be remembered by a lot of people. Forever.")
+    </beforefirstenter>
     <firstenter type="script">
       msg ("I should go inside to prepare myself for what it is to come, but I still have some time to look around if I want to. ")
     </firstenter>
@@ -34,46 +69,41 @@
         <value>Take</value>
       </displayverbs>
     </object>
-    <exit name="exit_goto_inside_sports_hall" to="inside of the sports hall">
+    <exit name="exit_goto_inside_sports_hall" alias="inside; inside sports hall; inside of sports hall" to="inside of the sports hall">
       <visible />
       <runscript type="boolean">false</runscript>
+      <scenery />
       <script type="script">
         UnlockExit (exit_goto_inside_sports_hall)
       </script>
-      <scenery />
     </exit>
     <object name="environment">
       <inherit name="editor_object" />
+      <usestandardverblist type="boolean">false</usestandardverblist>
+      <drop type="boolean">false</drop>
+      <scenery />
+      <can_environment_look_around />
+      <displayverbs type="stringlist" />
       <lookaround type="script">
         msg ("It's so quiet right now. ")
         msg ("The athletics track is already signposted, with crosses drawn in white chalk on a tarmac floor dyed red, demarcating the positions of each element from all four teams that will compete.")
         msg ("There will be four of us in total, and I will be the last one on the route to receive the testimony. I just hope I won't disappoint anyone.")
         msg ("Anyway, there's no point in daydreaming, I have to go inside.")
       </lookaround>
-      <usestandardverblist type="boolean">false</usestandardverblist>
-      <drop type="boolean">false</drop>
-      <scenery />
-      <can_environment_look_around />
-      <displayverbs type="stringlist" />
     </object>
     <command>
       <pattern>look around; look; look at environment; look outside</pattern>
+      <scope type="string"></scope>
       <script>
         msg ("The athletics track is already signposted, with crosses drawn in white chalk on a tarmac floor dyed red, demarcating the positions of each element from all four teams that will compete. ")
         MoveObject (player, outside of the sports hall)
       </script>
-      <scope type="string"></scope>
     </command>
-  </object>
-  <object name="kitchen">
-    <inherit name="editor_room" />
-    <description>A kitchen that seems ordinary at first sight, but in fact it looks like of abandoned, full of dust and dirt on the floor and furniture, in addition to smelling of rotting flesh. </description>
-    <exit alias="north" to="outside of the sports hall">
-      <inherit name="northdirection" />
-    </exit>
   </object>
   <object name="inside of the sports hall">
     <inherit name="editor_room" />
+    <descprefix>I'm</descprefix>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
     <description type="script"><![CDATA[
       msg ("I saw no one at the entrance door. I arrived earlier than expected, it seems. It’s probably because of the anxiety I am feeling right now. <br/>I must not disappoint my coach or my family. <br/>My teammates. <br/>They are all believing in me. ")
       msg ("There is a digital clock on the wall on the right side that, behind it, hides steep, old and deformed stairs that seem to lead to a sinister place with poor light.<br/>")
@@ -82,8 +112,6 @@
     ]]></description>
     <beforeenter type="script">
     </beforeenter>
-    <descprefix>I'm</descprefix>
-    <usedefaultprefix type="boolean">false</usedefaultprefix>
     <onexit type="script">
     </onexit>
     <object name="clock">
@@ -111,10 +139,14 @@
     </exit>
     <exit name="exit_outside_sports_hall" alias="outside, outside sports hall, outside the sports hall, go out" to="outside of the sports hall">
       <scenery />
-      <lockmessage>You can no longer go outside.</lockmessage>
+      <lockmessage>I can no longer go outside.</lockmessage>
     </exit>
     <object name="corridor">
       <inherit name="editor_object" />
+      <displayverbs type="stringlist" />
+      <scenery />
+      <attr name="corridor_counter" type="int">0</attr>
+      <fuck type="string"></fuck>
       <traverse type="script">
         msg ("I traverse the corridor while my chest keeps getting louder and louder.")
         msg (" It is a good idea to take a tranquilizer. I don't want them to find out my internal state. It would worry them and make them lose hope in me.")
@@ -122,14 +154,11 @@
         IncreaseObjectCounter (corridor, "corridor_counter")
         msg (corridor.corridor_counter)
       </traverse>
-      <displayverbs type="stringlist" />
-      <scenery />
-      <attr name="corridor_counter" type="int">0</attr>
-      <fuck type="string"></fuck>
     </object>
     <exit alias="men room, men shower room, men shower rooms" to="men shower room">
       <scenery />
       <runscript />
+      <visible />
       <script type="script">
         if (GetInt(corridor, "corridor_counter") = 0) {
           msg ("I must go there first.")
@@ -138,7 +167,6 @@
           msg ("I'm entering the men shower room.")
         }
       </script>
-      <visible />
     </exit>
     <exit alias="shower room, shower rooms" to="inside of the sports hall">
       <message>Which one?</message>
@@ -167,6 +195,12 @@
         }
       </script>
     </exit>
+    <command>
+      <pattern>go in</pattern>
+      <script>
+        msg ("I don't know, what am I thinking?")
+      </script>
+    </command>
   </object>
   <command>
     <pattern>climb</pattern>
@@ -176,10 +210,10 @@
   </command>
   <command>
     <pattern>look around</pattern>
+    <scope type="string"></scope>
     <script>
       msg ("Nothing to look around.")
     </script>
-    <scope type="string"></scope>
   </command>
   <command>
     <pattern>look; look at</pattern>
@@ -207,4 +241,11 @@
   <object name="men shower room">
     <inherit name="editor_room" />
   </object>
+  <command name="go_in">
+    <pattern>go in</pattern>
+    <unresolved>What?</unresolved>
+    <script>
+      msg ("What?")
+    </script>
+  </command>
 </asl>
