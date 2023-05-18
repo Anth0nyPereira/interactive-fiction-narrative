@@ -22,6 +22,9 @@
     <firstenter type="script">
       msg ("I should go inside to prepare myself for what it is to come, but I still have some time to look around if I want to. ")
     </firstenter>
+    <onexit type="script">
+      LockExit (exit_outside_sports_hall)
+    </onexit>
     <object name="player">
       <inherit name="editor_object" />
       <inherit name="editor_player" />
@@ -68,34 +71,20 @@
       <inherit name="northdirection" />
     </exit>
   </object>
-  <verb>
-    <property>watch</property>
-    <pattern>watch</pattern>
-    <defaultexpression>"You can't watch " + object.article + "."</defaultexpression>
-  </verb>
-  <object name="shower room">
-    <inherit name="editor_room" />
-    <isroom />
-    <description>This is quite a plain lounge with an old beige carpet and peeling wallpaper. </description>
-    <beforefirstenter type="script">
-      msg ("Today is the big day. A day that will be remembered by a lot of people. Forever.")
-    </beforefirstenter>
-    <exit alias="south" to="kitchen">
-      <inherit name="southdirection" />
-    </exit>
-  </object>
   <object name="inside of the sports hall">
     <inherit name="editor_room" />
     <description type="script"><![CDATA[
       msg ("I saw no one at the entrance door. I arrived earlier than expected, it seems. It’s probably because of the anxiety I am feeling right now. <br/>I must not disappoint my coach or my family. <br/>My teammates. <br/>They are all believing in me. ")
-      msg ("")
       msg ("There is a digital clock on the wall on the right side that, behind it, hides steep, old and deformed stairs that seem to lead to a sinister place with poor light.<br/>")
       msg ("In front of me, another wall makes it possible to traverse to another room. It looks like it houses a large, although odd sports field. ")
+      msg ("On the left, there is a small corridor that leads to the shower rooms. ")
     ]]></description>
     <beforeenter type="script">
     </beforeenter>
     <descprefix>I'm</descprefix>
     <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <onexit type="script">
+    </onexit>
     <object name="clock">
       <inherit name="editor_object" />
       <scenery />
@@ -116,9 +105,52 @@
         MoveObject (player, inside of the sports hall)
       </script>
     </command>
-    <exit name="exit_goto_sports_field" to="sports field">
-      <visible />
+    <exit alias="sports ground, in front, field" to="sports field">
       <scenery />
+    </exit>
+    <exit name="exit_outside_sports_hall" alias="outside, outside sports hall, outside the sports hall, go out" to="outside of the sports hall">
+      <scenery />
+      <lockmessage>You can no longer go outside.</lockmessage>
+    </exit>
+    <object name="corridor">
+      <inherit name="editor_object" />
+      <traverse type="script">
+        msg ("I traverse the corridor while my chest keeps getting louder and louder.")
+        msg (" It is a good idea to take a tranquilizer. I don't want them to find out my internal state. It would worry them and make them lose hope in me.")
+        msg ("The shower rooms are next to me. It feels like I spent so much on the way along the corridor. ")
+        IncreaseObjectCounter (corridor, "corridor_counter")
+        msg (corridor.corridor_counter)
+      </traverse>
+      <displayverbs type="stringlist" />
+      <scenery />
+      <attr name="corridor_counter" type="int">0</attr>
+      <fuck type="string"></fuck>
+    </object>
+    <exit alias="men room, men shower room" to="men shower room">
+      <scenery type="boolean">false</scenery>
+      <runscript />
+      <script type="script">
+        if (GetInt(corridor, "corridor_counter") = 0) {
+          msg ("I must go there first.")
+        }
+        else {
+          msg ("I'm entering the men shower room.")
+        }
+      </script>
+      <visible />
+    </exit>
+    <exit alias="shower room" to="inside of the sports hall">
+      <message>Which one?</message>
+      <scenery />
+      <runscript />
+      <script type="script">
+        if (GetInt(corridor, "corridor_counter") = 0) {
+          msg ("I must go there first.")
+        }
+        else {
+          msg ("Which one?")
+        }
+      </script>
     </exit>
   </object>
   <command>
@@ -148,5 +180,16 @@
   <object name="sports field">
     <inherit name="editor_room" />
     <descprefix>I'm in</descprefix>
+    <exit alias="north" to="inside of the sports hall">
+      <inherit name="northdirection" />
+    </exit>
+  </object>
+  <verb>
+    <property>traverse</property>
+    <pattern>traverse; pass through</pattern>
+    <defaultexpression>"You can't traverse " + object.article + "."</defaultexpression>
+  </verb>
+  <object name="men shower room">
+    <inherit name="editor_room" />
   </object>
 </asl>
