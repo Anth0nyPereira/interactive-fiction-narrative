@@ -8,6 +8,9 @@
     <firstpublished>2023</firstpublished>
     <defaultbackground>White</defaultbackground>
     <showpanes type="boolean">false</showpanes>
+    <attr name="changeroom_newline" type="boolean">false</attr>
+    <showborder />
+    <enablehyperlinks type="boolean">false</enablehyperlinks>
   </game>
   <command name="go">
     <pattern type="string"><![CDATA[^go to (?<exit>.*)$|^go (?<exit>.*)$|^(?<exit>north|east|south|west|northeast|northwest|southeast|southwest|in|out|up|down|n|e|s|w|ne|nw|se|sw|o|u|d)$]]></pattern>
@@ -199,6 +202,12 @@
       <pattern>go in</pattern>
       <script>
         msg ("I don't know, what am I thinking?")
+      </script>
+    </command>
+    <command>
+      <pattern>go shower</pattern>
+      <script>
+        msg ("Which one?")
       </script>
     </command>
   </object>
