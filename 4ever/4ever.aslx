@@ -51,7 +51,11 @@
   <object name="outside of the sports hall">
     <inherit name="editor_room" />
     <isroom />
-    <description type="string"></description>
+    <description type="script">
+      wait {
+        msg ("kakakakawaii")
+      }
+    </description>
     <descprefix>I'm on the</descprefix>
     <usedefaultprefix type="boolean">false</usedefaultprefix>
     <prefix type="string"></prefix>
@@ -220,10 +224,10 @@
     </command>
     <command>
       <pattern>go room</pattern>
+      <scope>inside of the sports hall</scope>
       <script>
         msg ("I'm getting a little ambiguous. I know it can be better.")
       </script>
-      <scope>inside of the sports hall</scope>
     </command>
   </object>
   <command>
@@ -264,6 +268,7 @@
   </verb>
   <object name="men shower room">
     <inherit name="editor_room" />
+    <description>The shower room seems empty at first glance. I don’t hear anyone – only the wind that makes the window shake, and that is probably why it still keeps judging me, even though abused by another entity. Please, stop it, ok, I trained so hard for this, it can’t be that bad. And I’m not alone, right? So get the fuck out and cease your assumptions and appraisals. </description>
   </object>
   <command name="go_in">
     <pattern>go in</pattern>
