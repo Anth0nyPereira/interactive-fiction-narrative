@@ -103,6 +103,13 @@
         MoveObject (player, outside of the sports hall)
       </script>
     </command>
+    <command>
+      <pattern>go room</pattern>
+      <scope>outside of the sports hall</scope>
+      <script>
+        msg ("Room? I should be more specific.")
+      </script>
+    </command>
   </object>
   <object name="inside of the sports hall">
     <inherit name="editor_room" />
@@ -156,7 +163,7 @@
         msg (" It is a good idea to take a tranquilizer. I don't want them to find out my internal state. It would worry them and make them lose hope in me.")
         msg ("The shower rooms are next to me. It feels like I spent so much on the way along the corridor. ")
         IncreaseObjectCounter (corridor, "corridor_counter")
-        msg (corridor.corridor_counter)
+        msg ("I should hurry and take a pill. And my bladder is full. ")
       </traverse>
     </object>
     <exit alias="men room, men shower room, men shower rooms" to="men shower room">
@@ -211,6 +218,13 @@
         msg ("Which one?")
       </script>
     </command>
+    <command>
+      <pattern>go room</pattern>
+      <script>
+        msg ("I'm getting a little ambiguous. I know it can be better.")
+      </script>
+      <scope>inside of the sports hall</scope>
+    </command>
   </object>
   <command>
     <pattern>climb</pattern>
@@ -258,4 +272,8 @@
       msg ("What?")
     </script>
   </command>
+  <function name="ShowMenuResponse" parameters="option">
+    msg ("I was a little ambiguous now. I know I can do better.")
+    msg ("Log(ShowMenuResponse())")
+  </function>
 </asl>
