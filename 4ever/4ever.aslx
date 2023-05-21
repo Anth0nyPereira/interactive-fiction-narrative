@@ -179,7 +179,7 @@
           msg ("I must go there first.")
         }
         else {
-          msg ("I'm entering the men shower room.")
+          MoveObject (player, men shower room)
         }
       </script>
     </exit>
@@ -217,7 +217,7 @@
       </script>
     </command>
     <command>
-      <pattern>go shower</pattern>
+      <pattern>go shower; go shower room</pattern>
       <script>
         msg ("Which one?")
       </script>
@@ -268,7 +268,18 @@
   </verb>
   <object name="men shower room">
     <inherit name="editor_room" />
-    <description>The shower room seems empty at first glance. I don’t hear anyone – only the wind that makes the window shake, and that is probably why it still keeps judging me, even though abused by another entity. Please, stop it, ok, I trained so hard for this, it can’t be that bad. And I’m not alone, right? So get the fuck out and cease your assumptions and appraisals. </description>
+    <description type="script">
+      msg ("The shower room seems empty at first glance. I don’t hear anyone – only the wind that makes the window shake, and that is probably why it still keeps judging me, even though abused by another entity. Please, stop it, ok, I trained so hard for this, it can’t be that bad. And I’m not alone, right? So get the fuck out and cease your assumptions and appraisals. ")
+    </description>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <descprefix>I'm in fuck2</descprefix>
+    <objectslistprefix>I can see</objectslistprefix>
+    <object name="toilet1">
+      <inherit name="editor_object" />
+    </object>
+    <object name="toilet2">
+      <inherit name="editor_object" />
+    </object>
   </object>
   <command name="go_in">
     <pattern>go in</pattern>
