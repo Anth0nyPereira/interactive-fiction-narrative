@@ -3,6 +3,9 @@
   <include ref="English.aslx" />
   <include ref="Core.aslx" />
   <template name="UnrecognisedCommand">I can't even understand my own commands. How dumb I am.</template>
+  <template name="NotCarryingAnything">I am not carrying anything.</template>
+  <template name="CarryingListHeader">I am carrying</template>
+  <dynamictemplate name="NotCarrying">"I am not carrying " + object.article + "."</dynamictemplate>
   <game name="4ever">
     <gameid>9521ab6e-e2ac-438b-9689-e3378facbcd3</gameid>
     <version>1.0</version>
@@ -12,10 +15,6 @@
     <attr name="changeroom_newline" type="boolean">false</attr>
     <showborder />
     <enablehyperlinks type="boolean">false</enablehyperlinks>
-    <object name="inventory1">
-      <inherit name="editor_object" />
-      <alias>inventory</alias>
-    </object>
   </game>
   <command name="go">
     <pattern type="string"><![CDATA[^go to (?<exit>.*)$|^go (?<exit>.*)$|^(?<exit>north|east|south|west|northeast|northwest|southeast|southwest|in|out|up|down|n|e|s|w|ne|nw|se|sw|o|u|d)$]]></pattern>
