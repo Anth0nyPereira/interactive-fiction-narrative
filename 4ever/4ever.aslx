@@ -275,6 +275,9 @@
       msg ("The shower room seems empty at first glance. I don’t hear anyone – only the wind that makes the window shake, and that is probably why it still keeps judging me, even though abused by another entity. Please, stop it, ok, I trained so hard for this, it can’t be that bad. And I’m not alone, right? So get the fuck out and cease your assumptions and appraisals. ")
       wait {
         msg ("But, inside – deep inside of me, I understood its point. It makes me feel nauseous that even a fucking primaeval window, plenty of wounds that time made it possible to mask them a little bit, but not enough to forget the years of others that went by here, is mocking me. I’m surprised it still did not fall in pieces, due to all the scratches it possesses.  And it fights and keeps fighting, against the breezy weather that is waiting for us all. It did not have knowledge of the verb give up. And it is mocking me – showing me that even an irrelevant piece of junk glass is still better than me. More useful than me.")
+        wait {
+          msg ("You bitch! I’m gonna show you who is the junk when I and my team will win the race.")
+        }
       }
     </description>
     <object name="toilet1">
