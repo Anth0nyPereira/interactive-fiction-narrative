@@ -282,9 +282,11 @@
     </description>
     <object name="toilet1">
       <inherit name="editor_object" />
+      <scenery />
     </object>
     <object name="toilet2">
       <inherit name="editor_object" />
+      <scenery />
     </object>
   </object>
   <command name="go_in">
