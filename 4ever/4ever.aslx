@@ -313,9 +313,11 @@
         }
         else {
           msg ("I’m next to the toilets. Well, there are two – which one should I enter? 1 or 2?")
+          SetObjectFlagOn (toilets, "amNextToToilets")
         }
       </walk>
       <alias>to toilets; to the toilets</alias>
+      <amNextToToilets type="boolean">false</amNextToToilets>
     </object>
     <command>
       <pattern>pee; urinate</pattern>
@@ -347,6 +349,52 @@
         }
       ]]></script>
     </command>
+    <command>
+      <pattern>enter toilet</pattern>
+      <script>
+        msg ("Which one?")
+      </script>
+    </command>
+    <command>
+      <pattern>exit toilet 2; exit toilet2</pattern>
+      <script>
+        msg ("I’m gonna exit. I need to get dressed. Time is ticking.")
+        SetObjectFlagOff (toilets, "amNextToToilets")
+      </script>
+    </command>
+    <command>
+      <pattern>look around; look</pattern>
+      <script><![CDATA[
+        msg ("In my sight, and forgetting about the glass, I’m able to see the toilets, the urinals (finally!), the showers and a large room on the right.<br/>")
+      ]]></script>
+    </command>
+    <object name="showers">
+      <inherit name="editor_object" />
+      <walk type="script"><![CDATA[
+        msg ("The showers look cheap. But they appear they are working fine. <br/>Despite I wonder why they did not separate themselves from each other. <br/>A translucent barrier, for instance. <br/>They could even manage to reuse that window – it’s perfect for this.")
+        wait {
+          msg ("I just think it was better to have more privacy. <br/>I don’t know. <br/>We are all guys, all with the same genitalia. Just a matter of safety. <br/>")
+          wait {
+            msg ("I don’t want them to find out. It can be hard to hide it naked, under these circumstances. <br/>I may be hard on myself. <br/>")
+            SetObjectFlagOn (showers, "nextToShowers")
+            msg ("Let me look at them closely.")
+          }
+        }
+      ]]></walk>
+      <alias>to showers</alias>
+      <nextToShowers type="boolean">false</nextToShowers>
+      <look type="script"><![CDATA[
+        msg ("Well, nothing special. But I never saw this kind of tap handle. Flawless cubes. <br/>")
+        wait {
+          msg ("Oh, look – one of them is unidentical from the others. This one in front of me is black, despite all the others being blue. Life isn’t perfect, right? Not even I am. So, I should stop blaming this.<br/>")
+        }
+      ]]></look>
+    </object>
+    <object name="room">
+      <inherit name="editor_object" />
+      <walk>Room yikes.</walk>
+      <alias>to room</alias>
+    </object>
   </object>
   <command name="go_in">
     <pattern>go in</pattern>
@@ -359,6 +407,11 @@
     <property>walk</property>
     <pattern>walk</pattern>
     <defaultexpression>"You can't walk " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>exit</property>
+    <pattern>exit</pattern>
+    <defaultexpression>"You can't exit " + object.article + "."</defaultexpression>
   </verb>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
