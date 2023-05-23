@@ -327,6 +327,26 @@
         }
       ]]></script>
     </command>
+    <command>
+      <pattern>enter toilet1; enter toilet 1</pattern>
+      <script><![CDATA[
+        msg ("Humm, it seems it’s locked. <br/>I did not pay attention to the smallest post-it that ever existed on Earth telling me that is out of order. <br/>")
+      ]]></script>
+      <scope>men shower room</scope>
+    </command>
+    <command>
+      <pattern>enter toilet2; enter toilet 2</pattern>
+      <scope>men shower room</scope>
+      <script><![CDATA[
+        msg ("This one seems 100% functional. And so bright my eyes hurt. I barely am capable of seeing anything. <br/>")
+        wait {
+          msg ("After a couple of seconds, something catches my regard – a small black square-shaped hole is on the bottom left corner of the left wall. Just like someone has broken the bright blue tile on the ground. <br/><br/>After all, the window is not the only thing in bad condition right here. <br/>")
+          wait {
+            msg ("I might exit or stay for a while.")
+          }
+        }
+      ]]></script>
+    </command>
   </object>
   <command name="go_in">
     <pattern>go in</pattern>
