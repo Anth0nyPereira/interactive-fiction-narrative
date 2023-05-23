@@ -51,7 +51,7 @@
   <object name="outside of the sports hall">
     <inherit name="editor_room" />
     <isroom />
-    <descprefix>I'm on the</descprefix>
+    <descprefix>I'm</descprefix>
     <usedefaultprefix type="boolean">false</usedefaultprefix>
     <prefix type="string"></prefix>
     <exitslistprefix type="string"></exitslistprefix>
@@ -271,23 +271,62 @@
     <usedefaultprefix type="boolean">false</usedefaultprefix>
     <descprefix>I'm in the</descprefix>
     <objectslistprefix>I can see</objectslistprefix>
-    <description type="script">
-      msg ("The shower room seems empty at first glance. I don’t hear anyone – only the wind that makes the window shake, and that is probably why it still keeps judging me, even though abused by another entity. Please, stop it, ok, I trained so hard for this, it can’t be that bad. And I’m not alone, right? So get the fuck out and cease your assumptions and appraisals. ")
+    <description type="script"><![CDATA[
+      msg ("The shower room seems empty at first glance. I don’t hear anyone – only the wind that makes the window shake, and that is probably why it still keeps judging me, even though abused by another entity. Please, stop it, ok, I trained so hard for this, it can’t be that bad. And I’m not alone, right? So get the fuck out and cease your assumptions and appraisals. <br/>")
       wait {
-        msg ("But, inside – deep inside of me, I understood its point. It makes me feel nauseous that even a fucking primaeval window, plenty of wounds that time made it possible to mask them a little bit, but not enough to forget the years of others that went by here, is mocking me. I’m surprised it still did not fall in pieces, due to all the scratches it possesses.  And it fights and keeps fighting, against the breezy weather that is waiting for us all. It did not have knowledge of the verb give up. And it is mocking me – showing me that even an irrelevant piece of junk glass is still better than me. More useful than me.")
+        msg ("But, inside – deep inside of me, I understood its point. It makes me feel nauseous that even a fucking primaeval window, plenty of wounds that time made it possible to mask them a little bit, but not enough to forget the years of others that went by here, is mocking me. I’m surprised it still did not fall in pieces, due to all the scratches it possesses.  And it fights and keeps fighting, against the breezy weather that is waiting for us all. It did not have knowledge of the verb give up. And it is mocking me – showing me that even an irrelevant piece of junk glass is still better than me. More useful than me.<br/>")
         wait {
-          msg ("You bitch! I’m gonna show you who is the junk when I and my team will win the race.")
+          msg ("You bitch! I’m gonna show you who is the junk when I and my team will win the race.<br/>")
+          wait {
+            msg ("In my sight, and forgetting about the glass, I’m able to see the toilets, the urinals (finally!), the showers and a large room on the right.")
+          }
         }
       }
-    </description>
+    ]]></description>
     <object name="toilet1">
       <inherit name="editor_object" />
       <scenery />
+      <alias>to the toilet1; to toilet1</alias>
     </object>
     <object name="toilet2">
       <inherit name="editor_object" />
       <scenery />
+      <walk type="string"></walk>
+      <alias>to the toilet2; to toilet2</alias>
     </object>
+    <object name="urinal">
+      <inherit name="editor_object" />
+      <alias>urinals; to the urinal; to the urinals; to urinal; to urinals</alias>
+      <walk type="script">
+        msg ("My back teeth are floating, man! I’m so relieved! Now I can urinate in peace, without people noticing. I don’t understand how men may pee outside, it feels rude. What if a teenager girl passes by and then you are accused of child abuse? Don’t tell me I’m overdramatic! Unusual things can happen. They are unusual, so they might happen. At least once. And once is enough. So, now, the last part.")
+        SetObjectFlagOn (urinal, "shouldPee")
+      </walk>
+      <shouldPee type="boolean">false</shouldPee>
+      <scenery />
+    </object>
+    <object name="toilets">
+      <inherit name="editor_object" />
+      <scenery />
+      <walk type="script">
+        if (urinal.shouldPee = True) {
+          msg ("I need to pee first!")
+        }
+        else {
+          msg ("I’m next to the toilets. Well, there are two – which one should I enter? 1 or 2?")
+        }
+      </walk>
+      <alias>to toilets; to the toilets</alias>
+    </object>
+    <command>
+      <pattern>pee; urinate</pattern>
+      <script><![CDATA[
+        if (urinal.shouldPee = true) {
+          msg ("Ah, that’s better. Imagine if I went straight to the sports track, my bladder would promote such a liquid diet for lots of blooders. <br/>Not that I care, to be honest.<br/>")
+          msg ("Alright, now it’s time to get dressed – I’m not gonna run with these skinny jeans of mine.")
+          SetObjectFlagOff (urinal, "shouldPee")
+        }
+      ]]></script>
+    </command>
   </object>
   <command name="go_in">
     <pattern>go in</pattern>
@@ -296,6 +335,11 @@
       msg ("What?")
     </script>
   </command>
+  <verb>
+    <property>walk</property>
+    <pattern>walk</pattern>
+    <defaultexpression>"You can't walk " + object.article + "."</defaultexpression>
+  </verb>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
     msg ("Log(ShowMenuResponse())")
