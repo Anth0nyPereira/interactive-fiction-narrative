@@ -12,6 +12,10 @@
     <attr name="changeroom_newline" type="boolean">false</attr>
     <showborder />
     <enablehyperlinks type="boolean">false</enablehyperlinks>
+    <object name="inventory1">
+      <inherit name="editor_object" />
+      <alias>inventory</alias>
+    </object>
   </game>
   <command name="go">
     <pattern type="string"><![CDATA[^go to (?<exit>.*)$|^go (?<exit>.*)$|^(?<exit>north|east|south|west|northeast|northwest|southeast|southwest|in|out|up|down|n|e|s|w|ne|nw|se|sw|o|u|d)$]]></pattern>
@@ -297,16 +301,18 @@
     <object name="urinal">
       <inherit name="editor_object" />
       <alias>urinals; to the urinal; to the urinals; to urinal; to urinals</alias>
+      <shouldPee type="boolean">false</shouldPee>
+      <scenery />
       <walk type="script">
         msg ("My back teeth are floating, man! I’m so relieved! Now I can urinate in peace, without people noticing. I don’t understand how men may pee outside, it feels rude. What if a teenager girl passes by and then you are accused of child abuse? Don’t tell me I’m overdramatic! Unusual things can happen. They are unusual, so they might happen. At least once. And once is enough. So, now, the last part.")
         SetObjectFlagOn (urinal, "shouldPee")
       </walk>
-      <shouldPee type="boolean">false</shouldPee>
-      <scenery />
     </object>
     <object name="toilets">
       <inherit name="editor_object" />
       <scenery />
+      <alias>to toilets; to the toilets</alias>
+      <amNextToToilets type="boolean">false</amNextToToilets>
       <walk type="script">
         if (urinal.shouldPee = True) {
           msg ("I need to pee first!")
@@ -316,8 +322,6 @@
           SetObjectFlagOn (toilets, "amNextToToilets")
         }
       </walk>
-      <alias>to toilets; to the toilets</alias>
-      <amNextToToilets type="boolean">false</amNextToToilets>
     </object>
     <command>
       <pattern>pee; urinate</pattern>
@@ -331,10 +335,10 @@
     </command>
     <command>
       <pattern>enter toilet1; enter toilet 1</pattern>
+      <scope>men shower room</scope>
       <script><![CDATA[
         msg ("Humm, it seems it’s locked. <br/>I did not pay attention to the smallest post-it that ever existed on Earth telling me that is out of order. <br/>")
       ]]></script>
-      <scope>men shower room</scope>
     </command>
     <command>
       <pattern>enter toilet2; enter toilet 2</pattern>
@@ -370,6 +374,8 @@
     </command>
     <object name="showers">
       <inherit name="editor_object" />
+      <alias>to showers</alias>
+      <nextToShowers type="boolean">false</nextToShowers>
       <walk type="script"><![CDATA[
         msg ("The showers look cheap. But they appear they are working fine. <br/>Despite I wonder why they did not separate themselves from each other. <br/>A translucent barrier, for instance. <br/>They could even manage to reuse that window – it’s perfect for this.<br/>")
         wait {
@@ -381,8 +387,6 @@
           }
         }
       ]]></walk>
-      <alias>to showers</alias>
-      <nextToShowers type="boolean">false</nextToShowers>
       <look type="script"><![CDATA[
         if (showers.nextToShowers = true) {
           msg ("Well, nothing special. But I never saw this kind of tap handle. Flawless cubes. <br/>")
@@ -399,6 +403,14 @@
       <inherit name="editor_object" />
       <walk>Room yikes.</walk>
       <alias>to room</alias>
+    </object>
+    <object name="black handle">
+      <inherit name="editor_object" />
+      <scenery />
+      <take type="script"><![CDATA[
+        msg ("I could remove it without any resistance. It shows up this was made up to something.<br/>I'm gonna put it in my inventory. It could be useful.")
+        AddToInventory (black handle)
+      ]]></take>
     </object>
   </object>
   <command name="go_in">
