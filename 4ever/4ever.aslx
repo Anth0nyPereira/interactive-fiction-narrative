@@ -371,22 +371,27 @@
     <object name="showers">
       <inherit name="editor_object" />
       <walk type="script"><![CDATA[
-        msg ("The showers look cheap. But they appear they are working fine. <br/>Despite I wonder why they did not separate themselves from each other. <br/>A translucent barrier, for instance. <br/>They could even manage to reuse that window – it’s perfect for this.")
+        msg ("The showers look cheap. But they appear they are working fine. <br/>Despite I wonder why they did not separate themselves from each other. <br/>A translucent barrier, for instance. <br/>They could even manage to reuse that window – it’s perfect for this.<br/>")
         wait {
           msg ("I just think it was better to have more privacy. <br/>I don’t know. <br/>We are all guys, all with the same genitalia. Just a matter of safety. <br/>")
           wait {
             msg ("I don’t want them to find out. It can be hard to hide it naked, under these circumstances. <br/>I may be hard on myself. <br/>")
             SetObjectFlagOn (showers, "nextToShowers")
-            msg ("Let me look at them closely.")
+            msg ("Let me look at them closely.<br/>")
           }
         }
       ]]></walk>
       <alias>to showers</alias>
       <nextToShowers type="boolean">false</nextToShowers>
       <look type="script"><![CDATA[
-        msg ("Well, nothing special. But I never saw this kind of tap handle. Flawless cubes. <br/>")
-        wait {
-          msg ("Oh, look – one of them is unidentical from the others. This one in front of me is black, despite all the others being blue. Life isn’t perfect, right? Not even I am. So, I should stop blaming this.<br/>")
+        if (showers.nextToShowers = true) {
+          msg ("Well, nothing special. But I never saw this kind of tap handle. Flawless cubes. <br/>")
+          wait {
+            msg ("Oh, look – one of them is unidentical from the others. This one in front of me is black, despite all the others being blue. Life isn’t perfect, right? Not even I am. So, I should stop blaming this.<br/>")
+          }
+        }
+        else {
+          msg ("I'm not next to them, so I cannot look at them closely.")
         }
       ]]></look>
     </object>
