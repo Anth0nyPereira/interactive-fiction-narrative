@@ -302,9 +302,15 @@
       <alias>urinals; to the urinal; to the urinals; to urinal; to urinals</alias>
       <shouldPee type="boolean">false</shouldPee>
       <scenery />
+      <didNotPee />
       <walk type="script">
-        msg ("My back teeth are floating, man! I’m so relieved! Now I can urinate in peace, without people noticing. I don’t understand how men may pee outside, it feels rude. What if a teenager girl passes by and then you are accused of child abuse? Don’t tell me I’m overdramatic! Unusual things can happen. They are unusual, so they might happen. At least once. And once is enough. So, now, the last part.")
         SetObjectFlagOn (urinal, "shouldPee")
+        if (urinal.didNotPee = True) {
+          msg ("My back teeth are floating, man! I’m so relieved! Now I can urinate in peace, without people noticing. I don’t understand how men may pee outside, it feels rude. What if a teenager girl passes by and then you are accused of child abuse? Don’t tell me I’m overdramatic! Unusual things can happen. They are unusual, so they might happen. At least once. And once is enough. So, now, the last part.")
+        }
+        else {
+          msg ("I no longer need to go there.")
+        }
       </walk>
     </object>
     <object name="toilets">
@@ -313,13 +319,8 @@
       <alias>to toilets; to the toilets</alias>
       <amNextToToilets type="boolean">false</amNextToToilets>
       <walk type="script">
-        if (urinal.shouldPee = True) {
-          msg ("I need to pee first!")
-        }
-        else {
-          msg ("I’m next to the toilets. Well, there are two – which one should I enter? 1 or 2?")
-          SetObjectFlagOn (toilets, "amNextToToilets")
-        }
+        SetObjectFlagOn (toilets, "amNextToToilets")
+        msg ("I’m next to the toilets. Well, there are two – which one should I enter? 1 or 2?")
       </walk>
     </object>
     <command>
@@ -329,6 +330,7 @@
           msg ("Ah, that’s better. Imagine if I went straight to the sports track, my bladder would promote such a liquid diet for lots of blooders. <br/>Not that I care, to be honest.<br/>")
           msg ("Alright, now it’s time to get dressed – I’m not gonna run with these skinny jeans of mine.")
           SetObjectFlagOff (urinal, "shouldPee")
+          SetObjectFlagOff (urinal, "didNotPee")
         }
       ]]></script>
     </command>
@@ -400,16 +402,35 @@
     </object>
     <object name="room">
       <inherit name="editor_object" />
-      <walk>Room yikes.</walk>
       <alias>to room</alias>
+      <walk type="script">
+        if (urinal.didNotPee = True) {
+          msg ("I need to pee!!")
+        }
+        else {
+          msg ("Such a room.")
+        }
+      </walk>
     </object>
     <object name="black handle">
       <inherit name="editor_object" />
       <scenery />
-      <take type="script"><![CDATA[
+      <feature_usegive />
+      <take type="script">
+      </take>
+      <use type="script">
+        if (Got(black handle)) {
+          msg ("")
+        }
+      </use>
+      <grab type="script"><![CDATA[
         msg ("I could remove it without any resistance. It shows up this was made up to something.<br/>I'm gonna put it in my inventory. It could be useful.")
         AddToInventory (black handle)
-      ]]></take>
+      ]]></grab>
+    </object>
+    <object name="test">
+      <inherit name="editor_object" />
+      <take />
     </object>
   </object>
   <command name="go_in">
@@ -428,6 +449,16 @@
     <property>exit</property>
     <pattern>exit</pattern>
     <defaultexpression>"You can't exit " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>save</property>
+    <pattern>save</pattern>
+    <defaultexpression>"You can't save " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>grab</property>
+    <pattern>grab</pattern>
+    <defaultexpression>"You can't grab " + object.article + "."</defaultexpression>
   </verb>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
