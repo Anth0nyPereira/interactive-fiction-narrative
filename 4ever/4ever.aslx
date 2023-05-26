@@ -417,16 +417,26 @@
       <scenery />
       <feature_usegive />
       <take type="script">
+        if (black handle.visited = false) {
+          msg ("I could remove it without any resistance. It shows up this was made up to something.")
+          SetObjectFlagOn (black handle, "visited")
+        }
+        else {
+        }
       </take>
       <use type="script">
-        if (Got(black handle)) {
-          msg ("")
-        }
       </use>
-      <grab type="script"><![CDATA[
-        msg ("I could remove it without any resistance. It shows up this was made up to something.<br/>I'm gonna put it in my inventory. It could be useful.")
-        AddToInventory (black handle)
-      ]]></grab>
+      <place type="script">
+        msg ("")
+      </place>
+      <ondrop type="script">
+        msg ("I suggest this handle may fit in the black hole.")
+      </ondrop>
+      <drop />
+      <ontake type="script"><![CDATA[
+        msg ("<br/>I'm gonna put it in my inventory. <br/>It could be useful.")
+      ]]></ontake>
+      <dropmsg>I drop it.</dropmsg>
     </object>
     <object name="test">
       <inherit name="editor_object" />
@@ -459,6 +469,11 @@
     <property>grab</property>
     <pattern>grab</pattern>
     <defaultexpression>"You can't grab " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>place</property>
+    <pattern>place</pattern>
+    <defaultexpression>"You can't place " + object.article + "."</defaultexpression>
   </verb>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
