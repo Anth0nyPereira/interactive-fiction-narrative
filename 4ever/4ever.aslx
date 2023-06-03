@@ -15,6 +15,10 @@
     <attr name="changeroom_newline" type="boolean">false</attr>
     <showborder />
     <enablehyperlinks type="boolean">false</enablehyperlinks>
+    <defaultfontsize type="int">16</defaultfontsize>
+    <start type="script">
+      MoveObject (player, main room of the men shower room)
+    </start>
   </game>
   <command name="go">
     <pattern type="string"><![CDATA[^go to (?<exit>.*)$|^go (?<exit>.*)$|^(?<exit>north|east|south|west|northeast|northwest|southeast|southwest|in|out|up|down|n|e|s|w|ne|nw|se|sw|o|u|d)$]]></pattern>
@@ -408,7 +412,7 @@
           msg ("I need to pee!!")
         }
         else {
-          msg ("Such a room.")
+          msg ("I'm at the entrance.")
         }
       </walk>
     </object>
@@ -416,6 +420,8 @@
       <inherit name="editor_object" />
       <scenery />
       <feature_usegive />
+      <drop />
+      <dropmsg>I drop it.</dropmsg>
       <take type="script">
         if (black handle.visited = false) {
           msg ("I could remove it without any resistance. It shows up this was made up to something.")
@@ -432,11 +438,9 @@
       <ondrop type="script">
         msg ("I suggest this handle may fit in the black hole.")
       </ondrop>
-      <drop />
       <ontake type="script"><![CDATA[
         msg ("<br/>I'm gonna put it in my inventory. <br/>It could be useful.")
       ]]></ontake>
-      <dropmsg>I drop it.</dropmsg>
     </object>
     <object name="test">
       <inherit name="editor_object" />
@@ -474,6 +478,86 @@
     <property>place</property>
     <pattern>place</pattern>
     <defaultexpression>"You can't place " + object.article + "."</defaultexpression>
+  </verb>
+  <object name="main room of the men shower room">
+    <inherit name="editor_room" />
+    <descprefix>I'm in</descprefix>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <prefix>the</prefix>
+    <description type="script"><![CDATA[
+      msg ("<br/>I’m entering the main room from the men's shower room, leaving the shower room hall behind.<br/>It feels like they spend good times here. The area is huge. I wonder if I would feel alone in here.")
+      wait {
+        msg ("<br/>A huge seat along all three walls in front of me, in the shape of a U, looking at me. <br/>They look young: younger than me, hell yes. <br/>Their surface is polished and soft. A sort of brown hue that makes me feel warm. <br/><br/>Relieved. <br/><br/>Alive.")
+        wait {
+          msg ("<br/>They used some ceramics next to some extremities, despite the wood being the main one. I believe it’s because it absorbs water. And is warmer than clay. <br/>Although I wonder why they did not just use it for everything. It would look perfect, resembling a sauna. Oh well, in practice, they’re not that different: closed hot spaces with naked guys. <br/><br/>Just imagining it – makes my body feel hot under my belly…")
+          wait {
+            msg ("<br/>Shit, dude. Stop with those thoughts. Are you crazy? No one can find out.<br/><br/>No one.<br/><br/>Or it will be the end. <br/><br/>My end.")
+            wait {
+              msg ("<br/>I have trained for this all my life. <br/>To become a professional athlete. <br/>I'm not going to lose this opportunity because of this, a mental problem. <br/>They would not accept me as I am if they knew. <br/>I'm about to finish university. This is really a competition between the best universities. <br/>This is the opportunity of my life. <br/>This is like a shop window. I need them to be proud. I need them to need me. <br/><br/>To want me.")
+              wait {
+                msg ("<br/>Alright, time to dress up. ")
+              }
+            }
+          }
+        }
+      }
+    ]]></description>
+    <command>
+      <pattern>dress up</pattern>
+      <scope>main room of the men shower room</scope>
+      <script>
+        msg ("Right, but not here, standing. I should put my suitcase down first. ")
+      </script>
+    </command>
+    <object name="suitcase">
+      <inherit name="editor_object" />
+      <alias>bag</alias>
+      <scenery />
+    </object>
+    <object name="seat">
+      <inherit name="editor_object" />
+      <walkto type="script">
+        msg ("Which one? Front, left, or the right one?")
+      </walkto>
+      <scenery />
+      <walk type="script">
+        msg ("Which one? Front, left, or the right one?")
+      </walk>
+    </object>
+    <command>
+      <pattern>put suitcase down; put bag down</pattern>
+      <scope>main room of the men shower room</scope>
+      <script><![CDATA[
+        msg ("Fair, but on which seat?<br/>I have to pick one of the three seats and should be next to it.")
+      ]]></script>
+    </command>
+    <object name="front seat">
+      <inherit name="editor_object" />
+      <scenery />
+      <walkto type="script"><![CDATA[
+        msg ("The larger seat. <br/>I bet it could make room for everyone today. <br/>But I would have preferred a proper seat. <br/><br/>People who come by are quickly presented with a bunch of dancing penises all over the place in front of their eyes, because this room has no door.")
+      ]]></walkto>
+    </object>
+  </object>
+  <verb>
+    <property>putsuitcasedown</property>
+    <pattern>put suitcase down</pattern>
+    <defaultexpression>"You can't put suitcase down " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>walkto</property>
+    <pattern>walk to</pattern>
+    <defaultexpression>"You can't walk to " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>walktofrontseat</property>
+    <pattern>walk to front seat</pattern>
+    <defaultexpression>"You can't walk to front seat " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>walkfrontseat</property>
+    <pattern>walk front seat</pattern>
+    <defaultexpression>"You can't walk front seat " + object.article + "."</defaultexpression>
   </verb>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
