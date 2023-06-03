@@ -279,17 +279,27 @@
     <descprefix>I'm in the</descprefix>
     <objectslistprefix>I can see</objectslistprefix>
     <description type="script"><![CDATA[
-      msg ("The shower room seems empty at first glance. I don’t hear anyone – only the wind that makes the window shake, and that is probably why it still keeps judging me, even though abused by another entity. Please, stop it, ok, I trained so hard for this, it can’t be that bad. And I’m not alone, right? So get the fuck out and cease your assumptions and appraisals. <br/>")
-      wait {
-        msg ("But, inside – deep inside of me, I understood its point. It makes me feel nauseous that even a fucking primaeval window, plenty of wounds that time made it possible to mask them a little bit, but not enough to forget the years of others that went by here, is mocking me. I’m surprised it still did not fall in pieces, due to all the scratches it possesses.  And it fights and keeps fighting, against the breezy weather that is waiting for us all. It did not have knowledge of the verb give up. And it is mocking me – showing me that even an irrelevant piece of junk glass is still better than me. More useful than me.<br/>")
+      if (men shower room.visitCount = 0) {
+        msg ("The shower room seems empty at first glance. I don’t hear anyone – only the wind that makes the window shake, and that is probably why it still keeps judging me, even though abused by another entity. Please, stop it, ok, I trained so hard for this, it can’t be that bad. And I’m not alone, right? So get the fuck out and cease your assumptions and appraisals. <br/>")
         wait {
-          msg ("You bitch! I’m gonna show you who is the junk when I and my team will win the race.<br/>")
+          msg ("But, inside – deep inside of me, I understood its point. It makes me feel nauseous that even a fucking primaeval window, plenty of wounds that time made it possible to mask them a little bit, but not enough to forget the years of others that went by here, is mocking me. I’m surprised it still did not fall in pieces, due to all the scratches it possesses.  And it fights and keeps fighting, against the breezy weather that is waiting for us all. It did not have knowledge of the verb give up. And it is mocking me – showing me that even an irrelevant piece of junk glass is still better than me. More useful than me.<br/>")
           wait {
-            msg ("In my sight, and forgetting about the glass, I’m able to see the toilets, the urinals (finally!), the showers and a large room on the right.")
+            msg ("You bitch! I’m gonna show you who is the junk when I and my team will win the race.<br/>")
+            wait {
+              msg ("In my sight, and forgetting about the glass, I’m able to see the toilets, the urinals (finally!), the showers and a large room on the right.")
+              IncreaseObjectCounter (men shower room, "visitCount")
+              SetObjectFlagOn (showers, "isGoingToTrySink")
+            }
           }
         }
       }
+      else {
+        msg ("I’m back in the shower hall. ")
+        msg ("In my sight, I’m able to see the toilets, the urinals, the showers and a large room on the right.")
+      }
     ]]></description>
+    <suffix>hall</suffix>
+    <visitCount type="int">0</visitCount>
     <object name="toilet1">
       <inherit name="editor_object" />
       <scenery />
@@ -403,6 +413,8 @@
           msg ("I'm not next to them, so I cannot look at them closely.")
         }
       ]]></look>
+      <isGoingToTrySink type="boolean">false</isGoingToTrySink>
+      <scenery />
     </object>
     <object name="room">
       <inherit name="editor_object" />
@@ -415,6 +427,7 @@
           msg ("I'm at the entrance.")
         }
       </walk>
+      <scenery />
     </object>
     <object name="black handle">
       <inherit name="editor_object" />
@@ -445,7 +458,15 @@
     <object name="test">
       <inherit name="editor_object" />
       <take />
+      <scenery />
     </object>
+    <exit to="main room of the men shower room" />
+    <command>
+      <pattern>walk to main room; walk to main room of the men shower room</pattern>
+      <script>
+        MoveObject (player, main room of the men shower room)
+      </script>
+    </command>
   </object>
   <command name="go_in">
     <pattern>go in</pattern>
@@ -512,6 +533,7 @@
     <object name="suitcase">
       <inherit name="editor_object" />
       <alias>bag</alias>
+      <isInLeftSeat type="boolean">false</isInLeftSeat>
       <scenery />
     </object>
     <object name="seat">
@@ -528,7 +550,18 @@
       <pattern>put suitcase down; put bag down</pattern>
       <scope>main room of the men shower room</scope>
       <script><![CDATA[
-        msg ("Fair, but on which seat?<br/>I have to pick one of the three seats and should be next to it.")
+        if (suitcase.isInLeftSeat = false) {
+          msg ("Fair, but on which seat?<br/>I have to pick one of the three seats and should be next to it.")
+        }
+        else {
+          msg ("I put the suitcase on the seat. ")
+          wait {
+            msg ("<br/>And suddenly, I can no longer feel myself. My brain disappears and my body is controlled like a puppet by someone above me. <br/>\"I have dizziness\", I think.")
+            wait {
+              msg ("<br/>I should hurry and take a pill before someone comes. <br/>It is in my front pocket. ")
+            }
+          }
+        }
       ]]></script>
     </command>
     <object name="front seat">
@@ -538,16 +571,113 @@
         msg ("The larger seat. <br/>I bet it could make room for everyone today. <br/>But I would have preferred a proper seat. <br/><br/>People who come by are quickly presented with a bunch of dancing penises all over the place in front of their eyes, because this room has no door.")
       ]]></walkto>
     </object>
+    <object name="left seat">
+      <inherit name="editor_object" />
+      <scenery />
+      <walkto type="script">
+        msg ("Great, the corner near the entrance wall is free. ")
+        SetObjectFlagOn (suitcase, "isInLeftSeat")
+      </walkto>
+    </object>
+    <object name="right seat">
+      <inherit name="editor_object" />
+      <scenery />
+      <walkto type="script"><![CDATA[
+        if (right seat.visitCount = 0) {
+          msg ("The corner next to the entrance wall is already occupied.")
+        }
+        else {
+          msg ("I’m now next to the two bags on the right seat. <br/>Let’s take a closer look.")
+          SetObjectFlagOn (right seat, "nextToRightSeat")
+        }
+      ]]></walkto>
+      <visitCount type="int">0</visitCount>
+      <nextToRightSeat type="boolean">false</nextToRightSeat>
+    </object>
+    <object name="pocket">
+      <inherit name="editor_object" />
+      <inherit name="openable" />
+      <feature_container />
+      <openscript type="script"><![CDATA[
+        msg ("The good thing about sports bags is that they have lots of pockets. <br/>I don't think I have time to check each one. I feel like I know where the pill might be.")
+      ]]></openscript>
+      <close type="boolean">false</close>
+      <onopen type="script"><![CDATA[
+        msg ("The good thing about sports bags is that they have lots of pockets.<br/>I don't think I have time to check each one. I feel like I know where the pill might be.")
+      ]]></onopen>
+      <scenery />
+    </object>
+    <object name="front pocket">
+      <inherit name="editor_object" />
+      <inherit name="openable" />
+      <feature_container />
+      <openscript type="script"><![CDATA[
+        msg ("Done. The bag is open. ")
+        wait {
+          msg ("<br/>Holy crap! I forgot my water bottle...<br/>What a great start.")
+          wait {
+            msg ("Think.")
+            wait {
+              msg ("Think.")
+              wait {
+                msg ("Just calm down and fucking think.")
+                wait {
+                  msg ("Breathe in.")
+                  wait {
+                    msg ("Breathe out.")
+                    wait {
+                      msg ("It's alright.<br/>I need to find a solution quickly.")
+                      IncreaseObjectCounter (right seat, "visitCount")
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]]></openscript>
+      <scenery />
+    </object>
+    <command>
+      <pattern>look around</pattern>
+      <scope>main room of the men shower room</scope>
+      <script>
+        msg ("I am the only one here at the moment. Although there are other bags on the right seat.")
+      </script>
+    </command>
+    <object name="bags">
+      <inherit name="editor_object" />
+      <look type="script"><![CDATA[
+        if (right seat.nextToRightSeat = true) {
+          msg ("Hum… From the shape, I don't think they have either.")
+          wait {
+            msg ("<br/>I’m panicking. ")
+            wait {
+              msg ("<br/>Like a lot.")
+              wait {
+                msg ("<br/><br/>It has to be another way. Something where water could come from. ")
+              }
+            }
+          }
+        }
+      ]]></look>
+      <scenery />
+    </object>
+    <command>
+      <pattern>walk to men shower room hall; walk to hall; walk men shower room hall; walk hall; walk to shower room hall; walk shower room hall</pattern>
+      <script>
+        MoveObject (player, men shower room)
+      </script>
+      <scope>main room of the men shower room</scope>
+    </command>
+    <exit to="men shower room">
+      <scenery />
+    </exit>
   </object>
   <verb>
     <property>putsuitcasedown</property>
     <pattern>put suitcase down</pattern>
     <defaultexpression>"You can't put suitcase down " + object.article + "."</defaultexpression>
-  </verb>
-  <verb>
-    <property>walkto</property>
-    <pattern>walk to</pattern>
-    <defaultexpression>"You can't walk to " + object.article + "."</defaultexpression>
   </verb>
   <verb>
     <property>walktofrontseat</property>
