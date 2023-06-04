@@ -16,12 +16,12 @@
     <showborder />
     <enablehyperlinks type="boolean">false</enablehyperlinks>
     <defaultfontsize type="int">16</defaultfontsize>
-    <start type="script">
-      MoveObject (player, Loans house)
-    </start>
     <showdescriptiononenter type="boolean">false</showdescriptiononenter>
     <attr name="autodescription_youarein_useprefix" type="boolean">false</attr>
     <attr name="feature_asktell" type="boolean">false</attr>
+    <start type="script">
+      MoveObject (player, outside of the small house)
+    </start>
   </game>
   <command name="go">
     <pattern type="string"><![CDATA[^go to (?<exit>.*)$|^go (?<exit>.*)$|^(?<exit>north|east|south|west|northeast|northwest|southeast|southwest|in|out|up|down|n|e|s|w|ne|nw|se|sw|o|u|d)$]]></pattern>
@@ -65,6 +65,7 @@
     <usedefaultprefix type="boolean">false</usedefaultprefix>
     <prefix type="string"></prefix>
     <exitslistprefix type="string"></exitslistprefix>
+    <firstRun type="boolean">false</firstRun>
     <description type="script">
     </description>
     <beforefirstenter type="script">
@@ -76,7 +77,6 @@
     <onexit type="script">
       LockExit (exit_outside_sports_hall)
     </onexit>
-    <firstRun type="boolean">false</firstRun>
     <object name="player">
       <inherit name="editor_object" />
       <inherit name="editor_player" />
@@ -331,6 +331,9 @@
     <usedefaultprefix type="boolean">false</usedefaultprefix>
     <descprefix>I'm in the</descprefix>
     <objectslistprefix>I can see</objectslistprefix>
+    <suffix>hall</suffix>
+    <visitCount type="int">0</visitCount>
+    <trySink type="boolean">false</trySink>
     <description type="script"><![CDATA[
       if (main room of the men shower room.lookingForWater = false) {
         msg ("The shower room seems empty at first glance. I don’t hear anyone – only the wind that makes the window shake, and that is probably why it still keeps judging me, even though abused by another entity. Please, stop it, ok, I trained so hard for this, it can’t be that bad. And I’m not alone, right? So get the fuck out and cease your assumptions and appraisals. <br/>")
@@ -351,9 +354,6 @@
         msg ("In my sight, I’m able to see the toilets, the urinals, the showers and a large room on the right.<br/>And, of course, that shitty window with that sink below it. ")
       }
     ]]></description>
-    <suffix>hall</suffix>
-    <visitCount type="int">0</visitCount>
-    <trySink type="boolean">false</trySink>
     <object name="toilet1">
       <inherit name="editor_object" />
       <scenery />
@@ -445,6 +445,7 @@
       <inherit name="editor_object" />
       <alias>to showers</alias>
       <nextToShowers type="boolean">false</nextToShowers>
+      <scenery />
       <walk type="script"><![CDATA[
         if (men shower room.trySink = false) {
           msg ("The showers look cheap. But they appear they are working fine. <br/>Despite I wonder why they did not separate themselves from each other. <br/>A translucent barrier, for instance. <br/>They could even manage to reuse that window – it’s perfect for this.<br/>")
@@ -472,11 +473,11 @@
           msg ("I'm not next to them, so I cannot look at them closely.")
         }
       ]]></look>
-      <scenery />
     </object>
     <object name="room">
       <inherit name="editor_object" />
       <alias>to room</alias>
+      <scenery />
       <walk type="script">
         if (urinal.didNotPee = True) {
           msg ("I need to pee!!")
@@ -485,7 +486,6 @@
           msg ("I'm at the entrance.")
         }
       </walk>
-      <scenery />
     </object>
     <object name="black handle">
       <inherit name="editor_object" />
@@ -529,6 +529,9 @@
     </command>
     <object name="sink">
       <inherit name="editor_object" />
+      <alias>to sink</alias>
+      <attr name="feature_switchable" type="boolean">false</attr>
+      <scenery />
       <walk type="script"><![CDATA[
         if (main room of the men shower room.lookingForWater = true) {
           msg ("Of course! This tap may supply water. <br/>Let me turn it on.")
@@ -537,12 +540,10 @@
           msg ("I don't need to go there now.")
         }
       ]]></walk>
-      <alias>to sink</alias>
-      <attr name="feature_switchable" type="boolean">false</attr>
-      <scenery />
     </object>
     <object name="tap">
       <inherit name="editor_object" />
+      <scenery />
       <turnon type="script"><![CDATA[
         msg ("Hum… It doesn’t work. <br/>Time to give up.<br/>It seems.")
         SetObjectFlagOn (main room of the men shower room, "noWater")
@@ -557,7 +558,6 @@
           }
         }
       ]]></turnon>
-      <scenery />
     </object>
   </object>
   <command name="go_in">
@@ -597,6 +597,23 @@
     <descprefix>I'm in</descprefix>
     <usedefaultprefix type="boolean">false</usedefaultprefix>
     <prefix>the</prefix>
+    <noWater type="boolean">false</noWater>
+    <lookingForWater type="boolean">false</lookingForWater>
+    <undressed type="boolean">false</undressed>
+    <ableToUndress type="boolean">false</ableToUndress>
+    <timeToDressUp type="boolean">false</timeToDressUp>
+    <answerNothing type="boolean">false</answerNothing>
+    <answerSorry type="boolean">false</answerSorry>
+    <firstTalk type="string"></firstTalk>
+    <secondTalk type="boolean">false</secondTalk>
+    <thirdTalk type="boolean">false</thirdTalk>
+    <fourthTalk type="boolean">false</fourthTalk>
+    <firstJustDoIt type="boolean">false</firstJustDoIt>
+    <secondJustDoIt type="boolean">false</secondJustDoIt>
+    <thirdJustDoIt type="boolean">false</thirdJustDoIt>
+    <fourthJustDoIt type="boolean">false</fourthJustDoIt>
+    <swallowed type="boolean">false</swallowed>
+    <hurry type="boolean">false</hurry>
     <description type="script"><![CDATA[
       if (main room of the men shower room.noWater = false) {
         msg ("<br/>I’m entering the main room from the men's shower room, leaving the shower room hall behind.<br/>It feels like they spend good times here. The area is huge. I wonder if I would feel alone in here.")
@@ -619,23 +636,6 @@
       else {
       }
     ]]></description>
-    <noWater type="boolean">false</noWater>
-    <lookingForWater type="boolean">false</lookingForWater>
-    <undressed type="boolean">false</undressed>
-    <ableToUndress type="boolean">false</ableToUndress>
-    <timeToDressUp type="boolean">false</timeToDressUp>
-    <answerNothing type="boolean">false</answerNothing>
-    <answerSorry type="boolean">false</answerSorry>
-    <firstTalk type="string"></firstTalk>
-    <secondTalk type="boolean">false</secondTalk>
-    <thirdTalk type="boolean">false</thirdTalk>
-    <fourthTalk type="boolean">false</fourthTalk>
-    <firstJustDoIt type="boolean">false</firstJustDoIt>
-    <secondJustDoIt type="boolean">false</secondJustDoIt>
-    <thirdJustDoIt type="boolean">false</thirdJustDoIt>
-    <fourthJustDoIt type="boolean">false</fourthJustDoIt>
-    <swallowed type="boolean">false</swallowed>
-    <hurry type="boolean">false</hurry>
     <command>
       <pattern>dress up</pattern>
       <scope>main room of the men shower room</scope>
@@ -663,14 +663,14 @@
     </object>
     <object name="seat">
       <inherit name="editor_object" />
+      <scenery />
+      <alias>to seat</alias>
       <walkto type="script">
         msg ("Which one? Front, left, or the right one?")
       </walkto>
-      <scenery />
       <walk type="script">
         msg ("Which one? Front, left, or the right one?")
       </walk>
-      <alias>to seat</alias>
     </object>
     <command>
       <pattern>put suitcase down; put bag down</pattern>
@@ -693,10 +693,10 @@
     <object name="front seat">
       <inherit name="editor_object" />
       <scenery />
+      <alias>to front seat</alias>
       <walkto type="script"><![CDATA[
         msg ("The larger seat. <br/>I bet it could make room for everyone today. <br/>But I would have preferred a proper seat. <br/><br/>People who come by are quickly presented with a bunch of dancing penises all over the place in front of their eyes, because this room has no door.")
       ]]></walkto>
-      <alias>to front seat</alias>
       <walk type="script"><![CDATA[
         msg ("The larger seat. I bet it could make room for everyone today. <br/>But I would have preferred a proper seat. ")
         wait {
@@ -707,11 +707,11 @@
     <object name="left seat">
       <inherit name="editor_object" />
       <scenery />
+      <alias>to left seat</alias>
       <walkto type="script">
         msg ("Great, the corner near the entrance wall is free. ")
         SetObjectFlagOn (suitcase, "isInLeftSeat")
       </walkto>
-      <alias>to left seat</alias>
       <walk type="script"><![CDATA[
         if (main room of the men shower room.noWater = false) {
           msg ("Great, the corner near the entrance wall is free. ")
@@ -729,6 +729,9 @@
     <object name="right seat">
       <inherit name="editor_object" />
       <scenery />
+      <visitCount type="int">0</visitCount>
+      <nextToRightSeat type="boolean">false</nextToRightSeat>
+      <alias>to right seat</alias>
       <walkto type="script"><![CDATA[
         if (right seat.visitCount = 0) {
           msg ("The corner next to the entrance wall is already occupied.")
@@ -738,9 +741,6 @@
           SetObjectFlagOn (right seat, "nextToRightSeat")
         }
       ]]></walkto>
-      <visitCount type="int">0</visitCount>
-      <nextToRightSeat type="boolean">false</nextToRightSeat>
-      <alias>to right seat</alias>
       <walk type="script">
         if (main room of the men shower room.lookingForWater = true) {
           msg ("I’m now next to the two bags on the right seat. ")
@@ -755,19 +755,21 @@
       <inherit name="editor_object" />
       <inherit name="openable" />
       <feature_container />
+      <close type="boolean">false</close>
+      <scenery />
       <openscript type="script"><![CDATA[
         msg ("The good thing about sports bags is that they have lots of pockets. <br/>I don't think I have time to check each one. I feel like I know where the pill might be.")
       ]]></openscript>
-      <close type="boolean">false</close>
       <onopen type="script"><![CDATA[
         msg ("The good thing about sports bags is that they have lots of pockets.<br/>I don't think I have time to check each one. I feel like I know where the pill might be.")
       ]]></onopen>
-      <scenery />
     </object>
     <object name="front pocket">
       <inherit name="editor_object" />
       <inherit name="openable" />
       <feature_container />
+      <scenery />
+      <isopen type="boolean">false</isopen>
       <openscript type="script"><![CDATA[
         if (main room of the men shower room.hurry = true) {
           msg ("The pocket is open. <br/>C'mon, I should swallow the pill as soon as possible.<br/>I quickly take out the pill box.<br/><br/>Now it is time to take it.")
@@ -799,8 +801,6 @@
           }
         }
       ]]></openscript>
-      <scenery />
-      <isopen type="boolean">false</isopen>
     </object>
     <command>
       <pattern>look around</pattern>
@@ -811,10 +811,10 @@
     </command>
     <command>
       <pattern>walk to men shower room hall; walk to hall; walk men shower room hall; walk hall; walk to shower room hall; walk shower room hall</pattern>
+      <scope>main room of the men shower room</scope>
       <script>
         MoveObject (player, men shower room)
       </script>
-      <scope>main room of the men shower room</scope>
     </command>
     <exit alias="men shower room hall; mens shower room; mens shower room hall" to="men shower room">
       <scenery />
@@ -837,6 +837,7 @@
       <inherit name="openable" />
       <feature_container />
       <close type="boolean">false</close>
+      <scenery />
       <openscript type="script"><![CDATA[
         msg ("I’m glad I haven’t forgotten it. ")
         wait {
@@ -865,7 +866,6 @@
           }
         }
       ]]></openscript>
-      <scenery />
     </object>
     <command>
       <pattern>answer; reply</pattern>
@@ -1181,6 +1181,7 @@
     </object>
     <command>
       <pattern>look at bags</pattern>
+      <scope>main room of the men shower room</scope>
       <script><![CDATA[
         if (right seat.nextToRightSeat = true) {
           msg ("Hum… From the shape, I don't think they have either.")
@@ -1195,7 +1196,6 @@
           }
         }
       ]]></script>
-      <scope>main room of the men shower room</scope>
     </command>
   </object>
   <verb>
@@ -1222,15 +1222,16 @@
     <inherit name="editor_room" />
     <descprefix type="string"></descprefix>
     <objectslistprefix type="string"></objectslistprefix>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
     <beforefirstenter type="script"><![CDATA[
       PrintCentered ("2 YEARS LATER<br/>")
       msg ("\"Hurry up, breakfast is ready! Get out of bed!\"<br/>\"I'm coming.\"")
     ]]></beforefirstenter>
-    <usedefaultprefix type="boolean">false</usedefaultprefix>
     <description type="script">
     </description>
     <object name="bed">
       <inherit name="editor_object" />
+      <scenery />
       <getoutof type="script"><![CDATA[
         msg ("I carefully get out of bed. <br/>I don't want to make too much noise. <br/>I want to show him that I can still be independent.")
         wait {
@@ -1282,7 +1283,6 @@
           }
         }
       ]]></getoutof>
-      <scenery />
     </object>
   </object>
   <verb>
@@ -1293,12 +1293,6 @@
   <object name="outside of the small house">
     <inherit name="editor_room" />
     <objectslistprefix>I can see</objectslistprefix>
-    <enter type="script"><![CDATA[
-      msg ("We're in front of a small house in the middle of nowhere. <br/>Loan is with me. ")
-      wait {
-        msg ("<br/>A large door is a few meters in front of us. The blinds are up, which means someone might be at home.")
-      }
-    ]]></enter>
     <firstTalkLoan />
     <secondTalkLoan type="boolean">false</secondTalkLoan>
     <thirdTalkLoan type="boolean">false</thirdTalkLoan>
@@ -1307,22 +1301,20 @@
     <comein type="boolean">false</comein>
     <checked type="boolean">false</checked>
     <ready type="boolean">false</ready>
+    <enter type="script"><![CDATA[
+      msg ("We're in front of a small house in the middle of nowhere. <br/>Loan is with me. By my side.")
+      wait {
+        msg ("<br/>A large door is a few meters in front of us. The blinds are up, which means someone might be at home.")
+      }
+    ]]></enter>
     <command>
       <pattern>look around</pattern>
       <unresolved type="string"></unresolved>
       <scope>outside of the small house</scope>
       <script><![CDATA[
-        msg ("I don't know exactly where we are.
-        I would say we are in the middle of the desert.
-        But without sand.")
+        msg ("I do not know exactly where we are.<br/>I would say we are in the middle of the desert.<br/>But without sand.")
         wait {
-          msg ("<br/>There is light green grass all around, down to the valley's mountain.
-          The sky is clear and the sun is shining, even though it is not hot here.
-          We must be above sea level. Sometimes it is hard to breathe.
-          There are a few trees, small but sturdy. You can hear birdsong from them.
-          The only road nearby is the one we came from. This place seems to have been forgotten by man.
-          There is only one house.
-          The one in front of us.")
+          msg ("<br/>There is light green grass all around, down to the valley's mountain.<br/><br/>The sky is clear and the sun is shining, even though it is not hot here.<br/><br/><br/>We must be above sea level. Sometimes it is hard to breathe.<br/><br/>There are a few trees, small but sturdy. You can hear birdsong from them.<br/><br/><br/>The only road nearby is the one we came from. This place seems to have been forgotten by man.<br/><br/>There is only one house.<br/>The one in front of us.")
         }
       ]]></script>
     </command>
@@ -1335,6 +1327,8 @@
     </command>
     <object name="Loan">
       <inherit name="editor_object" />
+      <alias>to Loan; loan; to loan</alias>
+      <scenery />
       <speak type="script"><![CDATA[
         if (outside of the small house.firstTalkLoan = true) {
           msg ("\"Why did you bring us here? There is nothing here!\"")
@@ -1352,25 +1346,23 @@
         else if (outside of the small house.thirdTalkLoan = true) {
           msg ("\"Why? You didn't do anything.\"<br/>\"I did.\"<br/><br/>\"And I even managed to destroy your future. Your life.\"")
           wait {
-            msg ("\"Save your jokes for tonight, sweetheart,\" Loan laughs. \"Just because you act funny, you're the one knocking on the door!\"")
+            msg ("<br/>\"Save your jokes for tonight, sweetheart,\" Loan laughs. \"Just because you act funny, you're the one knocking on the door!\"")
           }
         }
       ]]></speak>
-      <alias>to Loan; loan; to loan</alias>
-      <scenery />
-      <ask type="scriptdictionary">
-        <item key="Loan">
-        </item>
-      </ask>
       <swap type="script"><![CDATA[
         if (outside of the small house.isDave = true) {
           SetObjectFlagOff (outside of the small house, "isDave")
           msg ("I am Loan. ")
           wait {
-            msg ("<br/>\"Alright. I'll do it just for you, sweetie!\"<br/><br/>I smile as I look at him. He is perfect when he looks angry.<br/>I know he is not doing it on purpose. <br/><br/>It's just an armour to protect himself. ")
+            msg ("<br/>\"Alright. I'll do it just for you, sweetie!\"<br/><br/>I smile as I look at him. He is perfect when he looks angry.<br/>I know Dave is not doing it on purpose. <br/><br/>It's just an armour to protect himself. ")
           }
         }
       ]]></swap>
+      <ask type="scriptdictionary">
+        <item key="Loan">
+        </item>
+      </ask>
     </object>
     <object name="door">
       <inherit name="editor_object" />
@@ -1438,6 +1430,7 @@
           }
         }
       ]]></knockon>
+      <alias>to door</alias>
     </object>
     <exit alias="small house; old man house; man house; house; inside house" to="inside of the small house">
       <scenery />
@@ -1446,20 +1439,20 @@
         if (outside of the small house.comein = true) {
           msg ("I should check on Dave first. He looks tired and it's better to help him into the house.")
         }
-        else if (outside of the small house.ready = ) {
-        }
         else if (outside of the small house.ready = false) {
           msg ("I should go inside with Dave.")
         }
         else if (outside of the small house.ready = true) {
-          MoveObject (player, inside of the small house)
           msg ("Done. My job is done too.")
+          wait {
+            EnableTimer (checkIfIsDave)
+          }
         }
       </script>
     </exit>
     <object name="Dave">
       <inherit name="editor_object" />
-      <alias>dave; on dave; on Dave</alias>
+      <alias>dave; on dave; on Dave; to dave; towards dave: to Dave; towards Dave</alias>
       <scenery />
       <checkon type="script">
         msg ("He looks tired, but I can't help him from where I am. ")
@@ -1469,6 +1462,12 @@
         SetObjectFlagOff (outside of the small house, "comein")
         SetObjectFlagOn (outside of the small house, "checked")
       </walk>
+      <swap type="script">
+        if (outside of the small house.ready = true) {
+          msg ("I am Dave.")
+          SetObjectFlagOn (outside of the small house, "isDave")
+        }
+      </swap>
     </object>
   </object>
   <verb>
@@ -1486,19 +1485,20 @@
     <objectslistprefix>I'm able to see</objectslistprefix>
     <isDave />
     <nextToTable type="boolean">false</nextToTable>
+    <beforefirstenter type="script">
+      msg ("I'm Dave.")
+      msg ("We are inside.")
+    </beforefirstenter>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
     <object name="Loan2">
       <inherit name="editor_object" />
+      <alias>to Loan; loan; to loan</alias>
+      <scenery />
       <speak type="script">
         if (inside of the small house.isDave = true) {
           msg ("I don't think he knows either. I need to talk to its owner.")
         }
       </speak>
-      <alias>to Loan; loan; to loan</alias>
-      <scenery />
-      <ask type="scriptdictionary">
-        <item key="Loan">
-        </item>
-      </ask>
       <swap type="script"><![CDATA[
         if (outside of the small house.isDave = true) {
           SetObjectFlagOff (, "")
@@ -1511,10 +1511,14 @@
           msg ("I don't think that's necessary. Let me be myself, let me be Dave!")
         }
       ]]></swap>
+      <ask type="scriptdictionary">
+        <item key="Loan">
+        </item>
+      </ask>
     </object>
     <object name="Dave2">
       <inherit name="editor_object" />
-      <alias>dave; on dave; on Dave</alias>
+      <alias>dave; on dave; on Dave; to dave; to Dave</alias>
       <scenery />
       <checkon type="script">
         msg ("He looks tired, but I can't help him from where I am. ")
@@ -1591,6 +1595,16 @@
     <script>
       msg ("\"Are you crazy, dude? Take the stick, for God's sake!\"")
       DisableTimer (takeBaton)
+    </script>
+  </timer>
+  <timer name="checkIfIsDave">
+    <interval>0</interval>
+    <script>
+      if (outside of the small house.isDave = true) {
+        DisableTimer (checkIfIsDave)
+        ClearScreen
+        MoveObject (player, inside of the small house)
+      }
     </script>
   </timer>
 </asl>
