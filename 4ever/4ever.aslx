@@ -123,6 +123,7 @@
       <pattern>take baton; take stick; grab baton; grab stick</pattern>
       <scope>outside of the sports hall</scope>
       <script><![CDATA[
+        DisableTimer (takeBaton)
         msg ("I take the baton and start sprinting as fast as I can. <br/>Loan is standing next to me, on the track to the left of me.<br/><br/>He's smiling at me.<br/>That cocky smile. ")
         wait {
           msg ("<br/>Suddenly I start to lose strength.<br/><br/>\"Not now.\"<br/>\"You have to fight.\"<br/>\"Run.\"<br/>\"Run as if your life depends on it.\"")
@@ -157,6 +158,7 @@
                     msg ("<br/>\"Because I was worried about you. And you're more important than this.\"<br/>How did they know I was mentally questioning his behaviour?")
                     wait {
                       msg ("<br/>Asshole.<br/><br/>\"Somebody call an ambulance! Dave's just had a blackout!\"")
+                      ClearScreen
                       wait {
                         MoveObject (player, Loans house)
                       }
@@ -737,11 +739,12 @@
       <nextToRightSeat type="boolean">false</nextToRightSeat>
       <alias>to right seat</alias>
       <walk type="script">
-        if (main room of the men shower room.noWater = false) {
-          msg ("The corner next to the entrance wall is already occupied.")
-        }
-        else if (main room of the men shower room.lookingForWater = true) {
+        if (main room of the men shower room.lookingForWater = true) {
           msg ("I’m now next to the two bags on the right seat. ")
+          SetObjectFlagOn (right seat, "nextToRightSeat")
+        }
+        else if (main room of the men shower room.noWater = false) {
+          msg ("The corner next to the entrance wall is already occupied.")
         }
       </walk>
     </object>
@@ -794,7 +797,7 @@
         }
       ]]></openscript>
       <scenery />
-      <isopen />
+      <isopen type="boolean">false</isopen>
     </object>
     <command>
       <pattern>look around</pattern>
@@ -803,24 +806,6 @@
         msg ("I am the only one here at the moment. Although there are other bags on the right seat.")
       </script>
     </command>
-    <object name="bags">
-      <inherit name="editor_object" />
-      <look type="script"><![CDATA[
-        if (right seat.nextToRightSeat = true) {
-          msg ("Hum… From the shape, I don't think they have either.")
-          wait {
-            msg ("<br/>I’m panicking. ")
-            wait {
-              msg ("<br/>Like a lot.")
-              wait {
-                msg ("<br/><br/>It has to be another way. Something where water could come from. ")
-              }
-            }
-          }
-        }
-      ]]></look>
-      <scenery />
-    </object>
     <command>
       <pattern>walk to men shower room hall; walk to hall; walk men shower room hall; walk hall; walk to shower room hall; walk shower room hall</pattern>
       <script>
@@ -828,7 +813,7 @@
       </script>
       <scope>main room of the men shower room</scope>
     </command>
-    <exit to="men shower room">
+    <exit alias="men shower room hall; mens shower room; mens shower room hall" to="men shower room">
       <scenery />
     </exit>
     <command>
@@ -1191,6 +1176,24 @@
         }
       ]]></swallow>
     </object>
+    <command>
+      <pattern>look at bags</pattern>
+      <script><![CDATA[
+        if (right seat.nextToRightSeat = true) {
+          msg ("Hum… From the shape, I don't think they have either.")
+          wait {
+            msg ("<br/>I’m panicking. ")
+            wait {
+              msg ("<br/>Like a lot.")
+              wait {
+                msg ("<br/><br/>It has to be another way. Something where water could come from. ")
+              }
+            }
+          }
+        }
+      ]]></script>
+      <scope>main room of the men shower room</scope>
+    </command>
   </object>
   <verb>
     <property>putsuitcasedown</property>
