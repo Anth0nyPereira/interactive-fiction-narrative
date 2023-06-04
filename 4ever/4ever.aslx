@@ -1367,6 +1367,7 @@
     <object name="door">
       <inherit name="editor_object" />
       <scenery />
+      <alias>to door</alias>
       <walk type="script"><![CDATA[
         if (outside of the small house.nextToDoor = true) {
           if (outside of the small house.isDave = true) {
@@ -1430,7 +1431,6 @@
           }
         }
       ]]></knockon>
-      <alias>to door</alias>
     </object>
     <exit alias="small house; old man house; man house; house; inside house" to="inside of the small house">
       <scenery />
@@ -1485,16 +1485,6 @@
     <objectslistprefix>I'm able to see</objectslistprefix>
     <isDave />
     <nextToTable type="boolean">false</nextToTable>
-    <beforefirstenter type="script"><![CDATA[
-      msg ("I'm Dave.")
-      msg ("<br/>As we enter this man's house, I fully understand who he is. ")
-      wait {
-        msg ("<br/>From the way he looked back outside, I believed he was some kind of wizard - you know, the typical long white beard, the long blue jacket, the beaked hat. <br/>Although it could not be that simple. <br/>I suppose.")
-        wait {
-          msg ("<br/>And when we reach the main room, I could be 100% sure: there are a lot of esoteric things here.<br/><br/>\"Come here, in front of this table.\"")
-        }
-      }
-    ]]></beforefirstenter>
     <usedefaultprefix type="boolean">false</usedefaultprefix>
     <daveLookedAround type="boolean">false</daveLookedAround>
     <wizardDidPrank type="boolean">false</wizardDidPrank>
@@ -1509,6 +1499,16 @@
     <ableToCheckSecondProtuberance type="boolean">false</ableToCheckSecondProtuberance>
     <letDaveOpenScroll type="boolean">false</letDaveOpenScroll>
     <messageRevealed type="boolean">false</messageRevealed>
+    <beforefirstenter type="script"><![CDATA[
+      msg ("I'm Dave.")
+      msg ("<br/>As we enter this man's house, I fully understand who he is. ")
+      wait {
+        msg ("<br/>From the way he looked back outside, I believed he was some kind of wizard - you know, the typical long white beard, the long blue jacket, the beaked hat. <br/>Although it could not be that simple. <br/>I suppose.")
+        wait {
+          msg ("<br/>And when we reach the main room, I could be 100% sure: there are a lot of esoteric things here.<br/><br/>\"Come here, in front of this table.\"")
+        }
+      }
+    ]]></beforefirstenter>
     <object name="Loan2">
       <inherit name="editor_object" />
       <alias>to Loan; loan; to loan</alias>
@@ -1540,15 +1540,18 @@
           msg ("Alright, I'm Loan.<br/>Have I forgotten anything?")
         }
       ]]></swap>
+      <walk type="script">
+        if (inside of the small house.ableToCheckSecondProtuberance = true) {
+          msg ("I'm already nearby Loan.")
+        }
+        else if (inside of the small house.letLoanTalk = true) {
+          msg ("I'm already nearby Loan.")
+        }
+      </walk>
       <ask type="scriptdictionary">
         <item key="Loan">
         </item>
       </ask>
-      <walk type="script">
-        if (inside of the small house.ableToCheckSecondProtuberance = true) {
-          msg ("I'm already nearby Dave.")
-        }
-      </walk>
     </object>
     <object name="Dave2">
       <inherit name="editor_object" />
@@ -1558,7 +1561,7 @@
         msg ("He looks tired, but I can't help him from where I am. ")
       </checkon>
       <walk type="script"><![CDATA[
-        if (inside of the small house.ablleToCheckSecondProtuberance = true) {
+        if (inside of the small house.ableToCheckSecondProtuberance = true) {
           msg ("I'm already near Dave.")
         }
         else {
@@ -1595,14 +1598,14 @@
     </object>
     <object name="table">
       <inherit name="editor_object" />
+      <alias>to table</alias>
+      <scenery />
       <walk type="script"><![CDATA[
         if (inside of the small house.isDave = true) {
           msg ("\"It breaks my heart to ask you for help, but I need it. My love.\"<br/>\"Don't worry. I'm here to help you.\"<br/>The smile persists.<br/><br/>He is so cute.<br/><br/>Right. We finally reach the table.")
           SetObjectFlagOn (inside of the small house, "nextToTable")
         }
       ]]></walk>
-      <alias>to table</alias>
-      <scenery />
     </object>
     <command>
       <pattern>look around</pattern>
@@ -1656,9 +1659,7 @@
             else if (inside of the small house.wizardSecondTalk = true) {
               msg ("“Excuse me, but why are we here?\"<br/>\"I wanted to surprise you\", Loan says.<br/><br/>\"I may be able to find a cure for him. But as I told you, you must find the Cloaking Stone.\"<br/><br/>\"The Cloaking Stone?\", I say.<br/><br/>\"Yes, indeed. The most powerful amulet that may cloak the mistakes that life has made.”")
               wait {
-                msg ("<br/>This looks interesting. I have a look at Loan and he has a look of concentration too.
-                He seems to be trying not to open his mouth for fear of saying something embarrassing.
-                No worries, dear. We are among friends.")
+                msg ("<br/>This looks interesting. I have a look at Loan and he has a look of concentration too.<br/>He seems to be trying not to open his mouth for fear of saying something embarrassing.<br/><br/>No worries, dear. We are among friends.")
                 SetObjectFlagOn (inside of the small house, "letLoanTalk")
               }
             }
@@ -1689,7 +1690,7 @@
           }
         }
         else if (inside of the small house.isDave = false) {
-          if (inside of the small house.loanFinishedTalking = true) {
+          if (inside of the small house.LoanFinishedTalking = true) {
             msg ("I give the floor to Dave.")
           }
           else if (inside of the small house.letLoanTalk = true) {
