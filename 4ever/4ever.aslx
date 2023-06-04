@@ -1662,16 +1662,6 @@
                 SetObjectFlagOn (inside of the small house, "letLoanTalk")
               }
             }
-            else if (inside of the small house.wizardDidPrank = false) {
-              msg ("\"What is that giant statue over there?\", I ask him, pointing at it with my index.")
-              wait {
-                msg ("<br/>\"Oh, that? That is the Ultimate God. This is the true God that has ever existed! I am the servant of the Devil Himself!\"")
-                wait {
-                  msg ("<br/>\"Now be on your feet before I pluck out your eyes!\"<br/><br/>\"Wait, I thought you worked for the good. Is this some kind of online scam?\"<br/><br/>I love Loan's sense of humour.<br/>We're about to get killed and he still manages to make me laugh.<br/><br/>\"If you don't say 'You're the greatest wizard of all time' three times, your life is over.\"<br/><br/>\"But that's Voldemort!\" says Loan.<br/><br/>Shut up! You'll get us into more trouble.<br/><br/>\"I'm talking to you, Dave!\"<br/>\"In 3, 2, 1!\"")
-                  EnableTimer (wizardPrank)
-                }
-              }
-            }
             else if (inside of the small house.wizardThirdTalk = true) {
               msg ("\"So could you tell me and Loan where the entrance is? If you already know, it's a good place to start.\"<br/><br/>\"I can't. I'm forbidden to.\"<br/><br/>\"I can only give you two clues.\"")
               wait {
@@ -1684,6 +1674,16 @@
                     SetObjectFlagOn (inside of the small house, "loanShouldLookAround")
                   }
                 }
+              }
+            }
+          }
+          else if (inside of the small house.wizardDidPrank = false) {
+            msg ("\"What is that giant statue over there?\", I ask him, pointing at it with my index.")
+            wait {
+              msg ("<br/>\"Oh, that? That is the Ultimate God. This is the true God that has ever existed! I am the servant of the Devil Himself!\"")
+              wait {
+                msg ("<br/>\"Now be on your feet before I pluck out your eyes!\"<br/><br/>\"Wait, I thought you worked for the good. Is this some kind of online scam?\"<br/><br/>I love Loan's sense of humour.<br/>We're about to get killed and he still manages to make me laugh.<br/><br/>\"If you don't say 'You're the greatest wizard of all time' three times, your life is over.\"<br/><br/>\"But that's Voldemort!\" says Loan.<br/><br/>Shut up! You'll get us into more trouble.<br/><br/>\"I'm talking to you, Dave!\"<br/>\"In 3, 2, 1!\"")
+                EnableTimer (wizardPrank)
               }
             }
           }
@@ -1887,6 +1887,7 @@
         wait {
           msg ("<br/>\"Oh Gosh, sorry guys! I got a bit excited!\"<br/>\"My theatre classes are allowing me to make some progress. That's great!\"<br/><br/>I feel my heart stop for a split second. And somehow a warm glow fills my face.<br/><br/><br/>I should talk to him.")
           SetObjectFlagOn (inside of the small house, "wizardDidPrank")
+          DisableTimer (wizardPrank)
         }
       }
     ]]></script>
