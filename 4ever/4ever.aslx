@@ -17,8 +17,11 @@
     <enablehyperlinks type="boolean">false</enablehyperlinks>
     <defaultfontsize type="int">16</defaultfontsize>
     <start type="script">
-      MoveObject (player, main room of the men shower room)
+      MoveObject (player, Loans house)
     </start>
+    <showdescriptiononenter type="boolean">false</showdescriptiononenter>
+    <attr name="autodescription_youarein_useprefix" type="boolean">false</attr>
+    <attr name="feature_asktell" type="boolean">false</attr>
   </game>
   <command name="go">
     <pattern type="string"><![CDATA[^go to (?<exit>.*)$|^go (?<exit>.*)$|^(?<exit>north|east|south|west|northeast|northwest|southeast|southwest|in|out|up|down|n|e|s|w|ne|nw|se|sw|o|u|d)$]]></pattern>
@@ -566,7 +569,7 @@
   </command>
   <verb>
     <property>walk</property>
-    <pattern>walk</pattern>
+    <pattern>walk; walk to</pattern>
     <defaultexpression>"You can't walk " + object.article + "."</defaultexpression>
   </verb>
   <verb>
@@ -1220,9 +1223,12 @@
     <descprefix type="string"></descprefix>
     <objectslistprefix type="string"></objectslistprefix>
     <beforefirstenter type="script"><![CDATA[
-      PrintCentered ("2 YEARS LATER")
+      PrintCentered ("2 YEARS LATER<br/>")
       msg ("\"Hurry up, breakfast is ready! Get out of bed!\"<br/>\"I'm coming.\"")
     ]]></beforefirstenter>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <description type="script">
+    </description>
     <object name="bed">
       <inherit name="editor_object" />
       <getoutof type="script"><![CDATA[
@@ -1238,25 +1244,28 @@
                 wait {
                   msg ("<br/>Loan told me that he was in the ambulance with me, he took care of everything, tried to explain to all the doctors what had happened.<br/>When asked about something I could have taken before the race, he even told them about the pill.")
                   wait {
-                    msg ("And it seems that the pill was responsible for what happened. ")
+                    msg ("<br/>And it seems that the pill was responsible for what happened. ")
                     wait {
-                      msg ("\"Oh, and we found substances that are typically associated with human sperm.\"<br/>\"I'm his boyfriend.\"<br/>\"Oh, I see.\"<br/><br/>Thank God I was not awake. ")
+                      msg ("<br/>\"Oh, and we found substances that are typically associated with human sperm.\"<br/>\"I'm his boyfriend.\"<br/>\"Oh, I see.\"<br/><br/>Thank God I was not awake. ")
                       wait {
                         msg ("<br/>Later they told him I had something called traumatic myositis ossificans, and it seems that this condition causes my body injuries to turn into bone. Even a sprain can do that. <br/>Imagine what happened to my right leg after it was broken. <br/>And all the chair that went with it. <br/><br/>Slowly I began to lose the ability to move it, to walk with it, even to bend it.<br/>")
                         wait {
                           msg ("<br/>\"So this is incurable?\"<br/>\"Unfortunately, yes. And it's dangerous. Any small injury can cause the bone to develop.\"<br/>\"So he can no longer be an athlete?\"<br/>\"Unfortunately, yes.\"")
                           wait {
-                            msg ("I cried like a little baby when I woke up and he gave me a summary of what had happened while I was asleep.<br/><br/>\"You could have pursued your dream of becoming a professional athlete, Loan. You didn't need to take care of me. A burden. I never wanted to be a burden to anyone.<br/><br/>\"And who said that?\"<br/>\"I did.\"<br/>\"Your opinions mean NOTHING to me.\"<br/>\"NOTHING.\"<br/><br/>Asshole. <br/><br/>I love you, Loan. <br/><br/><br/>Thank you.<br/>")
+                            msg ("<br/>I cried like a little baby when I woke up and he gave me a summary of what had happened while I was asleep.<br/><br/>\"You could have pursued your dream of becoming a professional athlete, Loan. You didn't need to take care of me. A burden. I never wanted to be a burden to anyone.<br/><br/>\"And who said that?\"<br/>\"I did.\"<br/>\"Your opinions mean NOTHING to me.\"<br/>\"NOTHING.\"<br/><br/>Asshole. <br/><br/>I love you, Loan. <br/><br/><br/>Thank you.<br/>")
                             wait {
                               msg ("<br/>\"But you could have done it! It could have been your bright future!\"<br/>\"But you are my bright future.\"<br/><br/><br/>I start to shout at him: \"But what if?\"<br/>\"Do you think I would be at peace if I knew I had left you alone? I'm here because I want to be. And I mean it. A future without you will never be a future for me.\"<br/><br/>Why are you smiling? I just shouted at you, why are you smiling? <br/>Why are you being gentle with me?<br/><br/>I don't deserve it.<br/><br/>I deserve to die.<br/><br/>Not you.<br/><br/><br/>Me.<br/><br/><br/>I mean it.")
                               wait {
                                 msg ("<br/>\"Thank you for being here.\"<br/>\"I mean it.\"<br/><br/>Tears begin to fall from my eyes. I don't understand what's happening, I wasn't expecting this. <br/>Why am I such a snowflake? <br/><br/>\"It's OK, Dave. Just let it go. Your pain.\"<br/>\"You have a right to feel pain. Just like everyone else. Don't be ashamed of it.\"")
                                 wait {
-                                  msg ("Yes, I really needed a hug. <br/>Your smell makes my mind go blank. I feel safe. <br/>Like everything is going to be all right. <br/>For once.<br/><br/>Just this once.")
+                                  msg ("<br/>Yes, I really needed a hug. <br/>Your smell makes my mind go blank. I feel safe. <br/>Like everything is going to be all right. <br/>For once.<br/><br/>Just this once.")
                                   wait {
-                                    msg ("\"I'm here, Dave. I'll be here. Forever.\"<br/><br/>\"I know. Thank you, Loan. Thank you for everything.\"<br/><br/>\"You do so much and you don't even know it, don't you, Dave?\"<br/><br/>And he quickly stops holding me and goes to get the laptop. ")
+                                    msg ("<br/>\"I'm here, Dave. I'll be here. Forever.\"<br/><br/>\"I know. Thank you, Loan. Thank you for everything.\"<br/><br/>\"You do so much and you don't even know it, don't you, Dave?\"<br/><br/>And he quickly stops holding me and goes to get the laptop. ")
                                     wait {
-                                      msg ("\"As a reward, I've bought us tickets for a trip!\"<br/><br/>You're joking, right?<br/><br/><br/>Asshole.<br/><br/>Thank you. I love you, Loan. Forever.")
+                                      msg ("<br/>\"As a reward, I've bought us tickets for a trip!\"<br/><br/>You're joking, right?<br/><br/><br/>Asshole.<br/><br/>Thank you. I love you, Loan. Forever.")
+                                      wait {
+                                        MoveObject (player, outside of the small house)
+                                      }
                                     }
                                   }
                                 }
@@ -1273,12 +1282,295 @@
           }
         }
       ]]></getoutof>
+      <scenery />
     </object>
   </object>
   <verb>
     <property>getoutof</property>
     <pattern>get out of</pattern>
     <defaultexpression>"You can't get out of " + object.article + "."</defaultexpression>
+  </verb>
+  <object name="outside of the small house">
+    <inherit name="editor_room" />
+    <objectslistprefix>I can see</objectslistprefix>
+    <enter type="script"><![CDATA[
+      msg ("We're in front of a small house in the middle of nowhere. <br/>Loan is with me. ")
+      wait {
+        msg ("<br/>A large door is a few meters in front of us. The blinds are up, which means someone might be at home.")
+      }
+    ]]></enter>
+    <firstTalkLoan />
+    <secondTalkLoan type="boolean">false</secondTalkLoan>
+    <thirdTalkLoan type="boolean">false</thirdTalkLoan>
+    <nextToDoor type="boolean">false</nextToDoor>
+    <isDave />
+    <comein type="boolean">false</comein>
+    <checked type="boolean">false</checked>
+    <ready type="boolean">false</ready>
+    <command>
+      <pattern>look around</pattern>
+      <unresolved type="string"></unresolved>
+      <scope>outside of the small house</scope>
+      <script><![CDATA[
+        msg ("I don't know exactly where we are.
+        I would say we are in the middle of the desert.
+        But without sand.")
+        wait {
+          msg ("<br/>There is light green grass all around, down to the valley's mountain.
+          The sky is clear and the sun is shining, even though it is not hot here.
+          We must be above sea level. Sometimes it is hard to breathe.
+          There are a few trees, small but sturdy. You can hear birdsong from them.
+          The only road nearby is the one we came from. This place seems to have been forgotten by man.
+          There is only one house.
+          The one in front of us.")
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>talk</pattern>
+      <scope>outside of the small house</scope>
+      <script>
+        msg ("Talk to who?")
+      </script>
+    </command>
+    <object name="Loan">
+      <inherit name="editor_object" />
+      <speak type="script"><![CDATA[
+        if (outside of the small house.firstTalkLoan = true) {
+          msg ("\"Why did you bring us here? There is nothing here!\"")
+          wait {
+            msg ("<br/>\"Have you noticed that you are always complaining about something?\"<br/><br/><br/>Autch. That spear made me bleed. ")
+            SetObjectFlagOff (outside of the small house, "firstTalkLoan")
+            SetObjectFlagOn (outside of the small house, "secondTalkLoan")
+          }
+        }
+        else if (outside of the small house.secondTalkLoan = true) {
+          msg ("\"I'm sorry...\" I look at him, disturbed by my stupid reaction. <br/><br/>\"I'm sorry too.\"<br/><br/>Why?")
+          SetObjectFlagOff (outside of the small house, "secondTalkLoan")
+          SetObjectFlagOn (outside of the small house, "thirdTalkLoan")
+        }
+        else if (outside of the small house.thirdTalkLoan = true) {
+          msg ("\"Why? You didn't do anything.\"<br/>\"I did.\"<br/><br/>\"And I even managed to destroy your future. Your life.\"")
+          wait {
+            msg ("\"Save your jokes for tonight, sweetheart,\" Loan laughs. \"Just because you act funny, you're the one knocking on the door!\"")
+          }
+        }
+      ]]></speak>
+      <alias>to Loan; loan; to loan</alias>
+      <scenery />
+      <ask type="scriptdictionary">
+        <item key="Loan">
+        </item>
+      </ask>
+      <swap type="script"><![CDATA[
+        if (outside of the small house.isDave = true) {
+          SetObjectFlagOff (outside of the small house, "isDave")
+          msg ("I am Loan. ")
+          wait {
+            msg ("<br/>\"Alright. I'll do it just for you, sweetie!\"<br/><br/>I smile as I look at him. He is perfect when he looks angry.<br/>I know he is not doing it on purpose. <br/><br/>It's just an armour to protect himself. ")
+          }
+        }
+      ]]></swap>
+    </object>
+    <object name="door">
+      <inherit name="editor_object" />
+      <scenery />
+      <walk type="script"><![CDATA[
+        if (outside of the small house.nextToDoor = true) {
+          if (outside of the small house.isDave = true) {
+          }
+          else {
+            if (outside of the small house.checked = true) {
+              msg ("I hold him under his right arm, next to his armpit. <br/><br/>I can feel his sweat. <br/>He must have given it his all to get this far. It must not be easy for him to cope with his disability.")
+              wait {
+                msg ("<br/>I don't understand why he won't accept the crutch once and for all. He says he doesn't want people to suspect him, he doesn't want them to know he's different. He doesn't want to be judged or pitied.")
+                wait {
+                  msg ("<br/>I think he pays too much attention to what other people think.<br/><br/>Well, I can't say too much, because so do I. <br/><br/>Unfortunately.")
+                  wait {
+                    msg ("<br/>We are at the entrance door. It’s time to help Dave to come in.")
+                    SetObjectFlagOn (outside of the small house, "ready")
+                  }
+                }
+              }
+            }
+          }
+        }
+        else {
+          if (outside of the small house.isDave = true) {
+            msg ("\"Hey, but you're faster than me! My legs are already tired! Swap places with me.\"")
+          }
+          else {
+            msg ("As I approach the door, I hear some noises coming from inside. <br/>That's a good sign, it means we haven't come all this way for nothing. ")
+            wait {
+              msg ("<br/>I want him to do something for Dave. I know he can do it. ")
+              wait {
+                msg ("<br/>He is suffering so much, in spite of the fact that he tries to hide it all the time. <br/>I will help you, Dave.")
+                wait {
+                  msg ("<br/>I will.")
+                  wait {
+                    msg ("<br/>I promise.")
+                    SetObjectFlagOn (outside of the small house, "nextToDoor")
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]]></walk>
+      <knockon type="script"><![CDATA[
+        if (outside of the small house.nextToDoor = true) {
+          if (outside of the small house.isDave = true) {
+          }
+          else {
+            msg ("I knock on the door and soon an old man opens it. <br/>\"Oh, you must be Loan, right?\"<br/>\"Yes, I am. The same Loan who contacted you online. I was worried you might not be home when we arrived. You said you were busy these days... And you never answered me after that.\"<br/>\"Oh, really? I must have forgotten.\"")
+            wait {
+              msg ("<br/>Then he looks at Dave, from top to bottom, as if he is taking an X-ray in real time out of him.<br/>\"That means you must be Dave! Please come in!\"")
+              SetObjectFlagOn (outside of the small house, "comein")
+            }
+          }
+        }
+        else {
+          if (outside of the small house.isDave = true) {
+            msg ("I'm far from it. I have to be next to it first.")
+          }
+          else {
+            msg ("Well, I have to be there first.")
+          }
+        }
+      ]]></knockon>
+    </object>
+    <exit alias="small house; old man house; man house; house; inside house" to="inside of the small house">
+      <scenery />
+      <runscript />
+      <script type="script">
+        if (outside of the small house.comein = true) {
+          msg ("I should check on Dave first. He looks tired and it's better to help him into the house.")
+        }
+        else if (outside of the small house.ready = ) {
+        }
+        else if (outside of the small house.ready = false) {
+          msg ("I should go inside with Dave.")
+        }
+        else if (outside of the small house.ready = true) {
+          MoveObject (player, inside of the small house)
+          msg ("Done. My job is done too.")
+        }
+      </script>
+    </exit>
+    <object name="Dave">
+      <inherit name="editor_object" />
+      <alias>dave; on dave; on Dave</alias>
+      <scenery />
+      <checkon type="script">
+        msg ("He looks tired, but I can't help him from where I am. ")
+      </checkon>
+      <walk type="script">
+        msg ("I'm standing next to him and I might be able to help him to the front door now.")
+        SetObjectFlagOff (outside of the small house, "comein")
+        SetObjectFlagOn (outside of the small house, "checked")
+      </walk>
+    </object>
+  </object>
+  <verb>
+    <property>knockon</property>
+    <pattern>knock on; knock</pattern>
+    <defaultexpression>"You can't knock on " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>swap</property>
+    <pattern>swap; swap to</pattern>
+    <defaultexpression>"You can't swap " + object.article + "."</defaultexpression>
+  </verb>
+  <object name="inside of the small house">
+    <inherit name="editor_room" />
+    <objectslistprefix>I'm able to see</objectslistprefix>
+    <isDave />
+    <nextToTable type="boolean">false</nextToTable>
+    <object name="Loan2">
+      <inherit name="editor_object" />
+      <speak type="script">
+        if (inside of the small house.isDave = true) {
+          msg ("I don't think he knows either. I need to talk to its owner.")
+        }
+      </speak>
+      <alias>to Loan; loan; to loan</alias>
+      <scenery />
+      <ask type="scriptdictionary">
+        <item key="Loan">
+        </item>
+      </ask>
+      <swap type="script"><![CDATA[
+        if (outside of the small house.isDave = true) {
+          SetObjectFlagOff (, "")
+          msg ("I am Loan. ")
+          wait {
+            msg ("<br/>\"Alright. I'll do it just for you, sweetie!\"<br/><br/>I smile as I look at him. He is perfect when he looks angry.<br/>I know he is not doing it on purpose. <br/><br/>It's just an armour to protect himself. ")
+          }
+        }
+        if (inside of the small house.nextToTable = false) {
+          msg ("I don't think that's necessary. Let me be myself, let me be Dave!")
+        }
+      ]]></swap>
+    </object>
+    <object name="Dave2">
+      <inherit name="editor_object" />
+      <alias>dave; on dave; on Dave</alias>
+      <scenery />
+      <checkon type="script">
+        msg ("He looks tired, but I can't help him from where I am. ")
+      </checkon>
+      <walk type="script">
+      </walk>
+      <swap type="script"><![CDATA[
+        if (inside of the small house.isDave = false) {
+          msg ("I’m Dave.<br/><br/>As we enter this man's house, I fully understand who it is. ")
+          wait {
+            msg ("<br/>From the way he looked back outside, I was supposed to tell that he was some kind of wizard - you know, the typical long white beard, the long blue jacket, the beaked hat. Although it could not be that simple. I suppose.<br/><br/>And when we reached the main room, I could be 100% sure: there are a lot of esoteric things here.<br/><br/>\"Come here, in front of this table.\"")
+          }
+        }
+        else {
+          msg ("Well, it would be a good idea if I could, but I'm not able to swap with myself.")
+        }
+      ]]></swap>
+    </object>
+    <object name="table">
+      <inherit name="editor_object" />
+      <walk type="script"><![CDATA[
+        if (inside of the small house.isDave = true) {
+          msg ("\"It breaks my heart to ask you for help, but I need it. My love.\"<br/>\"Don't worry. I'm here to help you.\"<br/><br/>Right. We finally reach the table.")
+          SetObjectFlagOn (inside of the small house, "nextToTable")
+        }
+      ]]></walk>
+    </object>
+    <command>
+      <pattern>look around</pattern>
+      <scope>inside of the small house</scope>
+      <script><![CDATA[
+        if (inside of the small house.isDave = true) {
+          if (inside of the small house.nextToTable = true) {
+            msg ("Onions? <br/>Check. <br/>Potions? <br/>Check. <br/>Amulets? <br/>Also checked.<br/><br/>I can also see several dark candles burning. I hadn't noticed until now that this house has no electricity - it's the light from the candles that allows us to see what's around us. And they reveal a lot of glass jars with a lot of humanoid eyes. <br/>I finally realise that he is blind.<br/><br/>This is starting to get creepy.")
+            wait {
+              msg ("Oh, what the hell? What is that? ")
+            }
+          }
+          else if (inside of the small house.nextToTable = false) {
+            msg ("First of all, it is better to walk to the table.")
+          }
+        }
+      ]]></script>
+    </command>
+    <object name="wizard">
+      <inherit name="editor_object" />
+      <alias>magician; mage; old man; man</alias>
+      <scenery />
+      <speak type="script">
+      </speak>
+    </object>
+  </object>
+  <verb>
+    <property>checkon</property>
+    <pattern>check on</pattern>
+    <defaultexpression>"You can't check on " + object.article + "."</defaultexpression>
   </verb>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
