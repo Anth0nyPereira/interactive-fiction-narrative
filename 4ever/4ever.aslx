@@ -571,6 +571,17 @@
     <undressed type="boolean">false</undressed>
     <ableToUndress type="boolean">false</ableToUndress>
     <timeToDressUp type="boolean">false</timeToDressUp>
+    <answerNothing type="boolean">false</answerNothing>
+    <answerSorry type="boolean">false</answerSorry>
+    <firstTalk type="string"></firstTalk>
+    <secondTalk type="boolean">false</secondTalk>
+    <thirdTalk type="boolean">false</thirdTalk>
+    <fourthTalk type="boolean">false</fourthTalk>
+    <firstJustDoIt type="boolean">false</firstJustDoIt>
+    <secondJustDoIt type="boolean">false</secondJustDoIt>
+    <thirdJustDoIt type="boolean">false</thirdJustDoIt>
+    <fourthJustDoIt type="boolean">false</fourthJustDoIt>
+    <swallowed type="boolean">false</swallowed>
     <command>
       <pattern>dress up</pattern>
       <scope>main room of the men shower room</scope>
@@ -798,6 +809,7 @@
                       msg ("<br/>And that look - it conquered my heart.")
                       wait {
                         msg ("<br/>Much like the wood among us, his hair fits a light tone.  Curly. Slightly above the shoulders. <br/>I fall into a spiral of thoughts, unaware that he is staring at me. <br/>\"Are you all right? Is there anything I can help you with?\", he said.<br/>And then I came back to myself. Blushing all over. ")
+                        SetObjectFlagOn (main room of the men shower room, "answerSorry")
                       }
                     }
                   }
@@ -810,15 +822,42 @@
       <scenery />
     </object>
     <command>
-      <pattern>answer; talk; reply</pattern>
+      <pattern>answer; reply</pattern>
       <scope>main room of the men shower room</scope>
       <script><![CDATA[
-        msg ("\"Oh, I'm sorry, everything's fine\" - I reply, trying not to focus on his regard.")
-        wait {
-          msg ("<br/>I’m off the hook. That was close.<br/>Considering also that I’m basically naked.<br/>That was weird.")
+        if (main room of the men shower room.answerNothing = true) {
+          msg ("\"Nothing\". I answer as quickly as I can. ")
           wait {
-            msg ("Time to dress up for once!")
-            SetObjectFlagOn (main room of the men shower room, "timeToDressUp")
+            msg ("<br/>I don't want him to know that I know he's hurting himself. ")
+            wait {
+              msg ("<br/>I don't want him to feel bad about it. To feel that I'm judging him. <br/><br/>Because I'm not.")
+              wait {
+                msg ("<br/>Your secret is safe with me. ")
+                wait {
+                  msg ("<br/>And not only that - I will help you.")
+                  wait {
+                    msg ("<br/>I will.")
+                    wait {
+                      msg ("<br/>I promise.")
+                      wait {
+                        msg ("<br/>I pick up my tracksuit pants when he suddenly turns around and takes off his boxers. <br/>What a good-looking grass. No wonder, with a hose like that. His extremity is wet and it greets everyone who passes by. <br/><br/>I have to talk to him.")
+                        SetObjectFlagOn (main room of the men shower room, "firstTalk")
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        else if (main room of the men shower room.answerSorry = true) {
+          msg ("\"Oh, I'm sorry, everything's fine\" - I reply, trying not to focus on his regard.")
+          wait {
+            msg ("<br/>I’m off the hook. That was close.<br/>Considering also that I’m basically naked.<br/>That was weird.")
+            wait {
+              msg ("Time to dress up for once!")
+              SetObjectFlagOn (main room of the men shower room, "timeToDressUp")
+            }
           }
         }
       ]]></script>
@@ -874,6 +913,7 @@
                                 msg ("<br/>As I approach, I notice that he has wounds on the front of his thighs. <br/>They look recent. <br/>And they look like they were made with a sharp object. ")
                                 msg ("<br/>The cuts are mostly horizontal and vary in angle. And they are not clean at all. Not only is there still a lot of red blood showing his injuries, but the cuts seem to be irregular in depth: they were not made after a single blow. The knife made a couple of passes near the same area as the first cut, but not exactly along the path it must have followed. It is clear that other attempts not only made the first cut deeper, but also made it have more afluents coming out of its main blood stream.")
                                 msg ("<br/>\"Where are you looking?\"")
+                                SetObjectFlagOn (main room of the men shower room, "answerNothing")
                               }
                             }
                           }
@@ -885,6 +925,157 @@
               }
             }
           }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>talk</pattern>
+      <scope>main room of the men shower room</scope>
+      <script><![CDATA[
+        if (main room of the men shower room.firstTalk = true) {
+          msg ("\"You are beautiful.\"")
+          wait {
+            msg ("<br/>\"Handsome, mate. Don't you see it? My glande breathes even in pure air.\"")
+            wait {
+              msg ("<br/>Cocky.<br/>I like that.<br/><br/>\"Oh, right. I'm not used to complimenting boys.\"<br/><br/>Holy cow, I'm blushing.")
+              SetObjectFlagOn (main room of the men shower room, "secondTalk")
+              SetObjectFlagOff (main room of the men shower room, "firstTalk")
+            }
+          }
+        }
+        else if (main room of the men shower room.secondTalk = true) {
+          msg ("“Those scars of yours…”<br/>“Don’t tell anyone. They would not accept someone struggling with mental health. Please.”<br/>“I won’t.”")
+          wait {
+            msg ("<br/>I won’t. Trust me.")
+            SetObjectFlagOn (main room of the men shower room, "thirdTalk")
+            SetObjectFlagOff (main room of the men shower room, "secondTalk")
+          }
+        }
+        else if (main room of the men shower room.thirdTalk = true) {
+          msg ("\"Hey, you know what, this is going to look weird, but - do you want to pee?\"")
+          wait {
+            msg ("<br/>\"Why do you ask?\"<br/><br/>Should I tell him?")
+          }
+        }
+        else if (main room of the men shower room.fourthTalk = true) {
+          msg ("I can’t believe I'm going to suggest this. ")
+          wait {
+            msg ("<br/>\"Did you know that sperm is mostly water?\"<br/>He nods. But I don't think he realises what I'm about to say. To explain. To achieve. ")
+            wait {
+              msg ("<br/>Oh. That's it. The look of surprise. I think he gets it now. <br/>\"Are you sure?\", he asks me kindly.<br/><br/>If only I had another choice.<br/>At least you're beautiful.<br/><br/>Handsome. I mean.<br/><br/>\"So who's it going to be? I jerk off in front of you and...\"<br/><br/>Take a deep breath. And just do it.")
+              SetObjectFlagOn (main room of the men shower room, "firstJustDoIt")
+            }
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>no</pattern>
+      <scope>main room of the men shower room</scope>
+      <script>
+        if (main room of the men shower room.thirdTalk = true) {
+          msg ("Yes, that would be the safest thing to do. But I really have to take the pill.")
+        }
+      </script>
+    </command>
+    <command>
+      <pattern>yes</pattern>
+      <scope>main room of the men shower room</scope>
+      <script><![CDATA[
+        if (main room of the men shower room.thirdTalk = true) {
+          msg ("Yes, that would be the safest thing to do. But I really have to take the pill.")
+          wait {
+            msg ("<br/>\"I want to take a medicine, I'm not feeling very well today.\"<br/>\"It must be because of the anxiety or something like that.\"<br/>I tell him the truth.")
+            wait {
+              msg ("<br/>\"So could you...\"<br/><br/>\"You want to drink my urine, that's all?\"<br/><br/>Wow. He learns fast.")
+              wait {
+                msg ("<br/>\"I peed before I left home...\"<br/>\"Oh, I saw a sink when I entered the men's shower room!\"<br/>\"It doesn't work. The tap does not work.\"")
+                SetObjectFlagOff (main room of the men shower room, "thirdTalk")
+                SetObjectFlagOn (main room of the men shower room, "fourthTalk")
+              }
+            }
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>just do it</pattern>
+      <script><![CDATA[
+        if (main room of the men shower room.firstJustDoIt = true) {
+          msg ("I put my trousers on the wooden seat and walk towards him.<br/>And then I reach him.")
+          SetObjectFlagOff (main room of the men shower room, "firstJustDoIt")
+          SetObjectFlagOn (main room of the men shower room, "secondJustDoIt")
+        }
+        else if (main room of the men shower room.secondJustDoIt = true) {
+          msg ("<br/>I bow down to him, paying attention to his genitals. ")
+          wait {
+            msg ("<br/>My source of water.<br/><br/>Fresh new water.<br/><br/>Out of his fountain.")
+            wait {
+              msg ("<br/>“Are you sure about this?”<br/>Now it is my time to do it.")
+              SetObjectFlagOff (main room of the men shower room, "secondJustDoIt")
+              SetObjectFlagOn (main room of the men shower room, "thirdJustDoIt")
+            }
+          }
+        }
+        else if (main room of the men shower room.thirdJustDoIt = true) {
+          msg ("<br/>“It is better to take your shirt off. I might get it dirty.”<br/>“Good point.”")
+        }
+        else if (main room of the men shower room.fourthJustDoIt = true) {
+          msg ("I show some resistance to getting his dick in my mouth. This could be due to lack of experience. I have never had intimacy with boys. Like this. <br/><br/>Let me follow my instincts.<br/>All for that fucking pill.<br/>All for the competition.<br/>Anything for my team.<br/>Anything for my future.<br/><br/><br/>Even if it means losing my dignity.")
+          wait {
+            msg ("<br/>I start blowing his cock slowly, in and out, in and out. It reminds me of hide-and-seek - now I can see him, now I can't.<br/>I notice little tremors on his part. That's great. This shouldn't take long. Someone might catch us. <br/>And that could be the end for both of us.")
+            wait {
+              msg ("<br/>\"Am I doing well?<br/>He asks me out of the blue.")
+              wait {
+                msg ("I think I should be the one to ask such a question. <br/><br/>Anyway.")
+                wait {
+                  msg ("<br/>I notice that he is not feeling well. <br/>And so I started kissing other parts of his body; his chest, that sweet chest of his, while I tugged at his sparse hairs to make him feel pain, a horny pain; then I moved to his abdomen and licked the ones that were displayed with exactly the same tone as his voluminous brown beard. ")
+                  wait {
+                    msg ("<br/>Then I blow on his armpits and he begins to make tiny moans. <br/>His breathing gets faster and faster. <br/><br/>His skin is burning, <br/><br/>His blood must be boiling. <br/><br/>That's a good sign. Now make that blood go to a certain place, please.")
+                    wait {
+                      msg ("<br/>I decide to make a long, slow lick from his bare neck to the end of his torso. And in the blink of an eye I start kissing and licking his penis, all over again. ")
+                      wait {
+                        msg ("<br/>I start to blow on his frenulum and all the surrounding area where it belongs.<br/>He begins to moan louder and I catch him rolling his eyes.")
+                        wait {
+                          msg ("<br/>That must feel good.<br/>Let me go faster.<br/>Let's finish this. ")
+                          wait {
+                            msg ("<br/>In no time at all he is making some strange gestures. I don't understand them at first, but then he looks at his own cock and I get it. <br/><br/>Even though I knew he was going to come in my mouth, I am still surprised when it happens. Suddenly I feel like a warm breeze, like you feel at the end of the day in summer. But this one told me it was going to rain. And it did.")
+                            wait {
+                              msg ("<br/>It felt disgusting. The taste, the shape, everything. But at least, I have found water.<br/><br/>It was about time.")
+                              wait {
+                                msg ("<br/>Good. I should hurry and get the pill from the front pocket of my bag before I swallow his cum. ")
+                                EnableTimer (swallowCum)
+                                SetObjectFlagOff (main room of the men shower room, "fourthJustDoIt")
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        else if (main room of the men shower room.swallowed = true) {
+          SetObjectFlagOff (main room of the men shower room, "swallowed")
+          msg ("It felt disgusting. The taste, the shape, everything. But at least, I have found water.<br/><br/>It was about time.")
+          wait {
+            msg ("<br/>Good. I should hurry and get the pill from the front pocket of my bag before I swallow his cum. ")
+            EnableTimer (swallowCum)
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>take off shirt</pattern>
+      <scope>main room of the men shower room</scope>
+      <script><![CDATA[
+        if (main room of the men shower room.thirdJustDoIt = true) {
+          msg ("Done.<br/><br/>“Just do it.”<br/>Now my time has come. ")
+          SetObjectFlagOff (main room of the men shower room, "thirdJustDoIt")
+          SetObjectFlagOn (main room of the men shower room, "fourthJustDoIt")
         }
       ]]></script>
     </command>
@@ -908,4 +1099,14 @@
     msg ("I was a little ambiguous now. I know I can do better.")
     msg ("Log(ShowMenuResponse())")
   </function>
+  <timer name="swallowCum">
+    <interval>5</interval>
+    <script><![CDATA[
+      if (main room of the men shower room.swallowed = false) {
+        msg ("Shit! I couldn't wait any longer and swallowed all his cum!<br/><br/>Let me do it again.")
+        SetObjectFlagOn (main room of the men shower room, "swallowed")
+        DisableTimer (swallowCum)
+      }
+    ]]></script>
+  </timer>
 </asl>
