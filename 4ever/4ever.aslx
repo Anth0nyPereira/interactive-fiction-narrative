@@ -983,16 +983,13 @@
       <scope>main room of the men shower room</scope>
       <script><![CDATA[
         if (main room of the men shower room.thirdTalk = true) {
-          msg ("Yes, that would be the safest thing to do. But I really have to take the pill.")
+          msg ("\"I want to take a medicine, I'm not feeling very well today.\"<br/>\"It must be because of the anxiety or something like that.\"<br/>I tell him the truth.")
           wait {
-            msg ("<br/>\"I want to take a medicine, I'm not feeling very well today.\"<br/>\"It must be because of the anxiety or something like that.\"<br/>I tell him the truth.")
+            msg ("<br/>\"So could you...\"<br/><br/>\"You want to drink my urine, that's all?\"<br/><br/>Wow. He learns fast.")
             wait {
-              msg ("<br/>\"So could you...\"<br/><br/>\"You want to drink my urine, that's all?\"<br/><br/>Wow. He learns fast.")
-              wait {
-                msg ("<br/>\"I peed before I left home...\"<br/>\"Oh, I saw a sink when I entered the men's shower room!\"<br/>\"It doesn't work. The tap does not work.\"")
-                SetObjectFlagOff (main room of the men shower room, "thirdTalk")
-                SetObjectFlagOn (main room of the men shower room, "fourthTalk")
-              }
+              msg ("<br/>\"I peed before I left home...\"<br/>\"Oh, I saw a sink when I entered the men's shower room!\"<br/>\"It doesn't work. The tap does not work.\"")
+              SetObjectFlagOff (main room of the men shower room, "thirdTalk")
+              SetObjectFlagOn (main room of the men shower room, "fourthTalk")
             }
           }
         }
@@ -1007,7 +1004,7 @@
           SetObjectFlagOn (main room of the men shower room, "secondJustDoIt")
         }
         else if (main room of the men shower room.secondJustDoIt = true) {
-          msg ("<br/>I bow down to him, paying attention to his genitals. ")
+          msg ("I bow down to him, paying attention to his genitals. ")
           wait {
             msg ("<br/>My source of water.<br/><br/>Fresh new water.<br/><br/>Out of his fountain.")
             wait {
@@ -1018,7 +1015,7 @@
           }
         }
         else if (main room of the men shower room.thirdJustDoIt = true) {
-          msg ("<br/>“It is better to take your shirt off. I might get it dirty.”<br/>“Good point.”")
+          msg ("“It is better to take your shirt off. I might get it dirty.”<br/>“Good point.”")
         }
         else if (main room of the men shower room.fourthJustDoIt = true) {
           msg ("I show some resistance to getting his dick in my mouth. This could be due to lack of experience. I have never had intimacy with boys. Like this. <br/><br/>Let me follow my instincts.<br/>All for that fucking pill.<br/>All for the competition.<br/>Anything for my team.<br/>Anything for my future.<br/><br/><br/>Even if it means losing my dignity.")
