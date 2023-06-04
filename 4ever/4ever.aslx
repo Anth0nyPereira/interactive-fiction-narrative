@@ -279,27 +279,28 @@
     <descprefix>I'm in the</descprefix>
     <objectslistprefix>I can see</objectslistprefix>
     <description type="script"><![CDATA[
-      if (men shower room.visitCount = 0) {
+      if (main room of the men shower room.lookingForWater = false) {
         msg ("The shower room seems empty at first glance. I don’t hear anyone – only the wind that makes the window shake, and that is probably why it still keeps judging me, even though abused by another entity. Please, stop it, ok, I trained so hard for this, it can’t be that bad. And I’m not alone, right? So get the fuck out and cease your assumptions and appraisals. <br/>")
         wait {
           msg ("But, inside – deep inside of me, I understood its point. It makes me feel nauseous that even a fucking primaeval window, plenty of wounds that time made it possible to mask them a little bit, but not enough to forget the years of others that went by here, is mocking me. I’m surprised it still did not fall in pieces, due to all the scratches it possesses.  And it fights and keeps fighting, against the breezy weather that is waiting for us all. It did not have knowledge of the verb give up. And it is mocking me – showing me that even an irrelevant piece of junk glass is still better than me. More useful than me.<br/>")
           wait {
             msg ("You bitch! I’m gonna show you who is the junk when I and my team will win the race.<br/>")
             wait {
-              msg ("In my sight, and forgetting about the glass, I’m able to see the toilets, the urinals (finally!), the showers and a large room on the right.")
+              msg ("In my sight, and forgetting about the glass, I’m able to see the toilets, the urinals (finally!), the showers and a large room on the right.<br/>And, of course, that shitty window with that sink below it. ")
               IncreaseObjectCounter (men shower room, "visitCount")
-              SetObjectFlagOn (showers, "isGoingToTrySink")
+              SetObjectFlagOn (men shower room, "trySink")
             }
           }
         }
       }
       else {
         msg ("I’m back in the shower hall. ")
-        msg ("In my sight, I’m able to see the toilets, the urinals, the showers and a large room on the right.")
+        msg ("In my sight, I’m able to see the toilets, the urinals, the showers and a large room on the right.<br/>And, of course, that shitty window with that sink below it. ")
       }
     ]]></description>
     <suffix>hall</suffix>
     <visitCount type="int">0</visitCount>
+    <trySink type="boolean">false</trySink>
     <object name="toilet1">
       <inherit name="editor_object" />
       <scenery />
@@ -392,14 +393,19 @@
       <alias>to showers</alias>
       <nextToShowers type="boolean">false</nextToShowers>
       <walk type="script"><![CDATA[
-        msg ("The showers look cheap. But they appear they are working fine. <br/>Despite I wonder why they did not separate themselves from each other. <br/>A translucent barrier, for instance. <br/>They could even manage to reuse that window – it’s perfect for this.<br/>")
-        wait {
-          msg ("I just think it was better to have more privacy. <br/>I don’t know. <br/>We are all guys, all with the same genitalia. Just a matter of safety. <br/>")
+        if (men shower room.trySink = false) {
+          msg ("The showers look cheap. But they appear they are working fine. <br/>Despite I wonder why they did not separate themselves from each other. <br/>A translucent barrier, for instance. <br/>They could even manage to reuse that window – it’s perfect for this.<br/>")
           wait {
-            msg ("I don’t want them to find out. It can be hard to hide it naked, under these circumstances. <br/>I may be hard on myself. <br/>")
-            SetObjectFlagOn (showers, "nextToShowers")
-            msg ("Let me look at them closely.<br/>")
+            msg ("I just think it was better to have more privacy. <br/>I don’t know. <br/>We are all guys, all with the same genitalia. Just a matter of safety. <br/>")
+            wait {
+              msg ("I don’t want them to find out. It can be hard to hide it naked, under these circumstances. <br/>I may be hard on myself. <br/>")
+              SetObjectFlagOn (showers, "nextToShowers")
+              msg ("Let me look at them closely.<br/>")
+            }
           }
+        }
+        else {
+          msg ("There's water there, but it's going to be hard for me to drink it without getting completely wet.")
         }
       ]]></walk>
       <look type="script"><![CDATA[
@@ -413,7 +419,6 @@
           msg ("I'm not next to them, so I cannot look at them closely.")
         }
       ]]></look>
-      <isGoingToTrySink type="boolean">false</isGoingToTrySink>
       <scenery />
     </object>
     <object name="room">
@@ -460,13 +465,47 @@
       <take />
       <scenery />
     </object>
-    <exit to="main room of the men shower room" />
+    <exit to="main room of the men shower room">
+      <scenery />
+    </exit>
     <command>
       <pattern>walk to main room; walk to main room of the men shower room</pattern>
       <script>
         MoveObject (player, main room of the men shower room)
       </script>
     </command>
+    <object name="sink">
+      <inherit name="editor_object" />
+      <walk type="script"><![CDATA[
+        if (main room of the men shower room.lookingForWater = true) {
+          msg ("Of course! This tap may supply water. <br/>Let me turn it on.")
+        }
+        else {
+          msg ("I don't need to go there now.")
+        }
+      ]]></walk>
+      <alias>to sink</alias>
+      <attr name="feature_switchable" type="boolean">false</attr>
+      <scenery />
+    </object>
+    <object name="tap">
+      <inherit name="editor_object" />
+      <turnon type="script"><![CDATA[
+        msg ("Hum… It doesn’t work. <br/>Time to give up.<br/>It seems.")
+        SetObjectFlagOn (main room of the men shower room, "noWater")
+        wait {
+          msg ("<br/>I’m back to square one. Literally and metaphorically. Back to the large room, without water. ")
+          MoveObject (player, main room of the men shower room)
+          wait {
+            msg ("<br/>Well, it could be worse. I have to keep a positive attitude. ")
+            wait {
+              msg ("<br/>No one arrived. Something’s off. It’s almost time to start.<br/><br/><br/>I’ll get dressed.")
+            }
+          }
+        }
+      ]]></turnon>
+      <scenery />
+    </object>
   </object>
   <command name="go_in">
     <pattern>go in</pattern>
@@ -506,28 +545,49 @@
     <usedefaultprefix type="boolean">false</usedefaultprefix>
     <prefix>the</prefix>
     <description type="script"><![CDATA[
-      msg ("<br/>I’m entering the main room from the men's shower room, leaving the shower room hall behind.<br/>It feels like they spend good times here. The area is huge. I wonder if I would feel alone in here.")
-      wait {
-        msg ("<br/>A huge seat along all three walls in front of me, in the shape of a U, looking at me. <br/>They look young: younger than me, hell yes. <br/>Their surface is polished and soft. A sort of brown hue that makes me feel warm. <br/><br/>Relieved. <br/><br/>Alive.")
+      if (main room of the men shower room.noWater = false) {
+        msg ("<br/>I’m entering the main room from the men's shower room, leaving the shower room hall behind.<br/>It feels like they spend good times here. The area is huge. I wonder if I would feel alone in here.")
         wait {
-          msg ("<br/>They used some ceramics next to some extremities, despite the wood being the main one. I believe it’s because it absorbs water. And is warmer than clay. <br/>Although I wonder why they did not just use it for everything. It would look perfect, resembling a sauna. Oh well, in practice, they’re not that different: closed hot spaces with naked guys. <br/><br/>Just imagining it – makes my body feel hot under my belly…")
+          msg ("<br/>Huge three seats along all three walls in front of me, in the shape of a U, are looking at me. <br/>They look young: younger than me, hell yes. <br/>Their surface is polished and soft. A sort of brown hue that makes me feel warm. <br/><br/>Relieved. <br/><br/>Alive.")
           wait {
-            msg ("<br/>Shit, dude. Stop with those thoughts. Are you crazy? No one can find out.<br/><br/>No one.<br/><br/>Or it will be the end. <br/><br/>My end.")
+            msg ("<br/>They used some ceramics next to some extremities, despite the wood being the main one. I believe it’s because it absorbs water. And is warmer than clay. <br/>Although I wonder why they did not just use it for everything. It would look perfect, resembling a sauna. Oh well, in practice, they’re not that different: closed hot spaces with naked guys. <br/><br/>Just imagining it – makes my body feel hot under my belly…")
             wait {
-              msg ("<br/>I have trained for this all my life. <br/>To become a professional athlete. <br/>I'm not going to lose this opportunity because of this, a mental problem. <br/>They would not accept me as I am if they knew. <br/>I'm about to finish university. This is really a competition between the best universities. <br/>This is the opportunity of my life. <br/>This is like a shop window. I need them to be proud. I need them to need me. <br/><br/>To want me.")
+              msg ("<br/>Shit, dude. Stop with those thoughts. Are you crazy? No one can find out.<br/><br/>No one.<br/><br/>Or it will be the end. <br/><br/>My end.")
               wait {
-                msg ("<br/>Alright, time to dress up. ")
+                msg ("<br/>I have trained for this all my life. <br/>To become a professional athlete. <br/>I'm not going to lose this opportunity because of this, a mental problem. <br/>They would not accept me as I am if they knew. <br/>I'm about to finish university. This is really a competition between the best universities. <br/>This is the opportunity of my life. <br/>This is like a shop window. I need them to be proud. I need them to need me. <br/><br/>To want me.")
+                wait {
+                  msg ("<br/>Alright, time to dress up. ")
+                }
               }
             }
           }
         }
       }
+      else {
+      }
     ]]></description>
+    <noWater type="boolean">false</noWater>
+    <lookingForWater type="boolean">false</lookingForWater>
+    <undressed type="boolean">false</undressed>
+    <ableToUndress type="boolean">false</ableToUndress>
+    <timeToDressUp type="boolean">false</timeToDressUp>
     <command>
       <pattern>dress up</pattern>
       <scope>main room of the men shower room</scope>
       <script>
-        msg ("Right, but not here, standing. I should put my suitcase down first. ")
+        if (main room of the men shower room.noWater = false) {
+          msg ("Right, but not here, standing. I should put my suitcase down first. ")
+        }
+        else if (main room of the men shower room.undressed = true) {
+          msg ("Alright. But I have to get my tracksuit out of my bag. It is in the main pocket.")
+          SetObjectFlagOff (main room of the men shower room, "undressed")
+        }
+        else if (main room of the men shower room.timeToDressUp = true) {
+          msg ("Which should I wear first? Shirt or trousers? What a problem I have.")
+        }
+        else {
+          msg ("Right. But I still have this T-shirt and these jeans. ")
+        }
       </script>
     </command>
     <object name="suitcase">
@@ -545,6 +605,7 @@
       <walk type="script">
         msg ("Which one? Front, left, or the right one?")
       </walk>
+      <alias>to seat</alias>
     </object>
     <command>
       <pattern>put suitcase down; put bag down</pattern>
@@ -570,6 +631,13 @@
       <walkto type="script"><![CDATA[
         msg ("The larger seat. <br/>I bet it could make room for everyone today. <br/>But I would have preferred a proper seat. <br/><br/>People who come by are quickly presented with a bunch of dancing penises all over the place in front of their eyes, because this room has no door.")
       ]]></walkto>
+      <alias>to front seat</alias>
+      <walk type="script"><![CDATA[
+        msg ("The larger seat. I bet it could make room for everyone today. <br/>But I would have preferred a proper seat. ")
+        wait {
+          msg ("<br/>People who come by are quickly presented with a bunch of dancing penises all over the place in front of their eyes, because this room has no door.")
+        }
+      ]]></walk>
     </object>
     <object name="left seat">
       <inherit name="editor_object" />
@@ -578,6 +646,17 @@
         msg ("Great, the corner near the entrance wall is free. ")
         SetObjectFlagOn (suitcase, "isInLeftSeat")
       </walkto>
+      <alias>to left seat</alias>
+      <walk type="script">
+        if (main room of the men shower room.noWater = false) {
+          msg ("Great, the corner near the entrance wall is free. ")
+          SetObjectFlagOn (suitcase, "isInLeftSeat")
+        }
+        else {
+          msg ("I'm near my bag.")
+          SetObjectFlagOn (main room of the men shower room, "ableToUndress")
+        }
+      </walk>
     </object>
     <object name="right seat">
       <inherit name="editor_object" />
@@ -593,6 +672,15 @@
       ]]></walkto>
       <visitCount type="int">0</visitCount>
       <nextToRightSeat type="boolean">false</nextToRightSeat>
+      <alias>to right seat</alias>
+      <walk type="script">
+        if (main room of the men shower room.noWater = false) {
+          msg ("The corner next to the entrance wall is already occupied.")
+        }
+        else if (main room of the men shower room.lookingForWater = true) {
+          msg ("I’m now next to the two bags on the right seat. ")
+        }
+      </walk>
     </object>
     <object name="pocket">
       <inherit name="editor_object" />
@@ -628,6 +716,7 @@
                     wait {
                       msg ("It's alright.<br/>I need to find a solution quickly.")
                       IncreaseObjectCounter (right seat, "visitCount")
+                      SetObjectFlagOn (main room of the men shower room, "lookingForWater")
                     }
                   }
                 }
@@ -673,6 +762,132 @@
     <exit to="men shower room">
       <scenery />
     </exit>
+    <command>
+      <pattern>undress; take off clothes</pattern>
+      <scope>main room of the men shower room</scope>
+      <script><![CDATA[
+        if (main room of the men shower room.ableToUndress = true) {
+          msg ("Done.")
+          SetObjectFlagOn (main room of the men shower room, "undressed")
+        }
+        else {
+          msg ("I need to do that, yes.<br/>But it's better to be next to my suitcase first.")
+        }
+      ]]></script>
+    </command>
+    <object name="main pocket">
+      <inherit name="editor_object" />
+      <inherit name="openable" />
+      <feature_container />
+      <close type="boolean">false</close>
+      <openscript type="script"><![CDATA[
+        msg ("I’m glad I haven’t forgotten it. ")
+        wait {
+          msg ("<br/>...")
+          wait {
+            msg ("<br/>...")
+            wait {
+              msg ("<br/>I'm sitting in the corner and as I slowly take the T-shirt and trousers out of my pocket, slowly so as not to wrinkle them, a boy enters the room. <br/>Wow.<br/>I felt my cheeks burning just by looking at him. ")
+              wait {
+                msg ("<br/>Oh boy. Don't make me blush. ")
+                wait {
+                  msg ("<br/>Caucasian. Medium height: I'd say somewhere between 5.6 and 5.8''. ")
+                  wait {
+                    msg ("<br/>Those dark brown eyes. <br/>The slight dark circles under them make them look darker. As if they are calling me. I feel his penetrating gaze on me.")
+                    wait {
+                      msg ("<br/>And that look - it conquered my heart.")
+                      wait {
+                        msg ("<br/>Much like the wood among us, his hair fits a light tone.  Curly. Slightly above the shoulders. <br/>I fall into a spiral of thoughts, unaware that he is staring at me. <br/>\"Are you all right? Is there anything I can help you with?\", he said.<br/>And then I came back to myself. Blushing all over. ")
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]]></openscript>
+      <scenery />
+    </object>
+    <command>
+      <pattern>answer; talk; reply</pattern>
+      <scope>main room of the men shower room</scope>
+      <script><![CDATA[
+        msg ("\"Oh, I'm sorry, everything's fine\" - I reply, trying not to focus on his regard.")
+        wait {
+          msg ("<br/>I’m off the hook. That was close.<br/>Considering also that I’m basically naked.<br/>That was weird.")
+          wait {
+            msg ("Time to dress up for once!")
+            SetObjectFlagOn (main room of the men shower room, "timeToDressUp")
+          }
+        }
+      ]]></script>
+    </command>
+    <object name="trousers">
+      <inherit name="editor_object" />
+      <inherit name="wearable" />
+      <feature_wearable />
+      <wear_slots type="stringlist" />
+      <attr name="wear_layer" type="int">0</attr>
+      <attr name="wear_adjverbs" type="boolean">false</attr>
+      <wearmsg>Better to wear the shirt first. A shirtless barefoot guy with sporty trousers… Too masculine. Too erotic. Someone might catch me off guard. He might catch me off guard.</wearmsg>
+      <scenery />
+    </object>
+    <command>
+      <pattern>wear trousers</pattern>
+      <scope>main room of the men shower room</scope>
+      <script><![CDATA[
+        msg ("Better to wear the shirt first. <br/>A shirtless barefoot guy with sporty trousers… <br/><br/>Too masculine. <br/><br/>Too erotic. <br/><br/>Someone might catch me off guard.")
+        wait {
+          msg ("<br/>He might catch me off guard.")
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>wear shirt; wear t-shirt; wear tshirt</pattern>
+      <scope>main room of the men shower room</scope>
+      <script><![CDATA[
+        msg ("While I'm wearing my shirt, the other boy starts to undress without me noticing. <br/>Or so I think. <br/>Because I did not even realise at what point I had started to look at him, so fascinated by his body.")
+        wait {
+          msg ("<br/>Never in my life have I taken so long to put on a shirt.")
+          wait {
+            msg ("<br/>My eyes are simply in a state of possession. ")
+            wait {
+              msg ("<br/>The clothes from his torso revealed a slimmer man. Almost scrawny, I would say. <br/>Not the typical musculature of an athlete. But perhaps that's why he's here. Why he was chosen. Why he is good. Because everyone judges him by his cover, until he shuts them all up and surprises them.<br/><br/>And I like surprises.<br/><br/><br/>And what a lovely surprise.")
+              wait {
+                msg ("<br/>His pale skin looked even smoother. And bright, he makes my eyes dazzle. ")
+                wait {
+                  msg ("<br/>His chest looks like freshly mown grass. There are only a few hairs here and there. <br/>Again, the mesmerising brown.<br/><br/>And two dark brown spherical skin marks, side by side, barely in the middle of his chest. <br/>I found that literally cute. It reminded me, I do not know why exactly, but it reminded me of pedestrian traffic lights. You know, when they change between red and green, between green and red. I'm imagining myself pressing these skin marks like the buttons they look like, and switching his inner traffic light. Turning his light towards me.")
+                  wait {
+                    msg ("<br/>Looking down, my pupils realised that the lawnmower had not finished its work. There was a lot of body hair around the navel. They look soft – as they are usually unshaven. And flat, as if they were sleeping on his skin. With openness and delicacy. ")
+                    wait {
+                      msg ("<br/>Then he sits down and begins to remove his sockets.<br/>\"Hygiene at its best\", I think to myself, and let a grin slip out of my mouth. <br/><br/>I would never change my socks twice in one morning.<br/><br/>They revealed large feet, the pale tone is there too. Probably more striking - they seem... Dry. There is some peeling of the skin, especially on the soles. <br/>I lifted my neck and somehow noticed that he has bunions on each foot. They look irritated because of the constant strain and pressure. ")
+                      wait {
+                        msg ("<br/>He must be a hard working student. <br/><br/>He would never give up. <br/><br/><br/>Unlike me.")
+                        wait {
+                          msg ("<br/>“Oh dear, I've almost got my shirt on backwards”, I say loudly so he doesn't think I'm taking too long.<br/><br/>He stares at me and answers with a smile. <br/><br/>And that smile melted my heart.<br/>And my head, it immediately got wet.")
+                          wait {
+                            msg ("<br/>When I’m finally wearing my shirt properly, he takes his trousers off and shows his hairy legs. The body hair is not disordered or anything, it feels as if he has been brushed recently - it all follows a pattern, lying vertically on his light surface. <br/>A surface that, at first glance, looks just as bright as the others. <br/>Although this is not the case.<br/><br/>I noticed that he was trying to turn his back discreetly in my direction. I don't know, it seems strange. What is he trying to hide? He's still in his underwear. ")
+                            wait {
+                              msg ("<br/>I tilt my head to get a better view. I tilt so fast that my neck snaps. <br/>\"I hope he didn't hear that,\" I think. <br/>He did not move his gaze in my direction. <br/><br/>I'm clean. ")
+                              wait {
+                                msg ("<br/>As I approach, I notice that he has wounds on the front of his thighs. <br/>They look recent. <br/>And they look like they were made with a sharp object. ")
+                                msg ("<br/>The cuts are mostly horizontal and vary in angle. And they are not clean at all. Not only is there still a lot of red blood showing his injuries, but the cuts seem to be irregular in depth: they were not made after a single blow. The knife made a couple of passes near the same area as the first cut, but not exactly along the path it must have followed. It is clear that other attempts not only made the first cut deeper, but also made it have more afluents coming out of its main blood stream.")
+                                msg ("<br/>\"Where are you looking?\"")
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]]></script>
+    </command>
   </object>
   <verb>
     <property>putsuitcasedown</property>
