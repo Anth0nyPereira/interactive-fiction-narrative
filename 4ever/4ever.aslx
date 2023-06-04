@@ -312,7 +312,7 @@
   <verb>
     <property>check</property>
     <pattern>check</pattern>
-    <defaultexpression>"You can't check " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't check " + object.article + "."</defaultexpression>
   </verb>
   <object name="sports field">
     <inherit name="editor_room" />
@@ -324,7 +324,7 @@
   <verb>
     <property>traverse</property>
     <pattern>traverse; pass through</pattern>
-    <defaultexpression>"You can't traverse " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't traverse " + object.article + "."</defaultexpression>
   </verb>
   <object name="men shower room">
     <inherit name="editor_room" />
@@ -464,9 +464,9 @@
       ]]></walk>
       <look type="script"><![CDATA[
         if (showers.nextToShowers = true) {
-          msg ("Well, nothing special. But I never saw this kind of tap handle. Flawless cubes. <br/>")
+          msg ("Well, nothing special. But I never saw this kind of tap handle. Flawless cubes. ")
           wait {
-            msg ("Oh, look – one of them is unidentical from the others. This one in front of me is black, despite all the others being blue. Life isn’t perfect, right? Not even I am. So, I should stop blaming this.<br/>")
+            msg ("<br/>Oh, look – one of them is unidentical from the others. This one in front of me is black, despite all the others being blue. Life isn’t perfect, right? Not even I am. So, I should stop blaming this.")
           }
         }
         else {
@@ -503,15 +503,16 @@
       </take>
       <use type="script">
       </use>
-      <place type="script">
-        msg ("")
-      </place>
+      <place type="script"><![CDATA[
+        msg ("A small entrance near the ground on the left has opened. <br/><br/>I crawl into the opening, and I’m inside the first toilet. <br/><br/><br/>Something is written on the wall.")
+      ]]></place>
       <ondrop type="script">
         msg ("I suggest this handle may fit in the black hole.")
       </ondrop>
       <ontake type="script"><![CDATA[
         msg ("<br/>I'm gonna put it in my inventory. <br/>It could be useful.")
       ]]></ontake>
+      <grab type="string"></grab>
     </object>
     <object name="test">
       <inherit name="editor_object" />
@@ -559,6 +560,22 @@
         }
       ]]></turnon>
     </object>
+    <command>
+      <pattern>grab black handle; grab handle; take black handle; take handle; pick black handle; pick handle</pattern>
+      <scope>men shower room</scope>
+      <script><![CDATA[
+        msg ("I could remove it without any resistance. It shows up this was made up to something. <br/><br/>I'm adding it to my inventory. It can be useful. You never know.<br/><br/>I might have to take it out later.")
+        AddToInventory (black handle)
+      ]]></script>
+    </command>
+    <command>
+      <pattern>take out black handle; take out handle; use black handle; use handle; remove black handle; remove handle</pattern>
+      <scope>men shower room</scope>
+      <script>
+        RemoveObject (black handle)
+        msg ("I suggest this handle may fit in the black hole. ")
+      </script>
+    </command>
   </object>
   <command name="go_in">
     <pattern>go in</pattern>
@@ -570,27 +587,27 @@
   <verb>
     <property>walk</property>
     <pattern>walk; walk to</pattern>
-    <defaultexpression>"You can't walk " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't walk " + object.article + "."</defaultexpression>
   </verb>
   <verb>
     <property>exit</property>
     <pattern>exit</pattern>
-    <defaultexpression>"You can't exit " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't exit " + object.article + "."</defaultexpression>
   </verb>
   <verb>
     <property>save</property>
     <pattern>save</pattern>
-    <defaultexpression>"You can't save " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't save " + object.article + "."</defaultexpression>
   </verb>
   <verb>
-    <property>grab</property>
+    <property>grab; take</property>
     <pattern>grab</pattern>
-    <defaultexpression>"You can't grab " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't grab " + object.article + "."</defaultexpression>
   </verb>
   <verb>
     <property>place</property>
     <pattern>place</pattern>
-    <defaultexpression>"You can't place " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't place " + object.article + "."</defaultexpression>
   </verb>
   <object name="main room of the men shower room">
     <inherit name="editor_room" />
@@ -1201,22 +1218,22 @@
   <verb>
     <property>putsuitcasedown</property>
     <pattern>put suitcase down</pattern>
-    <defaultexpression>"You can't put suitcase down " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't put suitcase down " + object.article + "."</defaultexpression>
   </verb>
   <verb>
     <property>walktofrontseat</property>
     <pattern>walk to front seat</pattern>
-    <defaultexpression>"You can't walk to front seat " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't walk to front seat " + object.article + "."</defaultexpression>
   </verb>
   <verb>
     <property>walkfrontseat</property>
     <pattern>walk front seat</pattern>
-    <defaultexpression>"You can't walk front seat " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't walk front seat " + object.article + "."</defaultexpression>
   </verb>
   <verb>
     <property>swallow</property>
     <pattern>swallow</pattern>
-    <defaultexpression>"You can't swallow " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't swallow " + object.article + "."</defaultexpression>
   </verb>
   <object name="Loans house">
     <inherit name="editor_room" />
@@ -1288,7 +1305,7 @@
   <verb>
     <property>getoutof</property>
     <pattern>get out of</pattern>
-    <defaultexpression>"You can't get out of " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't get out of " + object.article + "."</defaultexpression>
   </verb>
   <object name="outside of the small house">
     <inherit name="editor_room" />
@@ -1473,12 +1490,12 @@
   <verb>
     <property>knockon</property>
     <pattern>knock on; knock</pattern>
-    <defaultexpression>"You can't knock on " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't knock on " + object.article + "."</defaultexpression>
   </verb>
   <verb>
     <property>swap</property>
     <pattern>swap; swap to</pattern>
-    <defaultexpression>"You can't swap " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't swap " + object.article + "."</defaultexpression>
   </verb>
   <object name="inside of the small house">
     <inherit name="editor_room" />
@@ -1509,6 +1526,8 @@
         }
       }
     ]]></beforefirstenter>
+    <nextToStatue type="string"></nextToStatue>
+    <tookScroll type="boolean">false</tookScroll>
     <object name="Loan2">
       <inherit name="editor_object" />
       <alias>to Loan; loan; to loan</alias>
@@ -1541,11 +1560,19 @@
         }
       ]]></swap>
       <walk type="script">
-        if (inside of the small house.ableToCheckSecondProtuberance = true) {
-          msg ("I'm already nearby Loan.")
+        if (inside of the small house.isDave = true) {
+          if (inside of the small house.ableToCheckSecondProtuberance = true) {
+            msg ("I'm already nearby Loan.")
+          }
+          else if (inside of the small house.letLoanTalk = true) {
+            msg ("I'm already nearby Loan.")
+          }
+          else if (inside of the small house.loanShouldLookAround = true) {
+            msg ("I'm already nearby Loan.")
+          }
         }
-        else if (inside of the small house.letLoanTalk = true) {
-          msg ("I'm already nearby Loan.")
+        else if (inside of the small house.isDave = false) {
+          msg ("Walk towards myself?")
         }
       </walk>
       <ask type="scriptdictionary">
@@ -1561,11 +1588,22 @@
         msg ("He looks tired, but I can't help him from where I am. ")
       </checkon>
       <walk type="script"><![CDATA[
-        if (inside of the small house.ableToCheckSecondProtuberance = true) {
-          msg ("I'm already near Dave.")
+        if (inside of the small house.isDave = true) {
+          msg ("Sure, going to walk towards myself.<br/>Please, focus!<br/><br/>I need to focus!")
         }
-        else {
-          msg ("I walk towards him. He is waiting for me to give him the scroll. <br/>He looks better but still has not moved from the table where he is holding himself.")
+        else if (inside of the small house.isDave = false) {
+          if (inside of the small house.ableToCheckSecondProtuberance = true) {
+            msg ("I'm already near Dave.")
+          }
+          else if (inside of the small house.LoanFinishedTalking = true) {
+            msg ("I'm already near Dave.")
+          }
+          else if (inside of the small house.letDaveOpenScroll = true) {
+            msg ("I walk towards him. He is waiting for me to give him the scroll. <br/>He looks better but still has not moved from the table where he is holding himself.")
+          }
+          else {
+            msg ("Should not do that now.")
+          }
         }
       ]]></walk>
       <swap type="script"><![CDATA[
@@ -1604,6 +1642,8 @@
         if (inside of the small house.isDave = true) {
           msg ("\"It breaks my heart to ask you for help, but I need it. My love.\"<br/>\"Don't worry. I'm here to help you.\"<br/>The smile persists.<br/><br/>He is so cute.<br/><br/>Right. We finally reach the table.")
           SetObjectFlagOn (inside of the small house, "nextToTable")
+        }
+        else {
         }
       ]]></walk>
     </object>
@@ -1679,13 +1719,18 @@
             }
           }
           else if (inside of the small house.wizardDidPrank = false) {
-            msg ("\"What is that giant statue over there?\", I ask him, pointing at it with my index.")
-            wait {
-              msg ("<br/>\"Oh, that? That is the Ultimate God. This is the true God that has ever existed! I am the servant of the Devil Himself!\"")
+            if (inside of the small house.nextToTable = true) {
+              msg ("\"What is that giant statue over there?\", I ask him, pointing at it with my index.")
               wait {
-                msg ("<br/>\"Now be on your feet before I pluck out your eyes!\"<br/><br/>\"Wait, I thought you worked for the good. Is this some kind of online scam?\"<br/><br/>I love Loan's sense of humour.<br/>We're about to get killed and he still manages to make me laugh.<br/><br/>\"If you don't say 'You're the greatest wizard of all time' three times, your life is over.\"<br/><br/>\"But that's Voldemort!\" says Loan.<br/><br/>Shut up! You'll get us into more trouble.<br/><br/>\"I'm talking to you, Dave!\"<br/>\"In 3, 2, 1!\"")
-                EnableTimer (wizardPrank)
+                msg ("<br/>\"Oh, that? That is the Ultimate God. This is the true God that has ever existed! I am the servant of the Devil Himself!\"")
+                wait {
+                  msg ("<br/>\"Now be on your feet before I pluck out your eyes!\"<br/><br/>\"Wait, I thought you worked for the good. Is this some kind of online scam?\"<br/><br/>I love Loan's sense of humour.<br/>We're about to get killed and he still manages to make me laugh.<br/><br/>\"If you don't say 'You're the greatest wizard of all time' three times, your life is over.\"<br/><br/>\"But that's Voldemort!\" says Loan.<br/><br/>Shut up! You'll get us into more trouble.<br/><br/>\"I'm talking to you, Dave!\"<br/>\"In 3, 2, 1!\"")
+                  EnableTimer (wizardPrank)
+                }
               }
+            }
+            else if (inside of the small house.nextToTable = false) {
+              msg ("We're not nearby the table.")
             }
           }
         }
@@ -1723,29 +1768,6 @@
         }
       ]]></look>
     </object>
-    <object name="arrows">
-      <inherit name="editor_object" />
-      <scenery />
-      <alias>to arrows</alias>
-      <look type="script"><![CDATA[
-        if (inside of the small house.isDave = false) {
-          if (inside of the small house.loanLookedAround = true) {
-            msg ("Hum... They point to the black candle. <br/><br/>But they look like they are diverging. Not converging on a single point of the candle. <br/><br/>It doesn't make such a difference because the candle is big, but that's it: the heads of the arrows don't converge on exactly the same spot on the candle. ")
-          }
-        }
-      ]]></look>
-    </object>
-    <object name="arrowtails">
-      <inherit name="editor_object" />
-      <alias>arrows tails; arrow extremities; arrows extremities; arrow end; arrows end; arrow edge; arrows edge</alias>
-      <look type="script">
-        if (inside of the small house.isDave = false) {
-          if (inside of the small house.loanLookedAround = true) {
-            msg ("Look! They converge from the same point! It is almost on the ground, it is better to bend a little. ")
-          }
-        }
-      </look>
-    </object>
     <command>
       <pattern>bend</pattern>
       <scope>inside of the small house</scope>
@@ -1773,7 +1795,7 @@
     </command>
     <object name="protuberance">
       <inherit name="editor_object" />
-      <alias>bulge</alias>
+      <alias>bulge; protuberance; button</alias>
       <press type="script">
         if (inside of the small house.isDave = false) {
           if (inside of the small house.loanLookedAround = true) {
@@ -1786,8 +1808,17 @@
             SetObjectFlagOff (inside of the small house, "ableToCheckSecondProtuberance")
             SetObjectFlagOn (inside of the small house, "messageRevealed")
           }
+          else if (inside of the small house.nextToStatue = true) {
+            msg ("When I press it, a message appears on the Devil's surface.")
+            SetObjectFlagOff (inside of the small house, "nextToStatue")
+            SetObjectFlagOn (inside of the small house, "messageRevealed")
+          }
+        }
+        else {
+          msg ("kakakakawaiiii")
         }
       </press>
+      <scenery />
     </object>
     <command>
       <scope>inside of the small house</scope>
@@ -1805,7 +1836,12 @@
           SetObjectFlagOn (inside of the small house, "ableToCheckSecondProtuberance")
         }
         else if (inside of the small house.isDave = false) {
-          msg ("\"Wait! Let me do it!\"<br/>\"Alright, Dave\", I reply as I stand up. ")
+          if (inside of the small house.tookScroll = true) {
+            msg ("\"Wait! Let me do it!\"<br/>\"Alright, Dave\", I reply as I stand up. ")
+          }
+          else if (inside of the small house.tookScroll = false) {
+            msg ("I should take the scroll first.")
+          }
         }
       ]]></script>
     </command>
@@ -1822,6 +1858,7 @@
       <alias>to statue; devil; to devil; Devil; to Devil</alias>
       <walk type="script">
         msg ("As I get closer, I can see a protuberance.")
+        SetObjectFlagOn (inside of the small house, "nextToStatue")
       </walk>
       <look type="script"><![CDATA[
         if (inside of the small house.messageReveaed = true) {
@@ -1832,21 +1869,43 @@
         }
       ]]></look>
     </object>
+    <command>
+      <pattern>look at arrows</pattern>
+      <script><![CDATA[
+        if (inside of the small house.isDave = false) {
+          if (inside of the small house.loanLookedAround = true) {
+            msg ("Hum... They point to the black candle. <br/><br/>But they look like they are diverging. Not converging on a single point of the candle. <br/><br/>It doesn't make such a difference because the candle is big, but that's it: the heads of the arrows don't converge on exactly the same spot on the candle. ")
+          }
+        }
+      ]]></script>
+      <scope>inside of the small house</scope>
+    </command>
+    <command>
+      <pattern>look at arrowtails; look at arrows tails; look at arrow extremities; look at arrows extremities; look at arrow end; look at arrows end; look at arrow edge; look at arrows edge; look arrowtails; look arrows tails; look arrow extremities; look arrows extremities; look arrow end; look arrows end; look arrow edge; look arrows edge</pattern>
+      <scope>inside of the small house</scope>
+      <script>
+        if (inside of the small house.isDave = false) {
+          if (inside of the small house.loanLookedAround = true) {
+            msg ("Look! They converge from the same point! It is almost on the ground, it is better to bend a little. ")
+          }
+        }
+      </script>
+    </command>
   </object>
   <verb>
     <property>checkon</property>
     <pattern>check on</pattern>
-    <defaultexpression>"You can't check on " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't check on " + object.article + "."</defaultexpression>
   </verb>
   <verb>
     <property>press</property>
     <pattern>press</pattern>
-    <defaultexpression>"You can't press " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't press " + object.article + "."</defaultexpression>
   </verb>
   <verb>
-    <property>givr</property>
-    <pattern>givr</pattern>
-    <defaultexpression>"You can't givr " + object.article + "."</defaultexpression>
+    <property>give</property>
+    <pattern>give</pattern>
+    <defaultexpression>"I can't give " + object.article + "."</defaultexpression>
   </verb>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
@@ -1891,6 +1950,7 @@
           DisableTimer (wizardPrank)
         }
       }
+      DisableTimer (wizardPrank)
     ]]></script>
   </timer>
 </asl>
