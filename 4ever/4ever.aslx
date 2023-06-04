@@ -20,7 +20,7 @@
     <attr name="autodescription_youarein_useprefix" type="boolean">false</attr>
     <attr name="feature_asktell" type="boolean">false</attr>
     <start type="script">
-      MoveObject (player, outside of the small house)
+      MoveObject (player, inside of the small house)
     </start>
   </game>
   <command name="go">
@@ -1485,36 +1485,70 @@
     <objectslistprefix>I'm able to see</objectslistprefix>
     <isDave />
     <nextToTable type="boolean">false</nextToTable>
-    <beforefirstenter type="script">
+    <beforefirstenter type="script"><![CDATA[
       msg ("I'm Dave.")
-      msg ("We are inside.")
-    </beforefirstenter>
+      msg ("<br/>As we enter this man's house, I fully understand who he is. ")
+      wait {
+        msg ("<br/>From the way he looked back outside, I believed he was some kind of wizard - you know, the typical long white beard, the long blue jacket, the beaked hat. <br/>Although it could not be that simple. <br/>I suppose.")
+        wait {
+          msg ("<br/>And when we reach the main room, I could be 100% sure: there are a lot of esoteric things here.<br/><br/>\"Come here, in front of this table.\"")
+        }
+      }
+    ]]></beforefirstenter>
     <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <daveLookedAround type="boolean">false</daveLookedAround>
+    <wizardDidPrank type="boolean">false</wizardDidPrank>
+    <wizardFirstTalk />
+    <wizardSecondTalk type="boolean">false</wizardSecondTalk>
+    <letLoanTalk type="boolean">false</letLoanTalk>
+    <LoanFinishedTalking type="boolean">false</LoanFinishedTalking>
+    <enteringHouse />
+    <wizardThirdTalk type="boolean">false</wizardThirdTalk>
+    <loanShouldLookAround type="boolean">false</loanShouldLookAround>
+    <loanLookedAround type="boolean">false</loanLookedAround>
+    <ableToCheckSecondProtuberance type="boolean">false</ableToCheckSecondProtuberance>
+    <letDaveOpenScroll type="boolean">false</letDaveOpenScroll>
+    <messageRevealed type="boolean">false</messageRevealed>
     <object name="Loan2">
       <inherit name="editor_object" />
       <alias>to Loan; loan; to loan</alias>
       <scenery />
       <speak type="script">
         if (inside of the small house.isDave = true) {
-          msg ("I don't think he knows either. I need to talk to its owner.")
+          if (inside of the small house.daveLookedAround = true) {
+            msg ("I don't think he knows either. I need to talk to its owner.")
+            SetObjectFlagOff (inside of the small house, "daveLookedAround")
+          }
+          else {
+            msg ("Why would I talk to him now?")
+          }
         }
       </speak>
       <swap type="script"><![CDATA[
-        if (outside of the small house.isDave = true) {
-          SetObjectFlagOff (, "")
-          msg ("I am Loan. ")
-          wait {
-            msg ("<br/>\"Alright. I'll do it just for you, sweetie!\"<br/><br/>I smile as I look at him. He is perfect when he looks angry.<br/>I know he is not doing it on purpose. <br/><br/>It's just an armour to protect himself. ")
-          }
-        }
         if (inside of the small house.nextToTable = false) {
           msg ("I don't think that's necessary. Let me be myself, let me be Dave!")
+        }
+        else if (inside of the small house.letLoanTalk = true) {
+          SetObjectFlagOff (inside of the small house, "isDave")
+          msg ("I'm Loan.")
+        }
+        else if (inside of the small house.loanShouldLookAround = true) {
+          msg ("It's Loan again.")
+          SetObjectFlagOff (inside of the small house, "isDave")
+        }
+        else if (inside of the small house.ableToCheckSecondProtuberance = true) {
+          msg ("Alright, I'm Loan.<br/>Have I forgotten anything?")
         }
       ]]></swap>
       <ask type="scriptdictionary">
         <item key="Loan">
         </item>
       </ask>
+      <walk type="script">
+        if (inside of the small house.ableToCheckSecondProtuberance = true) {
+          msg ("I'm already nearby Dave.")
+        }
+      </walk>
     </object>
     <object name="Dave2">
       <inherit name="editor_object" />
@@ -1523,13 +1557,35 @@
       <checkon type="script">
         msg ("He looks tired, but I can't help him from where I am. ")
       </checkon>
-      <walk type="script">
-      </walk>
+      <walk type="script"><![CDATA[
+        if (inside of the small house.ablleToCheckSecondProtuberance = true) {
+          msg ("I'm already near Dave.")
+        }
+        else {
+          msg ("I walk towards him. He is waiting for me to give him the scroll. <br/>He looks better but still has not moved from the table where he is holding himself.")
+        }
+      ]]></walk>
       <swap type="script"><![CDATA[
         if (inside of the small house.isDave = false) {
-          msg ("I’m Dave.<br/><br/>As we enter this man's house, I fully understand who it is. ")
-          wait {
-            msg ("<br/>From the way he looked back outside, I was supposed to tell that he was some kind of wizard - you know, the typical long white beard, the long blue jacket, the beaked hat. Although it could not be that simple. I suppose.<br/><br/>And when we reached the main room, I could be 100% sure: there are a lot of esoteric things here.<br/><br/>\"Come here, in front of this table.\"")
+          if (inside of the small house.LoanFinishedTalking = true) {
+            SetObjectFlagOff (inside of the small house, "LoanFinishedTalking")
+            msg ("Dave here.")
+            SetObjectFlagOff (inside of the small house, "wizardSecondTalk")
+            SetObjectFlagOn (inside of the small house, "wizardThirdTalk")
+            SetObjectFlagOn (inside of the small house, "isDave")
+          }
+          else if (inside of the small house.enteringHouse = true) {
+            msg ("I’m Dave.<br/><br/>As we enter this man's house, I fully understand who it is. ")
+            wait {
+              msg ("<br/>From the way he looked back outside, I was supposed to tell that he was some kind of wizard - you know, the typical long white beard, the long blue jacket, the beaked hat. Although it could not be that simple. I suppose.<br/><br/>And when we reached the main room, I could be 100% sure: there are a lot of esoteric things here.<br/><br/>\"Come here, in front of this table.\"")
+              SetObjectFlagOff (inside of the small house, "enteringHouse")
+            }
+            SetObjectFlagOn (inside of the small house, "isDave")
+          }
+          else if (inside of the small house.letDaveOpenScroll = true) {
+            SetObjectFlagOff (inside of the small house, "letDaveOpenScroll")
+            msg ("Dave here.<br/>Excited to know what the scroll reveals.")
+            SetObjectFlagOn (inside of the small house, "isDave")
           }
         }
         else {
@@ -1541,10 +1597,12 @@
       <inherit name="editor_object" />
       <walk type="script"><![CDATA[
         if (inside of the small house.isDave = true) {
-          msg ("\"It breaks my heart to ask you for help, but I need it. My love.\"<br/>\"Don't worry. I'm here to help you.\"<br/><br/>Right. We finally reach the table.")
+          msg ("\"It breaks my heart to ask you for help, but I need it. My love.\"<br/>\"Don't worry. I'm here to help you.\"<br/>The smile persists.<br/><br/>He is so cute.<br/><br/>Right. We finally reach the table.")
           SetObjectFlagOn (inside of the small house, "nextToTable")
         }
       ]]></walk>
+      <alias>to table</alias>
+      <scenery />
     </object>
     <command>
       <pattern>look around</pattern>
@@ -1554,27 +1612,240 @@
           if (inside of the small house.nextToTable = true) {
             msg ("Onions? <br/>Check. <br/>Potions? <br/>Check. <br/>Amulets? <br/>Also checked.<br/><br/>I can also see several dark candles burning. I hadn't noticed until now that this house has no electricity - it's the light from the candles that allows us to see what's around us. And they reveal a lot of glass jars with a lot of humanoid eyes. <br/>I finally realise that he is blind.<br/><br/>This is starting to get creepy.")
             wait {
-              msg ("Oh, what the hell? What is that? ")
+              msg ("<br/>Oh, what the hell? What is that? ")
+              SetObjectFlagOn (inside of the small house, "daveLookedAround")
             }
           }
           else if (inside of the small house.nextToTable = false) {
             msg ("First of all, it is better to walk to the table.")
           }
         }
+        else if (inside of the small house.isDave = false) {
+          if (inside of the small house.loanShouldLookAround = true) {
+            SetObjectFlagOff (inside of the small house, "loanShouldLookAround")
+            msg ("Hum... No doubt he was once an admirer of the Devil. The number 666 is everywhere. Even under the huge Satanic statue looking down.<br/>I can see black candles.  Nothing strange, it seems.")
+            wait {
+              msg ("<br/>Although one of them is not vertical. The one on the right, next to the window on the right wall. The only one different from the others. And there are arrows pointing to it nearby. <br/>It can't be a coincidence.")
+              SetObjectFlagOn (inside of the small house, "loanLookedAround")
+            }
+          }
+        }
       ]]></script>
     </command>
     <object name="wizard">
       <inherit name="editor_object" />
-      <alias>magician; mage; old man; man</alias>
+      <alias>magician; mage; old man; man; to wizard; to magician; to mage; to old man; to man</alias>
       <scenery />
-      <speak type="script">
-      </speak>
+      <speak type="script"><![CDATA[
+        if (inside of the small house.isDave = true) {
+          if (inside of the small house.wizardDidPrank = true) {
+            if (inside of the small house.wizardFirstTalk = true) {
+              msg ("\"What are you saying?\"<br/><br/>\"You're not going to kill us, are you? Oh, I'm so relieved! Imagine if I could never see Dave's face again!\"")
+              wait {
+                msg ("<br/>\"That was just a mise-en-scene. You know, just in case the Devil comes by to check if everything is under control.”<br/><br/>\"Actually, I do not help him very often anymore. Ever since he saw Barbie in the cinema, he's been redecorating in Hell, painting every nook and cranny in hot pink and throwing all-day pool parties. It seems that money cannot buy everything. And that makes me sad.”")
+                wait {
+                  msg ("<br/>Loan replies: “My heart goes out to you.”<br/>“Thank you! It’s so hard…”<br/>“I can imagine how it is… It must be hard to survive without money…”")
+                  wait {
+                    msg ("<br/>“What? I was talking about never being invited to his pool parties!”<br/><br/>I feel you.<br/><br/>But we’re wasting time. According to Loan, this is supposed to be the trip of our lives.")
+                    SetObjectFlagOff (inside of the small house, "wizardFirstTalk")
+                    SetObjectFlagOn (inside of the small house, "wizardSecondTalk")
+                  }
+                }
+              }
+            }
+            else if (inside of the small house.wizardSecondTalk = true) {
+              msg ("“Excuse me, but why are we here?\"<br/>\"I wanted to surprise you\", Loan says.<br/><br/>\"I may be able to find a cure for him. But as I told you, you must find the Cloaking Stone.\"<br/><br/>\"The Cloaking Stone?\", I say.<br/><br/>\"Yes, indeed. The most powerful amulet that may cloak the mistakes that life has made.”")
+              wait {
+                msg ("<br/>This looks interesting. I have a look at Loan and he has a look of concentration too.
+                He seems to be trying not to open his mouth for fear of saying something embarrassing.
+                No worries, dear. We are among friends.")
+                SetObjectFlagOn (inside of the small house, "letLoanTalk")
+              }
+            }
+            else if (inside of the small house.wizardDidPrank = false) {
+              msg ("\"What is that giant statue over there?\", I ask him, pointing at it with my index.")
+              wait {
+                msg ("<br/>\"Oh, that? That is the Ultimate God. This is the true God that has ever existed! I am the servant of the Devil Himself!\"")
+                wait {
+                  msg ("<br/>\"Now be on your feet before I pluck out your eyes!\"<br/><br/>\"Wait, I thought you worked for the good. Is this some kind of online scam?\"<br/><br/>I love Loan's sense of humour.<br/>We're about to get killed and he still manages to make me laugh.<br/><br/>\"If you don't say 'You're the greatest wizard of all time' three times, your life is over.\"<br/><br/>\"But that's Voldemort!\" says Loan.<br/><br/>Shut up! You'll get us into more trouble.<br/><br/>\"I'm talking to you, Dave!\"<br/>\"In 3, 2, 1!\"")
+                  EnableTimer (wizardPrank)
+                }
+              }
+            }
+            else if (inside of the small house.wizardThirdTalk = true) {
+              msg ("\"So could you tell me and Loan where the entrance is? If you already know, it's a good place to start.\"<br/><br/>\"I can't. I'm forbidden to.\"<br/><br/>\"I can only give you two clues.\"")
+              wait {
+                msg ("<br/>\"After you have made up your mind, you will choose one of the three doors on the other side of this table. One of them will lead you to the right place.\"")
+                SetObjectFlagOff (inside of the small house, "wizardThirdTalk")
+                wait {
+                  msg ("<br/>\"If it brings such power, why didn't you get it before?\"<br/>\"I can't. I'm forbidden to.\"<br/><br/>\"Three doors. The first one says 'Beach', the second 'Mountain'. And the third, 'Desert'.”<br/><br/><br/>\"Look around you.”<br/>\"I have already done so. Even if I did not tell you.\"")
+                  wait {
+                    msg ("<br/>\"You did. But not him.\"")
+                    SetObjectFlagOn (inside of the small house, "loanShouldLookAround")
+                  }
+                }
+              }
+            }
+          }
+        }
+        else if (inside of the small house.isDave = false) {
+          if (inside of the small house.loanFinishedTalking = true) {
+            msg ("I give the floor to Dave.")
+          }
+          else if (inside of the small house.letLoanTalk = true) {
+            msg ("“And where do we find it?”<br/>\"The problem is not where, but how.\"")
+            wait {
+              msg ("<br/>“I know where the entrance to the Street of Old Hells is. The stone is there. You must cross it all the way to the end. It will be waiting for you.”")
+              SetObjectFlagOff (inside of the small house, "letLoanTalk")
+              SetObjectFlagOn (inside of the small house, "LoanFinishedTalking")
+            }
+          }
+        }
+      ]]></speak>
+    </object>
+    <object name="candle">
+      <inherit name="editor_object" />
+      <alias>to candle; black candle; to black candle</alias>
+      <scenery />
+      <walk type="script">
+        if (inside of the small house.isDave = false) {
+          if (inside of the small house.loanLookedAround = true) {
+            msg ("Ok, I'm at the candle. ")
+          }
+        }
+      </walk>
+      <look type="script"><![CDATA[
+        if (inside of the small house.isDave = false) {
+          if (inside of the small house.loanLookedAround = true) {
+            msg ("Something's wrong. Nothing suspicious here.<br/>Maybe I should think differently. From a different angle.")
+          }
+        }
+      ]]></look>
+    </object>
+    <object name="arrows">
+      <inherit name="editor_object" />
+      <scenery />
+      <alias>to arrows</alias>
+      <look type="script"><![CDATA[
+        if (inside of the small house.isDave = false) {
+          if (inside of the small house.loanLookedAround = true) {
+            msg ("Hum... They point to the black candle. <br/><br/>But they look like they are diverging. Not converging on a single point of the candle. <br/><br/>It doesn't make such a difference because the candle is big, but that's it: the heads of the arrows don't converge on exactly the same spot on the candle. ")
+          }
+        }
+      ]]></look>
+    </object>
+    <object name="arrowtails">
+      <inherit name="editor_object" />
+      <alias>arrows tails; arrow extremities; arrows extremities; arrow end; arrows end; arrow edge; arrows edge</alias>
+      <look type="script">
+        if (inside of the small house.isDave = false) {
+          if (inside of the small house.loanLookedAround = true) {
+            msg ("Look! They converge from the same point! It is almost on the ground, it is better to bend a little. ")
+          }
+        }
+      </look>
+    </object>
+    <command>
+      <pattern>bend</pattern>
+      <scope>inside of the small house</scope>
+      <script><![CDATA[
+        if (inside of the small house.isDave = false) {
+          if (inside of the small house.loanLookedAround = true) {
+            msg ("There is a protuberance here.")
+          }
+          else if (inside of the small house.ableToCheckSecondProtuberance = true) {
+            msg ("Done.<br/><br/>Now the last part.")
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>press</pattern>
+      <scope>inside of the small house</scope>
+      <script>
+        if (inside of the small house.isDave = false) {
+          if (inside of the small house.loanLookedAround = true) {
+            msg ("Press what?")
+          }
+        }
+      </script>
+    </command>
+    <object name="protuberance">
+      <inherit name="editor_object" />
+      <alias>bulge</alias>
+      <press type="script">
+        if (inside of the small house.isDave = false) {
+          if (inside of the small house.loanLookedAround = true) {
+            msg ("A false floor rises up, revealing an ancient scroll. ")
+            SetObjectFlagOff (inside of the small house, "loanLookedAround")
+            SetObjectFlagOn (inside of the small house, "ableToCheckSecondProtuberance")
+          }
+          else if (inside of the small house.ableToCheckSecondProtuberance = true) {
+            msg ("When I press it, a message appears on the Devil's surface.")
+            SetObjectFlagOff (inside of the small house, "ableToCheckSecondProtuberance")
+            SetObjectFlagOn (inside of the small house, "messageRevealed")
+          }
+        }
+      </press>
+    </object>
+    <command>
+      <scope>inside of the small house</scope>
+      <pattern>open</pattern>
+      <script>
+        msg ("Open what?")
+      </script>
+    </command>
+    <command>
+      <pattern>open scroll</pattern>
+      <scope>inside of the small house</scope>
+      <script><![CDATA[
+        if (inside of the small house.isDave = true) {
+          msg ("It says: \"On the ___ day, God created the most precious thing - an imperfect copy of himself\".<br/>\"Right. Better get back to my research.\", says Loan.")
+          SetObjectFlagOn (inside of the small house, "ableToCheckSecondProtuberance")
+        }
+        else if (inside of the small house.isDave = false) {
+          msg ("\"Wait! Let me do it!\"<br/>\"Alright, Dave\", I reply as I stand up. ")
+        }
+      ]]></script>
+    </command>
+    <object name="scroll">
+      <inherit name="editor_object" />
+      <feature_usegive />
+      <use type="script"><![CDATA[
+        msg ("\"Thank you, Loan!\"<br/>Let's see what we've got.")
+      ]]></use>
+    </object>
+    <object name="statue">
+      <inherit name="editor_object" />
+      <scenery />
+      <alias>to statue; devil; to devil; Devil; to Devil</alias>
+      <walk type="script">
+        msg ("As I get closer, I can see a protuberance.")
+      </walk>
+      <look type="script"><![CDATA[
+        if (inside of the small house.messageReveaed = true) {
+          msg ("\"Hey, Dave! Look! It's writen 'Give up all your possessions. Everything belongs to the sea.'.\"")
+          wait {
+            msg ("<br/>\"What could it possibly mean?\"")
+          }
+        }
+      ]]></look>
     </object>
   </object>
   <verb>
     <property>checkon</property>
     <pattern>check on</pattern>
     <defaultexpression>"You can't check on " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>press</property>
+    <pattern>press</pattern>
+    <defaultexpression>"You can't press " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>givr</property>
+    <pattern>givr</pattern>
+    <defaultexpression>"You can't givr " + object.article + "."</defaultexpression>
   </verb>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
@@ -1606,5 +1877,18 @@
         MoveObject (player, inside of the small house)
       }
     </script>
+  </timer>
+  <timer name="wizardPrank">
+    <interval>5</interval>
+    <script><![CDATA[
+      msg ("<br/>\"Well, time's up! Prepare to die! By the hands of the Chaos Magician Himself!\"<br/>\"MUAHAHAHAHAHAHAHAHAHAHAH!!\"")
+      wait {
+        msg ("<br/>And suddenly he opens his eyes and we see the reflection of the flames of Hell. <br/><br/>...<br/><br/>...")
+        wait {
+          msg ("<br/>\"Oh Gosh, sorry guys! I got a bit excited!\"<br/>\"My theatre classes are allowing me to make some progress. That's great!\"<br/><br/>I feel my heart stop for a split second. And somehow a warm glow fills my face.<br/><br/><br/>I should talk to him.")
+          SetObjectFlagOn (inside of the small house, "wizardDidPrank")
+        }
+      }
+    ]]></script>
   </timer>
 </asl>
