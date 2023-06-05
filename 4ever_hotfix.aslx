@@ -21,6 +21,8 @@
     <attr name="feature_asktell" type="boolean">false</attr>
     <start type="script">
       MoveObject (player, inside of the small house)
+      SetObjectFlagOn (inside of the small house, "foundStatueClue")
+      SetObjectFlagOn (inside of the small house, "foundCandleClue")
     </start>
   </game>
   <command name="go">
@@ -2270,6 +2272,16 @@
     <enabled />
     <script>
       msg ("hello")
+    </script>
+  </timer>
+  <timer name="foundAllClues">
+    <interval>1</interval>
+    <enabled />
+    <script>
+      if (inside of the small house.foundStatueClue and inside of the small house.foundCandleClue) {
+        msg ("BEJBA")
+        DisableTimer (foundAllClues)
+      }
     </script>
   </timer>
 </asl>
