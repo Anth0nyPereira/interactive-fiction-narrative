@@ -21,6 +21,8 @@
     <attr name="feature_asktell" type="boolean">false</attr>
     <start type="script">
       MoveObject (player, inside of the small house)
+      SetObjectFlagOn (inside of the small house, "foundStatueClue")
+      SetObjectFlagOn (inside of the small house, "foundCandleClue")
     </start>
   </game>
   <command name="go">
@@ -1566,8 +1568,9 @@
         }
       </speak>
       <swap type="script"><![CDATA[
-        if (inside of the small house.nextToTable = false) {
-          msg ("I don't think that's necessary. Let me be myself, let me be Dave!")
+        if (inside of the small house.foundAll = true) {
+          msg ("Back to Loan.<br/>I'm trying to come up with something, but it's kinda hard to think.<br/>It's better to talk to Dave, since he was looking at me all the time.<br/><br/>Or maybe it was because I'm so beautiful?<br/><br/>Wrong! I'm handsome!!<br/><br/>I have a fucking penis!!")
+          SetObjectFlagOff (inside of the small house, "isDave")
         }
         else if (inside of the small house.letLoanTalk = true) {
           SetObjectFlagOff (inside of the small house, "isDave")
@@ -1580,6 +1583,9 @@
         else if (inside of the small house.ableToCheckSecondProtuberance = true) {
           msg ("Alright, I'm Loan.<br/>Have I forgotten anything?")
           SetObjectFlagOff (inside of the small house, "isDave")
+        }
+        else if (inside of the small house.nextToTable = false) {
+          msg ("I don't think that's necessary. Let me be myself, let me be Dave!")
         }
       ]]></swap>
       <walk type="script">
@@ -1676,10 +1682,15 @@
       <goGetKey type="boolean">false</goGetKey>
       <walk type="script"><![CDATA[
         if (inside of the small house.isDave = true) {
-          msg ("\"It breaks my heart to ask you for help, but I need it. My love.\"<br/>\"Don't worry. I'm here to help you.\"<br/>The smile persists.<br/><br/>He is so cute.<br/><br/>Right. We finally reach the table.")
-          SetObjectFlagOn (inside of the small house, "nextToTable")
-          SetObjectFlagOff (inside of the small house, "nextToStatue")
-          SetObjectFlagOff (inside of the small house, "nextToCandle")
+          if (inside of the small house.foundAll = true) {
+            msg ("I was always next to the table anyway. Time to decide on something.")
+          }
+          else {
+            msg ("\"It breaks my heart to ask you for help, but I need it. My love.\"<br/>\"Don't worry. I'm here to help you.\"<br/>The smile persists.<br/><br/>He is so cute.<br/><br/>Right. We finally reach the table.")
+            SetObjectFlagOn (inside of the small house, "nextToTable")
+            SetObjectFlagOff (inside of the small house, "nextToStatue")
+            SetObjectFlagOff (inside of the small house, "nextToCandle")
+          }
         }
         else if (inside of the small house.isDave = false) {
           SetObjectFlagOff (inside of the small house, "nextToStatue")
@@ -1702,8 +1713,6 @@
               }
             }
           }
-        }
-        else {
         }
       ]]></walk>
     </object>
