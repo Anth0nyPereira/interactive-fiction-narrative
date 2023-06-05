@@ -1554,6 +1554,7 @@
     ]]></firstenter>
     <releasedDave type="boolean">false</releasedDave>
     <goGetKey type="boolean">false</goGetKey>
+    <isAlreadyNearDave type="boolean">false</isAlreadyNearDave>
     <object name="Loan2">
       <inherit name="editor_object" />
       <alias>to Loan; loan; to loan</alias>
@@ -1642,6 +1643,9 @@
           else if (inside of the small house.letDaveOpenScroll = true) {
             msg ("And where he is?")
           }
+          else if (inside of the small house.haveKey = true) {
+            msg ("And where did I leave him?")
+          }
           else if (inside of the small house.foundAll = true) {
             msg ("And where should I find him?")
           }
@@ -1711,9 +1715,14 @@
               }
             }
             else if (inside of the small house.goGetKey = false) {
-              msg ("I walk in Dave's direction, trying to come up with a theory about the clues we've found. <br/>But nothing makes sense.")
-              wait {
-                msg ("<br/>I'm not the smart one.<br/><br/>Ok, I'm near him.")
+              if (inside of the small house.isAlreadyNearDave = true) {
+                msg ("I'm already near Dave.")
+              }
+              else {
+                msg ("I walk in Dave's direction, trying to come up with a theory about the clues we've found. <br/>But nothing makes sense.")
+                wait {
+                  msg ("<br/>I'm not the smart one.<br/><br/>Ok, I'm near him.")
+                }
               }
             }
           }
@@ -2059,6 +2068,7 @@
               SetObjectFlagOn (inside of the small house, "goGetKey")
               SetObjectFlagOff (inside of the small house, "firstTimeOpeningADoor")
             }
+            SetObjectFlagOn (inside of the small house, "doorOpen")
           }
           else if (inside of the small house.doorOpen = true) {
             msg ("The door is already open.")
@@ -2073,6 +2083,7 @@
         if (inside of the small house.foundAll = true) {
           if (inside of the small house.doorOpen = false) {
             msg ("The door is open.")
+            SetObjectFlagOn (inside of the small house, "doorOpen")
             if (inside of the small house.firstTimeOpeningADoor = true) {
               msg ("<br/>We're about to say goodbye to the wizard when he stops us from crossing.<br/><br/>\"Wait! Come back, I should give you the key to open the door to the Street of Old Hells\".")
               SetObjectFlagOn (inside of the small house, "goGetKey")
@@ -2087,12 +2098,13 @@
     </command>
     <command>
       <scope>inside of the small house</scope>
-      <pattern>walk to desert; walk to right door; walk to desert door; go desert; go to desert door; go to right door; go right door</pattern>
+      <pattern>walk to desert; walk to right door; walk to desert door; go desert; go to desert door; go to right door; go right door; walk to last door</pattern>
       <script><![CDATA[
         if (inside of the small house.foundAll = true) {
           if (inside of the small house.doorOpen = true) {
             msg ("We walk through the door.")
             SetObjectFlagOff (inside of the small house, "doorOpen")
+            ClearScreen
             MoveObject (player, desert)
           }
           else if (inside of the small house.doorOpen = false) {
@@ -2124,6 +2136,7 @@
           if (inside of the small house.doorOpen = true) {
             msg ("We walk through the door.")
             SetObjectFlagOff (inside of the small house, "doorOpen")
+            ClearScreen
             MoveObject (player, mountain)
           }
           else if (inside of the small house.doorOpen = false) {
@@ -2132,6 +2145,18 @@
         }
       ]]></script>
     </command>
+    <command>
+      <pattern>take wizard key; take magician key; take key; take mage key; take man key; take wizards key; take magicians key; take mages key; take man key; tale mans key</pattern>
+      <scope>inside of the small house</scope>
+      <script>
+        msg ("Done. I stored it in my inventory.")
+        AddToInventory (wizard key)
+        SetObjectFlagOn (inside of the small house, "haveKey")
+      </script>
+    </command>
+    <object name="wizard key">
+      <inherit name="editor_object" />
+    </object>
   </object>
   <verb>
     <property>checkon</property>
@@ -2168,12 +2193,12 @@
     </command>
     <object name="end">
       <inherit name="editor_object" />
-      <alias>to end</alias>
+      <alias>to end; to light; light</alias>
       <scenery />
       <walk type="script"><![CDATA[
         msg ("We decide to follow the light.")
         wait {
-          msg ("And when we get there, a big door is waiting for us. <br/>It seems that the light comes from its lock.")
+          msg ("<br/>And when we get there, a big door is waiting for us. <br/>It seems that the light comes from its lock.")
         }
       ]]></walk>
     </object>
@@ -2204,10 +2229,13 @@
         else if (mountain.keyInHands = true) {
           msg ("I try to put the key in the lock of the door, but it does not work.<br/><br/>\"No way! We failed!\"")
           wait {
-            msg ("Dave starts to get nervous. I am too, but I shouldn't show it to him.<br/><br/>\"What are we going to do now? Are we going to spend the rest of our lives here?\"<br/>I calm him down, even though I don't believe a single word: \"There must be a way out.\"")
+            msg ("<br/>Dave starts to get nervous. I am too, but I shouldn't show it to him.<br/><br/>\"What are we going to do now? Are we going to spend the rest of our lives here?\"<br/>I calm him down, even though I don't believe a single word: \"There must be a way out.\"")
             wait {
-              msg ("Immediately a door appears on our left. It opens immediately and we recognise the wizard on the other side.")
+              SetObjectFlagOff (desert, "keyInHands")
+              msg ("<br/>Immediately a door appears on our left. It opens immediately and we recognise the wizard on the other side.")
+              ClearScreen
               MoveObject (player, inside of the small house)
+              SetObjectFlagOn (inside of the small house, "isAlreadyNearDave")
             }
           }
         }
@@ -2231,6 +2259,52 @@
         }
       }
     ]]></enter>
+    <command>
+      <pattern>take out key; take out wizard key; take out man key; take out  magician key</pattern>
+      <scope>desert</scope>
+      <script><![CDATA[
+        SetObjectFlagOn (desert, "keyInHands")
+        msg ("I hold the key in my hand. I might need to use it later.")
+        wait {
+          msg ("<br/>\"I let you do all the work! I'm sorry\", shouts Dave.<br/>I look at him beside me and kiss him on the mouth.")
+          wait {
+            msg ("<br/>\"Don't apologise. I'm here because I love you!\"<br/>\"But how can you love someone like me?\"<br/><br/>And how can you love someone like me?")
+            wait {
+              msg ("<br/>\"You are much more than you think.\"<br/><br/>\"I'm sorry for bringing this all of a sudden, Loan. We should move on.<br/>\"Don't apologise. And I'll never get tired of telling you that.\"<br/>\"And that I love you.\"<br/><br/>From the bottom of my heart.<br/><br/>OK. Let's go.")
+            }
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>use wizard key; use wizards key; use magicians key; use magician key; use man key; use mans key; use key</pattern>
+      <scope>desert</scope>
+      <script><![CDATA[
+        if (desert.keyInHands = false) {
+          msg ("Alright. I will have to take the key out of my inventory first.")
+        }
+        else if (desert.keyInHands = true) {
+          msg ("I try to put the key in the lock of the door, but it does not work.<br/><br/>\"No way! We failed!\"")
+          wait {
+            msg ("<br/>Dave starts to get nervous. I am too, but I shouldn't show it to him.<br/><br/>\"What are we going to do now? Are we going to spend the rest of our lives here?\"<br/>I calm him down, even though I don't believe a single word: \"There must be a way out.\"")
+            wait {
+              SetObjectFlagOff (desert, "keyInHands")
+              msg ("<br/>Immediately a door appears on our left. It opens immediately and we recognise the wizard on the other side.")
+              ClearScreen
+              MoveObject (player, inside of the small house)
+              SetObjectFlagOn (inside of the small house, "isAlreadyNearDave")
+            }
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>go inside small house; go inside of small house; go wizard house; go wizards house: go to wizards house; got to wizard house; walk to wizard house; walk to wizards house</pattern>
+      <scope>desert</scope>
+      <script>
+        msg ("We can no longer do that. The door disappeared.")
+      </script>
+    </command>
   </object>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
@@ -2299,6 +2373,7 @@
           msg ("The wizard yells, \"Both clues have already been discovered!\"<br/>\"It's time to make a decision.\"<br/><br/>Should swap to Loan now.")
           SetObjectFlagOn (inside of the small house, "foundAll")
           DisableTimer (foundAllClues)
+          SetObjectFlagOn (inside of the small house, "isAlreadyNearDave")
         }
       }
     ]]></script>
