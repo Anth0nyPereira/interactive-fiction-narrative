@@ -11,3 +11,6 @@
 [0604/144825:WARNING:dns_config_service_win.cc(654)] Failed to read DnsConfig.
 [0604/144830:WARNING:dns_config_service_win.cc(654)] Failed to read DnsConfig.
 [0604/194017:WARNING:message_in_transit_queue.cc(18)] Destroying nonempty message queue
+[0605/152011:ERROR:renderer_main.cc(207)] Running without renderer sandbox
+[0605/161027:WARNING:message_in_transit_queue.cc(18)] Destroying nonempty message queue
+[0605/161129:ERROR:renderer_main.cc(207)] Running without renderer sandbox

@@ -1518,6 +1518,7 @@
     <messageRevealed type="boolean">false</messageRevealed>
     <nextToStatue type="boolean">false</nextToStatue>
     <tookScroll type="boolean">false</tookScroll>
+    <nextToCandle type="string"></nextToCandle>
     <beforefirstenter type="script"><![CDATA[
       msg ("I'm Dave.")
       msg ("<br/>As we enter this man's house, I fully understand who he is. ")
@@ -1528,7 +1529,6 @@
         }
       }
     ]]></beforefirstenter>
-    <nextToCandle type="string"></nextToCandle>
     <object name="Loan2">
       <inherit name="editor_object" />
       <alias>to Loan; loan; to loan</alias>
@@ -1670,6 +1670,9 @@
           else if (inside of the small house.nextToTable = false) {
             msg ("First of all, it is better to walk to the table.")
           }
+          else {
+            msg ("Not now.")
+          }
         }
         else if (inside of the small house.isDave = false) {
           if (inside of the small house.loanShouldLookAround = true) {
@@ -1761,6 +1764,12 @@
               SetObjectFlagOn (inside of the small house, "LoanFinishedTalking")
             }
           }
+          else {
+            msg ("foda-se")
+          }
+        }
+        else {
+          msg ("´foda-se 2.")
         }
       ]]></speak>
     </object>
@@ -1861,13 +1870,6 @@
         }
       ]]></script>
     </command>
-    <object name="scroll">
-      <inherit name="editor_object" />
-      <feature_usegive />
-      <use type="script"><![CDATA[
-        msg ("\"Thank you, Loan!\"<br/>Let's see what we've got.")
-      ]]></use>
-    </object>
     <object name="statue">
       <inherit name="editor_object" />
       <scenery />
@@ -1908,6 +1910,20 @@
           }
         }
       </script>
+    </command>
+    <command>
+      <pattern>give scroll</pattern>
+      <scope>inside of the small house</scope>
+      <script><![CDATA[
+        msg ("\"Thank you, Loan!\"<br/>Let's see what we've got.")
+      ]]></script>
+    </command>
+    <command>
+      <pattern>take scroll</pattern>
+      <scope>inside of the small house</scope>
+      <script><![CDATA[
+        msg ("Done.<br/><br/>I look at the wizard and ask if I can put the scroll in my inventory.<br/>\"Absolutely not!\"<br/><br/><br/> Oh well. You are the boss.")
+      ]]></script>
     </command>
   </object>
   <verb>
