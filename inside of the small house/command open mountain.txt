@@ -1,0 +1,17 @@
+pattern: open mountain; open mountain door; open middle; open middle door; open second door; open second
+
+scope: inside of the small house
+
+if (inside of the small house.foundAll = true) {
+  if (inside of the small house.doorOpen = false) {
+    msg ("The door is open.")
+    if (inside of the small house.firstTimeOpeningADoor = true) {
+      msg ("<br/>We're about to say goodbye to the wizard when he stops us from crossing.<br/><br/>\"Wait! Come back, I should give you the key to open the door to the Street of Old Hells\".")
+      SetObjectFlagOn (inside of the small house, "goGetKey")
+      SetObjectFlagOff (inside of the small house, "firstTimeOpeningADoor")
+    }
+  }
+  else if (inside of the small house.doorOpen = true) {
+    msg ("The door is already open.")
+  }
+}

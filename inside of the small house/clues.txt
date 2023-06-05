@@ -1,0 +1,12 @@
+verb check
+
+msg ("\"Alright, so we found three things that could be clues, even though the wizard told us there were only two. One of them is an impostor?\"<br/><br/>I reply to Dave, \"Or maybe the wizard lied to us.")
+wait {
+  msg ("<br/>\"That could happen, yes. I don't know what the point of lying to us would be, but anything's possible.\"<br/>\"So the scroll showed the message, 'On the ___ day, God created the most precious thing - an imperfect copy of himself.'\"<br/><br/>\"Oh, Dave, I remember looking at a lot of 666's. Is this a reference to the clue that might be incomplete?\"")
+  wait {
+    msg ("<br/>\"I don't know. It could be. But I'm not sure of its meaning yet.\"<br/><br/>To end the conversation, I start talking about the other clue: \"And then, on the statue of the devil, there was a message that said, 'Give up all things as they belong to the sea.'\"")
+    wait {
+      msg ("<br/>That's it. That's all we have.")
+    }
+  }
+}

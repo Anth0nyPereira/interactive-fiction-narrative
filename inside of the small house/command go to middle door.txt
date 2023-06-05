@@ -1,0 +1,18 @@
+pattern: 
+
+go to middle door; go middle door; go mountain; go to mountain; go mountain door; go to mountain door; walk to middle door; walk middle door; walk to mountain door; walk mountain door; walk to mountain; walk mountain
+
+scope:
+inside of the small house
+
+
+if (inside of the small house.foundAll = true) {
+  if (inside of the small house.doorOpen = true) {
+    msg ("We walk through the door.")
+    SetObjectFlagOff (inside of the small house, "doorOpen")
+    MoveObject (player, mountain)
+  }
+  else if (inside of the small house.doorOpen = false) {
+    msg ("\"The second door is the good one,\" says Dave.<br/>Right. <br/>I should open the door.")
+  }
+}
