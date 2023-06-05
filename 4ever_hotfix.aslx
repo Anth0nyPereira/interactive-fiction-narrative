@@ -1519,6 +1519,13 @@
     <nextToStatue type="boolean">false</nextToStatue>
     <tookScroll type="boolean">false</tookScroll>
     <nextToCandle type="boolean">false</nextToCandle>
+    <foundStatueClue type="boolean">false</foundStatueClue>
+    <foundCandleClue type="boolean">false</foundCandleClue>
+    <foundAll type="boolean">false</foundAll>
+    <firstTimeOpeningADoor />
+    <haveKey type="boolean">false</haveKey>
+    <doorOpen type="boolean">false</doorOpen>
+    <justPickAnother type="boolean">false</justPickAnother>
     <beforefirstenter type="script">
     </beforefirstenter>
     <enter type="script"><![CDATA[
@@ -1543,13 +1550,6 @@
         }
       }
     ]]></firstenter>
-    <foundStatueClue type="boolean">false</foundStatueClue>
-    <foundCandleClue type="boolean">false</foundCandleClue>
-    <foundAll type="boolean">false</foundAll>
-    <firstTimeOpeningADoor />
-    <haveKey type="boolean">false</haveKey>
-    <doorOpen type="boolean">false</doorOpen>
-    <justPickAnother type="boolean">false</justPickAnother>
     <object name="Loan2">
       <inherit name="editor_object" />
       <alias>to Loan; loan; to loan</alias>
@@ -1983,39 +1983,46 @@
         msg ("Done.<br/><br/>I look at the wizard and ask if I can put the scroll in my inventory.<br/>\"Absolutely not!\"<br/><br/><br/> Oh well. You are the boss.")
       ]]></script>
     </command>
-    <object name="clues">
+    <object name="doors">
       <inherit name="editor_object" />
       <scenery />
-      <check type="script"><![CDATA[
-        msg ("\"Alright, so we found three things that could be clues, even though the wizard told us there were only two. One of them is an impostor?\"<br/><br/>I reply to Dave, \"Or maybe the wizard lied to us.")
-        wait {
-          msg ("<br/>\"That could happen, yes. I don't know what the point of lying to us would be, but anything's possible.\"<br/>\"So the scroll showed the message, 'On the ___ day, God created the most precious thing - an imperfect copy of himself.'\"<br/><br/>\"Oh, Dave, I remember looking at a lot of 666's. Is this a reference to the clue that might be incomplete?\"")
+      <alias>to doors; three doors; to three doors</alias>
+      <look type="script"><![CDATA[
+        if (inside of the small house.foundAll = true) {
+          msg ("Just as the mage told us before: the first one, to the left of the wall in front of us, has a sign above the door that says \"Beach\". <br/>The door in the middle has a sign too, but this time it marks \"Mountain\". <br/>And the last one has \"Desert\" written above the door.")
+        }
+      ]]></look>
+      <walk type="script"><![CDATA[
+        if (inside of the small house.foundAll = false) {
+          msg ("I pass the table that separates us from the three doors next to each other on the same wall as I go around it on the right.")
           wait {
-            msg ("<br/>\"I don't know. It could be. But I'm not sure of its meaning yet.\"<br/><br/>To end the conversation, I start talking about the other clue: \"And then, on the statue of the devil, there was a message that said, 'Give up all things as they belong to the sea.'\"")
+            msg ("<br/>\"I'm so sure of what I'm doing,\" I think to myself. ")
             wait {
-              msg ("<br/>That's it. That's all we have.")
+              msg ("<br/>When, all of a sudden, I have bumped into something. My reflex was to close my eyes, even though I didn't notice anything in front of me. When I open them, I notice that there is nothing.<br/><br/>How peculiar.<br/><br/>\"Loan!\"<br/>\"Loan, are you okay?\"<br/>\"I'm fine. Don't worry, Dave!\"<br/><br/>\"I think I should worry, to be honest. What was that?\"<br/>\"That's an impenetrable wall,\" assures the wizard, \"It guarantees that you can only cross it if you have discovered all the hints!\"<br/><br/>Oh, I see.<br/>It means that something else may have slipped through the cracks.")
             }
           }
         }
-      ]]></check>
-    </object>
-    <command>
-      <pattern>go to middle door; go middle door; go mountain; go to mountain; go mountain door; go to mountain door; walk to middle door; walk middle door; walk to mountain door; walk mountain door; walk to mountain; walk mountain</pattern>
-      <unresolved type="string"></unresolved>
-      <scope>inside of the small house</scope>
-      <script><![CDATA[
-        if (inside of the small house.foundAll = true) {
-          if (inside of the small house.doorOpen = true) {
-            msg ("We walk through the door.")
-            SetObjectFlagOff (inside of the small house, "doorOpen")
-            MoveObject (player, mountain)
+        else if (inside of the small house.foundAll = true) {
+          if (inside of the small house.justPickAnother = false) {
+            if (inside of the small house.haveKey = true) {
+              msg ("I am back in Dave's arms in a hurry.<br/><br/>And so, we say goodbye to the wizard and are capable of passing through the door. <br/><br/>Let's go!")
+            }
+            else if (inside of the small house.haveKey = false) {
+              msg ("We walk slowly.<br/>I don't want Dave to get hurt.<br/><br/>\"You could lengthen your stride, Loan.\"<br/>\"Don't worry about me. I know I can keep up.\"<br/>\"All right! Let's do it!\"<br/><br/>Together.")
+              wait {
+                msg ("<br/>I don't want him to know this, but I'm really scared about all this. My sweat covered my face, even though I was cold and shivering.<br/><br/>If this is so scary, I'm afraid I won't be able to go on to the next phase. <br/>I should be sure of myself. I should be sure of myself so that Dave does not feel alone or abandoned. <br/>I hope he does not find out.")
+                wait {
+                  msg ("<br/>I don't want him to be disappointed. To live with a man who is afraid of everything but tries so hard to hide it. To act like a real man. A virile man. <br/>But I'm not a real man.<br/><br/>I hope he never finds out. Never.<br/>If he leaves, I don't know if I could handle it. <br/><br/>He is the reason my life has a purpose.<br/>That I have found a reason to live again. <br/><br/>So please.<br/>Please.<br/>Please...<br/><br/>Don't go away.<br/>Never.<br/>I want to be with you.<br/><br/>Forever.<br/><br/>We stand near the doors.")
+                }
+              }
+            }
           }
-          else if (inside of the small house.doorOpen = false) {
-            msg ("\"The second door is the good one,\" says Dave.<br/>Right. <br/>I should open the door.")
+          else if (inside of the small house.justPickAnother = true) {
+            msg ("We're back to the doors. <br/><br/>Time to open another one.")
           }
         }
-      ]]></script>
-    </command>
+      ]]></walk>
+    </object>
     <command>
       <pattern>open desert door; open desert; open third door; open last door; open third; open last</pattern>
       <scope>inside of the small house</scope>
@@ -2055,8 +2062,8 @@
       ]]></script>
     </command>
     <command>
-      <pattern>walk to desert; walk to right door; walk to desert door; go desert; go to desert door; go to right door; go right door</pattern>
       <scope>inside of the small house</scope>
+      <pattern>walk to desert; walk to right door; walk to desert door; go desert; go to desert door; go to right door; go right door</pattern>
       <script><![CDATA[
         if (inside of the small house.foundAll = true) {
           if (inside of the small house.doorOpen = true) {
@@ -2066,6 +2073,37 @@
           }
           else if (inside of the small house.doorOpen = false) {
             msg ("\"The third door is the good one,\" says Dave.<br/>Right. <br/>I should open the door.")
+          }
+        }
+      ]]></script>
+    </command>
+    <object name="clues">
+      <inherit name="editor_object" />
+      <check type="script"><![CDATA[
+        msg ("\"Alright, so we found three things that could be clues, even though the wizard told us there were only two. One of them is an impostor?\"<br/><br/>I reply to Dave, \"Or maybe the wizard lied to us.")
+        wait {
+          msg ("<br/>\"That could happen, yes. I don't know what the point of lying to us would be, but anything's possible.\"<br/>\"So the scroll showed the message, 'On the ___ day, God created the most precious thing - an imperfect copy of himself.'\"<br/><br/>\"Oh, Dave, I remember looking at a lot of 666's. Is this a reference to the clue that might be incomplete?\"")
+          wait {
+            msg ("<br/>\"I don't know. It could be. But I'm not sure of its meaning yet.\"<br/><br/>To end the conversation, I start talking about the other clue: \"And then, on the statue of the devil, there was a message that said, 'Give up all things as they belong to the sea.'\"")
+            wait {
+              msg ("<br/>That's it. That's all we have.")
+            }
+          }
+        }
+      ]]></check>
+    </object>
+    <command>
+      <pattern>go to middle door; go middle door; go mountain; go to mountain; go mountain door; go to mountain door; walk to middle door; walk middle door; walk to mountain door; walk mountain door; walk to mountain; walk mountain</pattern>
+      <scope>inside of the small house</scope>
+      <script><![CDATA[
+        if (inside of the small house.foundAll = true) {
+          if (inside of the small house.doorOpen = true) {
+            msg ("We walk through the door.")
+            SetObjectFlagOff (inside of the small house, "doorOpen")
+            MoveObject (player, mountain)
+          }
+          else if (inside of the small house.doorOpen = false) {
+            msg ("\"The second door is the good one,\" says Dave.<br/>Right. <br/>I should open the door.")
           }
         }
       ]]></script>
@@ -2159,6 +2197,7 @@
   </verb>
   <object name="desert">
     <inherit name="editor_room" />
+    <keyInHands type="boolean">false</keyInHands>
     <enter type="script"><![CDATA[
       msg ("This must be some powerful magic. We have just teleported to a desert.")
       wait {
@@ -2168,7 +2207,6 @@
         }
       }
     ]]></enter>
-    <keyInHands type="boolean">false</keyInHands>
   </object>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
