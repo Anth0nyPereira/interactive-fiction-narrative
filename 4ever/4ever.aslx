@@ -1516,7 +1516,7 @@
     <ableToCheckSecondProtuberance type="boolean">false</ableToCheckSecondProtuberance>
     <letDaveOpenScroll type="boolean">false</letDaveOpenScroll>
     <messageRevealed type="boolean">false</messageRevealed>
-    <nextToStatue type="string"></nextToStatue>
+    <nextToStatue type="boolean">false</nextToStatue>
     <tookScroll type="boolean">false</tookScroll>
     <beforefirstenter type="script"><![CDATA[
       msg ("I'm Dave.")
@@ -1528,6 +1528,7 @@
         }
       }
     ]]></beforefirstenter>
+    <nextToCandle type="string"></nextToCandle>
     <object name="Loan2">
       <inherit name="editor_object" />
       <alias>to Loan; loan; to loan</alias>
@@ -1642,6 +1643,13 @@
         if (inside of the small house.isDave = true) {
           msg ("\"It breaks my heart to ask you for help, but I need it. My love.\"<br/>\"Don't worry. I'm here to help you.\"<br/>The smile persists.<br/><br/>He is so cute.<br/><br/>Right. We finally reach the table.")
           SetObjectFlagOn (inside of the small house, "nextToTable")
+          SetObjectFlagOff (inside of the small house, "nextToStatue")
+          SetObjectFlagOff (inside of the small house, "nextToCandle")
+        }
+        else if (inside of the small house.isDave = false) {
+          SetObjectFlagOff (inside of the small house, "nextToStatue")
+          SetObjectFlagOff (inside of the small house, "nextToCandle")
+          SetObjectFlagOn (inside of the small house, "nextToTable")
         }
         else {
         }
@@ -1702,6 +1710,7 @@
                 msg ("<br/>This looks interesting. I have a look at Loan and he has a look of concentration too.<br/>He seems to be trying not to open his mouth for fear of saying something embarrassing.<br/><br/>No worries, dear. We are among friends.")
                 SetObjectFlagOn (inside of the small house, "letLoanTalk")
               }
+              SetObjectFlagOff (inside of the small house, "wizardSecondTalk")
             }
             else if (inside of the small house.wizardThirdTalk = true) {
               msg ("\"So could you tell me and Loan where the entrance is? If you already know, it's a good place to start.\"<br/><br/>\"I can't. I'm forbidden to.\"<br/><br/>\"I can only give you two clues.\"")
@@ -1716,6 +1725,9 @@
                   }
                 }
               }
+            }
+            else if (inside of the small house.letLoanTalk = true) {
+              msg ("Loan might want to tell something.")
             }
           }
           else if (inside of the small house.wizardDidPrank = false) {
@@ -1732,6 +1744,9 @@
             else if (inside of the small house.nextToTable = false) {
               msg ("We're not nearby the table.")
             }
+          }
+          else {
+            msg ("Not now.")
           }
         }
         else if (inside of the small house.isDave = false) {
@@ -1757,12 +1772,16 @@
         if (inside of the small house.isDave = false) {
           if (inside of the small house.loanLookedAround = true) {
             msg ("Ok, I'm at the candle. ")
+            SetObjectFlagOff (inside of the small house, "loanLookedAround")
+            SetObjectFlagOn (inside of the small house, "nextToCandle")
+            SetObjectFlagOff (inside of the small house, "nextToStatue")
+            SetObjectFlagOff (inside of the small house, "nextToTable")
           }
         }
       </walk>
       <look type="script"><![CDATA[
         if (inside of the small house.isDave = false) {
-          if (inside of the small house.loanLookedAround = true) {
+          if (inside of the small house.nextToCandle = true) {
             msg ("Something's wrong. Nothing suspicious here.<br/>Maybe I should think differently. From a different angle.")
           }
         }
@@ -1773,11 +1792,11 @@
       <scope>inside of the small house</scope>
       <script><![CDATA[
         if (inside of the small house.isDave = false) {
-          if (inside of the small house.loanLookedAround = true) {
-            msg ("There is a protuberance here.")
+          if (inside of the small house.nextToCandle = true) {
+            msg ("Near the bottom of the window where the black candle is, I'm able to see a protuberance.")
           }
-          else if (inside of the small house.ableToCheckSecondProtuberance = true) {
-            msg ("Done.<br/><br/>Now the last part.")
+          else if (inside of the small house.nextToStatue = true) {
+            msg ("Done.<br/><br/>There is a protuberance here.")
           }
         }
       ]]></script>
@@ -1787,9 +1806,7 @@
       <scope>inside of the small house</scope>
       <script>
         if (inside of the small house.isDave = false) {
-          if (inside of the small house.loanLookedAround = true) {
-            msg ("Press what?")
-          }
+          msg ("Press what?")
         }
       </script>
     </command>
@@ -1799,12 +1816,11 @@
       <scenery />
       <press type="script">
         if (inside of the small house.isDave = false) {
-          if (inside of the small house.loanLookedAround = true) {
+          if (inside of the small house.nextToCandle = true) {
             msg ("A false floor rises up, revealing an ancient scroll. ")
-            SetObjectFlagOff (inside of the small house, "loanLookedAround")
-            SetObjectFlagOn (inside of the small house, "ableToCheckSecondProtuberance")
+            SetObjectFlagOff (inside of the small house, "nextToStatue")
           }
-          else if (inside of the small house.ableToCheckSecondProtuberance = true) {
+          else if (inside of the small house.nextToStatue = true) {
             msg ("When I press it, a message appears on the Devil's surface.")
             SetObjectFlagOff (inside of the small house, "ableToCheckSecondProtuberance")
             SetObjectFlagOn (inside of the small house, "messageRevealed")
@@ -1856,12 +1872,14 @@
       <inherit name="editor_object" />
       <scenery />
       <alias>to statue; devil; to devil; Devil; to Devil</alias>
-      <walk type="script">
-        msg ("As I get closer, I can see a protuberance.")
+      <walk type="script"><![CDATA[
+        msg ("As I get closer, something near the ground catches my attention. <br/>Poor Dave: no wonder he was unable to help me, imagine bending with a completely torn leg.")
         SetObjectFlagOn (inside of the small house, "nextToStatue")
-      </walk>
+        SetObjectFlagOff (inside of the small house, "nextToCandle")
+        SetObjectFlagOff (inside of the small house, "nextToTable")
+      ]]></walk>
       <look type="script"><![CDATA[
-        if (inside of the small house.messageReveaed = true) {
+        if (inside of the small house.messageRevealed = true) {
           msg ("\"Hey, Dave! Look! It's writen 'Give up all your possessions. Everything belongs to the sea.'.\"")
           wait {
             msg ("<br/>\"What could it possibly mean?\"")
@@ -1874,7 +1892,7 @@
       <scope>inside of the small house</scope>
       <script><![CDATA[
         if (inside of the small house.isDave = false) {
-          if (inside of the small house.loanLookedAround = true) {
+          if (inside of the small house.nextToCandle = true) {
             msg ("Hum... They point to the black candle. <br/><br/>But they look like they are diverging. Not converging on a single point of the candle. <br/><br/>It doesn't make such a difference because the candle is big, but that's it: the heads of the arrows don't converge on exactly the same spot on the candle. ")
           }
         }
@@ -1885,7 +1903,7 @@
       <scope>inside of the small house</scope>
       <script>
         if (inside of the small house.isDave = false) {
-          if (inside of the small house.loanLookedAround = true) {
+          if (inside of the small house.nextToCandle = true) {
             msg ("Look! They converge from the same point! It is almost on the ground, it is better to bend a little. ")
           }
         }
