@@ -1892,7 +1892,8 @@
       <scope>inside of the small house</scope>
       <script><![CDATA[
         if (inside of the small house.isDave = true) {
-          msg ("It says: \"On the ___ day, God created the most precious thing - an imperfect copy of himself\".<br/>\"Right. Better get back to my research.\", says Loan.")
+          msg ("It says: \"On the ___ day, God created the most precious thing - an imperfect copy of himself\".<br/>\"Right..\", says Loan.")
+          SetObjectFlagOn (inside of the small house, "foundCandleClue")
           SetObjectFlagOn (inside of the small house, "ableToCheckSecondProtuberance")
         }
         else if (inside of the small house.isDave = false) {
@@ -1920,6 +1921,7 @@
           msg ("\"Hey, Dave! Look! It's writen 'Give up all your possessions. Everything belongs to the sea.'.\"")
           wait {
             msg ("<br/>\"What could it possibly mean?\"")
+            SetObjectFlagOn (inside of the small house, "foundStatueClue")
           }
         }
       ]]></look>
