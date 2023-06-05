@@ -1,0 +1,3 @@
+msg ("Done.<br/><br/>I look at the wizard and ask if I can put the scroll in my inventory.<br/>\"Absolutely not!\"<br/><br/><br/> Oh well. You are the boss.")
+SetObjectFlagOn (inside of the small house, "tookScroll")
+SetObjectFlagOn (inside of the small house, "letDaveOpenScroll")

@@ -1,0 +1,5 @@
+if (inside of the small house.isDave = false) {
+  if (inside of the small house.nextToCandle = true) {
+    msg ("Hum... They point to the black candle. <br/><br/>But they look like they are diverging. Not converging on a single point of the candle. <br/><br/>It doesn't make such a difference because the candle is big, but that's it: the heads of the arrows don't converge on exactly the same spot on the candle. ")
+  }
+}

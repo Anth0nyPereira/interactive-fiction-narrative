@@ -1,0 +1,34 @@
+if (inside of the small house.justPickAnother = false) {
+  if (inside of the small house.isDave = true) {
+    if (inside of the small house.nextToTable = true) {
+      msg ("Onions? <br/>Check. <br/>Potions? <br/>Check. <br/>Amulets? <br/>Also checked.<br/><br/>I can also see several dark candles burning. I hadn't noticed until now that this house has no electricity - it's the light from the candles that allows us to see what's around us. And they reveal a lot of glass jars with a lot of humanoid eyes. <br/>I finally realise that he is blind.<br/><br/>This is starting to get creepy.")
+      wait {
+        msg ("<br/>Oh, what the hell? What is that? ")
+        SetObjectFlagOn (inside of the small house, "daveLookedAround")
+      }
+    }
+    else if (inside of the small house.nextToTable = false) {
+      msg ("First of all, it is better to walk to the table.")
+    }
+    else {
+      msg ("Not now.")
+    }
+  }
+  else if (inside of the small house.isDave = false) {
+    if (inside of the small house.loanShouldLookAround = true) {
+      SetObjectFlagOff (inside of the small house, "loanShouldLookAround")
+      msg ("Hum... No doubt he was once an admirer of the Devil. The number 666 is everywhere. Even under the huge Satanic statue looking down.<br/>I can see black candles.  Nothing strange, it seems.")
+      wait {
+        msg ("<br/>Although one of them is not vertical. The one on the right, next to the window on the right wall. The only one different from the others. And there are arrows pointing to it nearby. <br/>It can't be a coincidence.")
+        SetObjectFlagOn (inside of the small house, "loanLookedAround")
+      }
+    }
+    else {
+      msg ("Not now.")
+    }
+  }
+}
+else if (inside of the sports hall.JustPickAnother = true) {
+  msg ("Don't need to look around. <br/><br/>Not anymore.")
+}
+

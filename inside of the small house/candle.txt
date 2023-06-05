@@ -1,0 +1,22 @@
+to candle; black candle; to black candle
+
+look at:
+
+if (inside of the small house.isDave = false) {
+  if (inside of the small house.nextToCandle = true) {
+    msg ("Something's wrong. Nothing suspicious here.<br/>Maybe I should think differently. From a different angle.")
+  }
+}
+
+walk to
+
+if (inside of the small house.isDave = false) {
+  if (inside of the small house.loanLookedAround = true) {
+    msg ("Ok, I'm at the candle. ")
+    SetObjectFlagOff (inside of the small house, "loanLookedAround")
+    SetObjectFlagOn (inside of the small house, "nextToCandle")
+    SetObjectFlagOff (inside of the small house, "nextToStatue")
+    SetObjectFlagOff (inside of the small house, "nextToTable")
+  }
+}
+

@@ -1,0 +1,64 @@
+alias: dave; on dave; on Dave; to dave; to Dave
+
+verb talk:
+
+if (inside of the small house.isDave = false) {
+  if (inside of the small house.foundAll = true) {
+    msg ("\"What do you think?\"<br/>I smile at him, confident that he will know what to do. <br/>He is better at making decisions.")
+    wait {
+      msg ("<br/>\"Based on the clues, I might know which door to choose.\"<br/><br/>I take Dave under his right arm, preparing to carry him again.")
+    }
+  }
+}
+else {
+  msg ("I have nothing to say to Dave.")
+
+verb walk
+
+if (inside of the small house.isDave = true) {
+  msg ("Sure, going to walk towards myself.<br/>Please, focus!<br/><br/>I need to focus!")
+}
+else if (inside of the small house.isDave = false) {
+  if (inside of the small house.ableToCheckSecondProtuberance = true) {
+    msg ("I'm already near Dave.")
+  }
+  else if (inside of the small house.LoanFinishedTalking = true) {
+    msg ("I'm already near Dave.")
+  }
+  else if (inside of the small house.letDaveOpenScroll = true) {
+    msg ("And where he is?")
+  }
+  else if (inside of the small house.foundAll = true) {
+    msg ("And where should I find him?")
+  }
+  else {
+    msg ("Should not do that now.")
+  }
+}
+
+verb swap
+
+if (inside of the small house.isDave = false) {
+  if (inside of the small house.LoanFinishedTalking = true) {
+    SetObjectFlagOff (inside of the small house, "LoanFinishedTalking")
+    msg ("Dave here.")
+    SetObjectFlagOff (inside of the small house, "wizardSecondTalk")
+    SetObjectFlagOn (inside of the small house, "wizardThirdTalk")
+    SetObjectFlagOn (inside of the small house, "isDave")
+  }
+  else if (inside of the small house.letDaveOpenScroll = true) {
+    SetObjectFlagOff (inside of the small house, "letDaveOpenScroll")
+    msg ("Dave here.<br/>Excited to know what the scroll reveals.")
+    SetObjectFlagOn (inside of the small house, "isDave")
+  }
+  else if (inside of the small house.foundAll = true) {
+    msg ("I don't need to swap with him right now.")
+  }
+}
+else {
+  msg ("Well, it would be a good idea if I could, but I'm not able to swap with myself.")
+}
+
+verb release
+msg ("\"Wait for me here, okay, my love?\"<br/>\"Nothing to worry about.\"<br/>\"I know you are doing the right thing Loan.\"<br/>\"I believe in you.\"<br/>\"From the very first moment I met you.\"<br/><br/>Duuuuuuude. Calm down! I'm going to look like a tomato!")
+SetObjectFlagOn (inside of the small house, "releasedDave")

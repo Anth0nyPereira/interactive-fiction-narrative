@@ -1,0 +1,18 @@
+alias: to statue; devil; to devil; Devil; to Devil
+
+look at
+
+if (inside of the small house.messageRevealed = true) {
+  msg ("\"Hey, Dave! Look! It's writen 'Give up all your possessions. Everything belongs to the sea.'.\"")
+  wait {
+    msg ("<br/>\"What could it possibly mean?\"")
+    SetObjectFlagOn (inside of the small house, "foundStatueClue")
+  }
+}
+
+walk 
+
+msg ("As I get closer, something near the ground catches my attention. <br/>Poor Dave: no wonder he was unable to help me, imagine bending with a completely torn leg.")
+SetObjectFlagOn (inside of the small house, "nextToStatue")
+SetObjectFlagOff (inside of the small house, "nextToCandle")
+SetObjectFlagOff (inside of the small house, "nextToTable")

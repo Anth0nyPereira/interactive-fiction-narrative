@@ -1,0 +1,13 @@
+if (inside of the small house.isDave = true) {
+  msg ("It says: \"On the ___ day, God created the most precious thing - an imperfect copy of himself\".<br/>\"Right..\", says Loan.")
+  SetObjectFlagOn (inside of the small house, "foundCandleClue")
+  SetObjectFlagOn (inside of the small house, "ableToCheckSecondProtuberance")
+}
+else if (inside of the small house.isDave = false) {
+  if (inside of the small house.tookScroll = true) {
+    msg ("\"Wait! Let me do it!\"<br/>\"Alright, Dave\", I reply as I stand up. ")
+  }
+  else if (inside of the small house.tookScroll = false) {
+    msg ("I should take the scroll first.")
+  }
+}

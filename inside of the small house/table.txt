@@ -1,0 +1,38 @@
+alias: to table
+
+verb walk:
+
+
+if (inside of the small house.isDave = true) {
+  msg ("\"It breaks my heart to ask you for help, but I need it. My love.\"<br/>\"Don't worry. I'm here to help you.\"<br/>The smile persists.<br/><br/>He is so cute.<br/><br/>Right. We finally reach the table.")
+  SetObjectFlagOn (inside of the small house, "nextToTable")
+  SetObjectFlagOff (inside of the small house, "nextToStatue")
+  SetObjectFlagOff (inside of the small house, "nextToCandle")
+}
+else if (inside of the small house.isDave = false) {
+  SetObjectFlagOff (inside of the small house, "nextToStatue")
+  SetObjectFlagOff (inside of the small house, "nextToCandle")
+  SetObjectFlagOn (inside of the small house, "nextToTable")
+  if (inside of the small house.letDaveOpenScroll = true) {
+    msg ("I walk towards him. He is waiting for me to give him the scroll. <br/>He looks better but still has not moved from the table where he is holding himself.")
+  }
+  else if (inside of the small house.foundAll = true) {
+    msg ("I walk in Dave's direction, trying to come up with a theory about the clues we've found. <br/>But nothing makes sense.")
+    wait {
+      msg ("<br/>I'm not the smart one.<br/><br/>Ok, I'm near him.")
+    }
+    if (inside of the small house.goGetKey = true) {
+      if (inside of the small house.releasedDave = true) {
+        msg ("I arrive at the table, with the magician by my side. <br/><br/>He gives me his key and wishes us all the best. <br/>I should take it fast.")
+      }
+      else if (inside of the small house.releasedDave = false) {
+        msg ("Yes, I should go to the wizard, but I don't need to bring Dave with me. Releasing him might be the best thing. ")
+      }
+    }
+  }
+}
+else {
+}
+
+
+attributes: goGetKey is False
