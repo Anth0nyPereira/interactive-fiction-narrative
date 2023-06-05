@@ -1518,17 +1518,38 @@
     <messageRevealed type="boolean">false</messageRevealed>
     <nextToStatue type="boolean">false</nextToStatue>
     <tookScroll type="boolean">false</tookScroll>
-    <nextToCandle type="string"></nextToCandle>
-    <beforefirstenter type="script"><![CDATA[
+    <nextToCandle type="boolean">false</nextToCandle>
+    <beforefirstenter type="script">
+    </beforefirstenter>
+    <enter type="script"><![CDATA[
+      if (inside of the small house.firstTimeOpeningADoor = false) {
+        SetObjectFlagOff (inside of the small house, "isDave")
+        msg ("We cross it and find ourselves back inside the wizard's small house. Near the table, just like him, on the opposite side of the three doors.<br/><br/>\"Wrong door, guys...\"<br/>\"Try again!\"<br/>\"Remember to check the clues when in doubt!\"")
+        SetObjectFlagOn (inside of the small house, "nextToTable")
+        SetObjectFlagOff (inside of the small house, "nextToStatue")
+        SetObjectFlagOff (inside of the small house, "nextToCandle")
+        SetObjectFlagOn (inside of the small house, "justPickAnother")
+        SetObjectFlagOff (inside of the small house, "doorOpen")
+      }
+    ]]></enter>
+    <firstenter type="script"><![CDATA[
       msg ("I'm Dave.")
       msg ("<br/>As we enter this man's house, I fully understand who he is. ")
       wait {
         msg ("<br/>From the way he looked back outside, I believed he was some kind of wizard - you know, the typical long white beard, the long blue jacket, the beaked hat. <br/>Although it could not be that simple. <br/>I suppose.")
         wait {
           msg ("<br/>And when we reach the main room, I could be 100% sure: there are a lot of esoteric things here.<br/><br/>\"Come here, in front of this table.\"")
+          SetObjectFlagOff (inside of the small house, "enteringHouse")
         }
       }
-    ]]></beforefirstenter>
+    ]]></firstenter>
+    <foundStatueClue type="boolean">false</foundStatueClue>
+    <foundCandleClue type="boolean">false</foundCandleClue>
+    <foundAll type="boolean">false</foundAll>
+    <firstTimeOpeningADoor />
+    <haveKey type="boolean">false</haveKey>
+    <doorOpen type="boolean">false</doorOpen>
+    <justPickAnother type="boolean">false</justPickAnother>
     <object name="Loan2">
       <inherit name="editor_object" />
       <alias>to Loan; loan; to loan</alias>
@@ -1651,6 +1672,7 @@
       <inherit name="editor_object" />
       <alias>to table</alias>
       <scenery />
+      <goGetKey type="boolean">false</goGetKey>
       <walk type="script"><![CDATA[
         if (inside of the small house.isDave = true) {
           msg ("\"It breaks my heart to ask you for help, but I need it. My love.\"<br/>\"Don't worry. I'm here to help you.\"<br/>The smile persists.<br/><br/>He is so cute.<br/><br/>Right. We finally reach the table.")
@@ -1683,7 +1705,6 @@
         else {
         }
       ]]></walk>
-      <goGetKey type="boolean">false</goGetKey>
     </object>
     <command>
       <pattern>look around</pattern>
