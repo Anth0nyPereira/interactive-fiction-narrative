@@ -1,0 +1,61 @@
+mountain
+
+after entering first time
+
+msg ("This must be some powerful magic. We have just teleported to a large cordillera covered in white snow.")
+wait {
+  msg ("<br/>The door of the wizard's house we came through has disappeared.<br/><br/>This place has not been discovered by man either. Everything seems so perfect, so natural. From where we are, we can see a nearby village all the way to the bottom of the mountain. But I'm sure it would take us at least 6 days of walking to get there. ")
+  wait {
+    msg ("There is only one path ahead of us. Something is flashing at the end of it. Maybe it is some kind of light?")
+  }
+}
+
+command
+pattern: go inside small house; go inside of small house; go wizard house; go wizards house: go to wizards house; got to wizard house; walk to wizard house; walk to wizards house
+
+scope: mountain
+
+msg ("We can no longer do that. The door disappeared.")
+
+create object end
+walk to
+
+msg ("We decide to follow the light.")
+wait {
+  msg ("And when we get there, a big door is waiting for us. <br/>It seems that the light comes from its lock.")
+}
+
+command: take out key; take out wizard key; take out man key; take out  magician key
+
+SetObjectFlagOn (mountain, "keyInHands")
+msg ("I hold the key in my hand. I might need to use it later.")
+wait {
+  msg ("<br/>\"I let you do all the work! I'm sorry\", shouts Dave.<br/>I look at him beside me and kiss him on the mouth.")
+  wait {
+    msg ("<br/>\"Don't apologise. I'm here because I love you!\"<br/>\"But how can you love someone like me?\"<br/><br/>And how can you love someone like me?")
+    wait {
+      msg ("<br/>\"You are much more than you think.\"<br/><br/>\"I'm sorry for bringing this all of a sudden, Loan. We should move on.<br/>\"Don't apologise. And I'll never get tired of telling you that.\"<br/>\"And that I love you.\"<br/><br/>From the bottom of my heart.<br/><br/>OK. Let's go.")
+    }
+  }
+}
+
+command: use wizard key; use wizards key; use magicians key; use magician key; use man key; use mans key; use key
+
+if (mountain.keyInHands = false) {
+  msg ("Alright. I will have to take the key out of my inventory first.")
+}
+else if (mountain.keyInHands = true) {
+  msg ("I try to put the key in the lock of the door, but it does not work.<br/><br/>\"No way! We failed!\"")
+  wait {
+    msg ("Dave starts to get nervous. I am too, but I shouldn't show it to him.<br/><br/>\"What are we going to do now? Are we going to spend the rest of our lives here?\"<br/>I calm him down, even though I don't believe a single word: \"There must be a way out.\"")
+    wait {
+      msg ("Immediately a door appears on our left. It opens immediately and we recognise the wizard on the other side.")
+      MoveObject (player, inside of the small house)
+    }
+  }
+}
+
+
+
+
+
