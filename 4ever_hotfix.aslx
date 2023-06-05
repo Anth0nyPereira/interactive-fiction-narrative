@@ -1579,6 +1579,7 @@
         }
         else if (inside of the small house.ableToCheckSecondProtuberance = true) {
           msg ("Alright, I'm Loan.<br/>Have I forgotten anything?")
+          SetObjectFlagOff (inside of the small house, "isDave")
         }
       ]]></swap>
       <walk type="script">
@@ -1843,6 +1844,9 @@
             SetObjectFlagOff (inside of the small house, "nextToTable")
           }
         }
+        else if (inside of the small house.isDave = true) {
+          msg ("I cannot walk right now.")
+        }
       </walk>
       <look type="script"><![CDATA[
         if (inside of the small house.isDave = false) {
@@ -1932,10 +1936,15 @@
       <scenery />
       <alias>to statue; devil; to devil; Devil; to Devil</alias>
       <walk type="script"><![CDATA[
-        msg ("As I get closer, something near the ground catches my attention. <br/>Poor Dave: no wonder he was unable to help me, imagine bending with a completely torn leg.")
-        SetObjectFlagOn (inside of the small house, "nextToStatue")
-        SetObjectFlagOff (inside of the small house, "nextToCandle")
-        SetObjectFlagOff (inside of the small house, "nextToTable")
+        if (inside of the small house.isDave = false) {
+          msg ("As I get closer, something near the ground catches my attention. <br/>Poor Dave: no wonder he was unable to help me, imagine bending with a completely torn leg.")
+          SetObjectFlagOn (inside of the small house, "nextToStatue")
+          SetObjectFlagOff (inside of the small house, "nextToCandle")
+          SetObjectFlagOff (inside of the small house, "nextToTable")
+        }
+        else if (inside of the small house.isDave = true) {
+          msg ("I cannot walk right now.")
+        }
       ]]></walk>
       <look type="script"><![CDATA[
         if (inside of the small house.messageRevealed = true) {
@@ -1980,6 +1989,8 @@
       <pattern>take scroll</pattern>
       <scope>inside of the small house</scope>
       <script><![CDATA[
+        SetObjectFlagOn (inside of the small house, "tookScroll")
+        SetObjectFlagOn (inside of the small house, "letDaveOpenScroll")
         msg ("Done.<br/><br/>I look at the wizard and ask if I can put the scroll in my inventory.<br/>\"Absolutely not!\"<br/><br/><br/> Oh well. You are the boss.")
       ]]></script>
     </command>
@@ -2255,7 +2266,7 @@
     ]]></script>
   </timer>
   <timer name="timerHotFix">
-    <interval>1</interval>
+    <interval>10</interval>
     <enabled />
     <script>
       msg ("hello")
