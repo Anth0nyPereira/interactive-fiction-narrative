@@ -493,6 +493,7 @@
       <feature_usegive />
       <drop />
       <dropmsg>I drop it.</dropmsg>
+      <grab type="string"></grab>
       <take type="script">
         if (black handle.visited = false) {
           msg ("I could remove it without any resistance. It shows up this was made up to something.")
@@ -512,7 +513,6 @@
       <ontake type="script"><![CDATA[
         msg ("<br/>I'm gonna put it in my inventory. <br/>It could be useful.")
       ]]></ontake>
-      <grab type="string"></grab>
     </object>
     <object name="test">
       <inherit name="editor_object" />
@@ -1516,6 +1516,8 @@
     <ableToCheckSecondProtuberance type="boolean">false</ableToCheckSecondProtuberance>
     <letDaveOpenScroll type="boolean">false</letDaveOpenScroll>
     <messageRevealed type="boolean">false</messageRevealed>
+    <nextToStatue type="string"></nextToStatue>
+    <tookScroll type="boolean">false</tookScroll>
     <beforefirstenter type="script"><![CDATA[
       msg ("I'm Dave.")
       msg ("<br/>As we enter this man's house, I fully understand who he is. ")
@@ -1526,8 +1528,6 @@
         }
       }
     ]]></beforefirstenter>
-    <nextToStatue type="string"></nextToStatue>
-    <tookScroll type="boolean">false</tookScroll>
     <object name="Loan2">
       <inherit name="editor_object" />
       <alias>to Loan; loan; to loan</alias>
@@ -1796,6 +1796,7 @@
     <object name="protuberance">
       <inherit name="editor_object" />
       <alias>bulge; protuberance; button</alias>
+      <scenery />
       <press type="script">
         if (inside of the small house.isDave = false) {
           if (inside of the small house.loanLookedAround = true) {
@@ -1818,7 +1819,6 @@
           msg ("kakakakawaiiii")
         }
       </press>
-      <scenery />
     </object>
     <command>
       <scope>inside of the small house</scope>
@@ -1871,6 +1871,7 @@
     </object>
     <command>
       <pattern>look at arrows</pattern>
+      <scope>inside of the small house</scope>
       <script><![CDATA[
         if (inside of the small house.isDave = false) {
           if (inside of the small house.loanLookedAround = true) {
@@ -1878,7 +1879,6 @@
           }
         }
       ]]></script>
-      <scope>inside of the small house</scope>
     </command>
     <command>
       <pattern>look at arrowtails; look at arrows tails; look at arrow extremities; look at arrows extremities; look at arrow end; look at arrows end; look at arrow edge; look at arrows edge; look arrowtails; look arrows tails; look arrow extremities; look arrows extremities; look arrow end; look arrows end; look arrow edge; look arrows edge</pattern>
