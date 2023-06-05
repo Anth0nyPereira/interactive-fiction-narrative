@@ -21,8 +21,6 @@
     <attr name="feature_asktell" type="boolean">false</attr>
     <start type="script">
       MoveObject (player, inside of the small house)
-      SetObjectFlagOn (inside of the small house, "foundStatueClue")
-      SetObjectFlagOn (inside of the small house, "foundCandleClue")
     </start>
   </game>
   <command name="go">
@@ -2269,7 +2267,7 @@
   </timer>
   <timer name="timerHotFix">
     <interval>10</interval>
-    <enabled />
+    <enabled type="boolean">false</enabled>
     <script>
       msg ("hello")
     </script>
@@ -2277,11 +2275,19 @@
   <timer name="foundAllClues">
     <interval>1</interval>
     <enabled />
-    <script>
+    <script><![CDATA[
       if (inside of the small house.foundStatueClue and inside of the small house.foundCandleClue) {
-        msg ("BEJBA")
-        DisableTimer (foundAllClues)
+        if (inside of the small house.isDave = false) {
+          msg ("The wizard yells, \"Both clues have already been discovered!\"<br/>\"It's time to make a decision.\"<br/><br/>I should join Dave again. ")
+          SetObjectFlagOn (inside of the small house, "foundAll")
+          DisableTimer (foundAllClues)
+        }
+        else if (inside of the small house.isDave = true) {
+          msg ("The wizard yells, \"Both clues have already been discovered!\"<br/>\"It's time to make a decision.\"<br/><br/>Should swap to Loan now.")
+          SetObjectFlagOn (inside of the small house, "foundAll")
+          DisableTimer (foundAllClues)
+        }
       }
-    </script>
+    ]]></script>
   </timer>
 </asl>
