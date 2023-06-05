@@ -14,3 +14,5 @@
 [0605/152011:ERROR:renderer_main.cc(207)] Running without renderer sandbox
 [0605/161027:WARNING:message_in_transit_queue.cc(18)] Destroying nonempty message queue
 [0605/161129:ERROR:renderer_main.cc(207)] Running without renderer sandbox
+[0605/190804:WARNING:message_in_transit_queue.cc(18)] Destroying nonempty message queue
+[0605/190818:ERROR:renderer_main.cc(207)] Running without renderer sandbox

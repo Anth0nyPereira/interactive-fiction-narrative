@@ -6,6 +6,7 @@
   <template name="NotCarryingAnything">I am not carrying anything.</template>
   <template name="CarryingListHeader">I am carrying</template>
   <dynamictemplate name="NotCarrying">"I am not carrying " + object.article + "."</dynamictemplate>
+  <dynamictemplate name="DisambiguateMenu">"Nothing."</dynamictemplate>
   <game name="4ever">
     <gameid>9521ab6e-e2ac-438b-9689-e3378facbcd3</gameid>
     <version>1.0</version>
@@ -1520,7 +1521,15 @@
     <nextToStatue type="boolean">false</nextToStatue>
     <tookScroll type="boolean">false</tookScroll>
     <nextToCandle type="string"></nextToCandle>
+    <foundStatueClue type="boolean">false</foundStatueClue>
+    <foundCandleClue type="boolean">false</foundCandleClue>
+    <foundAll type="boolean">false</foundAll>
+    <firstTimeOpeningADoor />
+    <haveKey type="boolean">false</haveKey>
+    <doorOpen type="boolean">false</doorOpen>
+    <justPickAnother type="boolean">false</justPickAnother>
     <beforefirstenter type="script"><![CDATA[
+      MakeObjectInvisible (wizard key)
       msg ("I'm Dave.")
       msg ("<br/>As we enter this man's house, I fully understand who he is. ")
       wait {
@@ -1531,12 +1540,6 @@
         }
       }
     ]]></beforefirstenter>
-    <foundStatueClue type="boolean">false</foundStatueClue>
-    <foundCandleClue type="boolean">false</foundCandleClue>
-    <foundAll type="boolean">false</foundAll>
-    <firstTimeOpeningADoor />
-    <haveKey type="boolean">false</haveKey>
-    <doorOpen type="boolean">false</doorOpen>
     <beforeenter type="script"><![CDATA[
       if (inside of the small house.firstTimeOpeningADoor = false) {
         SetObjectFlagOff (inside of the small house, "isDave")
@@ -1548,7 +1551,6 @@
         SetObjectFlagOff (inside of the small house, "doorOpen")
       }
     ]]></beforeenter>
-    <justPickAnother type="boolean">false</justPickAnother>
     <object name="Loan2">
       <inherit name="editor_object" />
       <alias>to Loan; loan; to loan</alias>
@@ -1672,6 +1674,7 @@
       <inherit name="editor_object" />
       <alias>to table</alias>
       <scenery />
+      <goGetKey type="boolean">false</goGetKey>
       <walk type="script"><![CDATA[
         if (inside of the small house.isDave = true) {
           msg ("\"It breaks my heart to ask you for help, but I need it. My love.\"<br/>\"Don't worry. I'm here to help you.\"<br/>The smile persists.<br/><br/>He is so cute.<br/><br/>Right. We finally reach the table.")
@@ -1704,7 +1707,6 @@
         else {
         }
       ]]></walk>
-      <goGetKey type="boolean">false</goGetKey>
     </object>
     <command>
       <pattern>look around</pattern>
@@ -1988,6 +1990,7 @@
     <object name="doors">
       <inherit name="editor_object" />
       <scenery />
+      <alias>to doors; three doors; to three doors</alias>
       <walk type="script"><![CDATA[
         if (inside of the small house.foundAll = false) {
           msg ("I pass the table that separates us from the three doors next to each other on the same wall as I go around it on the right.")
@@ -2018,7 +2021,6 @@
           }
         }
       ]]></walk>
-      <alias>to doors; three doors; to three doors</alias>
       <look type="script"><![CDATA[
         if (inside of the small house.foundAll = true) {
           msg ("Just as the mage told us before: the first one, to the left of the wall in front of us, has a sign above the door that says \"Beach\". <br/>The door in the middle has a sign too, but this time it marks \"Mountain\". <br/>And the last one has \"Desert\" written above the door.")
@@ -2150,6 +2152,7 @@
   <object name="mountain">
     <inherit name="editor_room" />
     <objectslistprefix>I can see</objectslistprefix>
+    <keyInHands type="boolean">false</keyInHands>
     <firstenter type="script"><![CDATA[
       msg ("This must be some powerful magic. We have just teleported to a large cordillera covered in white snow.")
       wait {
@@ -2159,7 +2162,6 @@
         }
       }
     ]]></firstenter>
-    <keyInHands type="boolean">false</keyInHands>
     <command>
       <pattern>go inside small house; go inside of small house; go wizard house; go wizards house: go to wizards house; got to wizard house; walk to wizard house; walk to wizards house</pattern>
       <scope>mountain</scope>
@@ -2283,6 +2285,7 @@
     </command>
     <command>
       <pattern>use wizard key; use wizards key; use magicians key; use magician key; use man key; use mans key; use key</pattern>
+      <scope>desert</scope>
       <script><![CDATA[
         if (mountain.keyInHands = false) {
           msg ("Alright. I will have to take the key out of my inventory first.")
@@ -2298,7 +2301,6 @@
           }
         }
       ]]></script>
-      <scope>desert</scope>
     </command>
   </object>
   <function name="ShowMenuResponse" parameters="option">
@@ -2346,9 +2348,11 @@
       }
       DisableTimer (wizardPrank)
     ]]></script>
+    <enabled />
   </timer>
   <timer name="checkIfCluesAllDiscovered">
     <interval>0</interval>
+    <enabled />
     <script><![CDATA[
       if (inside of the small house.foundStatueClue = true) {
         if (inside of the small house.foundCandleClue = true) {
@@ -2358,6 +2362,5 @@
         }
       }
     ]]></script>
-    <enabled />
   </timer>
 </asl>
