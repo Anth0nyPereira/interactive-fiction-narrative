@@ -1482,6 +1482,7 @@
       <swap type="script">
         if (outside of the small house.ready = true) {
           msg ("I am Dave.")
+          SetObjectFlagOn (inside of the small house, "enteringHouse")
           SetObjectFlagOn (outside of the small house, "isDave")
         }
       </swap>
@@ -1509,7 +1510,7 @@
     <wizardSecondTalk type="boolean">false</wizardSecondTalk>
     <letLoanTalk type="boolean">false</letLoanTalk>
     <LoanFinishedTalking type="boolean">false</LoanFinishedTalking>
-    <enteringHouse />
+    <enteringHouse type="boolean">false</enteringHouse>
     <wizardThirdTalk type="boolean">false</wizardThirdTalk>
     <loanShouldLookAround type="boolean">false</loanShouldLookAround>
     <loanLookedAround type="boolean">false</loanLookedAround>
@@ -1526,9 +1527,28 @@
         msg ("<br/>From the way he looked back outside, I believed he was some kind of wizard - you know, the typical long white beard, the long blue jacket, the beaked hat. <br/>Although it could not be that simple. <br/>I suppose.")
         wait {
           msg ("<br/>And when we reach the main room, I could be 100% sure: there are a lot of esoteric things here.<br/><br/>\"Come here, in front of this table.\"")
+          SetObjectFlagOff (inside of the small house, "enteringHouse")
         }
       }
     ]]></beforefirstenter>
+    <foundStatueClue type="boolean">false</foundStatueClue>
+    <foundCandleClue type="boolean">false</foundCandleClue>
+    <foundAll type="boolean">false</foundAll>
+    <firstTimeOpeningADoor />
+    <haveKey type="boolean">false</haveKey>
+    <doorOpen type="boolean">false</doorOpen>
+    <beforeenter type="script"><![CDATA[
+      if (inside of the small house.firstTimeOpeningADoor = false) {
+        SetObjectFlagOff (inside of the small house, "isDave")
+        msg ("We cross it and find ourselves back inside the wizard's small house. Near the table, just like him, on the opposite side of the three doors.<br/><br/>\"Wrong door, guys...\"<br/>\"Try again!\"<br/>\"Remember to check the clues when in doubt!\"")
+        SetObjectFlagOn (inside of the small house, "nextToTable")
+        SetObjectFlagOff (inside of the small house, "nextToStatue")
+        SetObjectFlagOff (inside of the small house, "nextToCandle")
+        SetObjectFlagOn (inside of the small house, "justPickAnother")
+        SetObjectFlagOff (inside of the small house, "doorOpen")
+      }
+    ]]></beforeenter>
+    <justPickAnother type="boolean">false</justPickAnother>
     <object name="Loan2">
       <inherit name="editor_object" />
       <alias>to Loan; loan; to loan</alias>
@@ -1558,6 +1578,7 @@
         }
         else if (inside of the small house.ableToCheckSecondProtuberance = true) {
           msg ("Alright, I'm Loan.<br/>Have I forgotten anything?")
+          SetObjectFlagOff (inside of the small house, "isDave")
         }
       ]]></swap>
       <walk type="script">
@@ -1585,9 +1606,19 @@
       <inherit name="editor_object" />
       <alias>dave; on dave; on Dave; to dave; to Dave</alias>
       <scenery />
-      <checkon type="script">
-        msg ("He looks tired, but I can't help him from where I am. ")
-      </checkon>
+      <speak type="script"><![CDATA[
+        if (inside of the small house.isDave = false) {
+          if (inside of the small house.foundAll = true) {
+            msg ("\"What do you think?\"<br/>I smile at him, confident that he will know what to do. <br/>He is better at making decisions.")
+            wait {
+              msg ("<br/>\"Based on the clues, I might know which door to choose.\"<br/><br/>I take Dave under his right arm, preparing to carry him again.")
+            }
+          }
+        }
+        else {
+          msg ("I have nothing to say to Dave.")
+        }
+      ]]></speak>
       <walk type="script"><![CDATA[
         if (inside of the small house.isDave = true) {
           msg ("Sure, going to walk towards myself.<br/>Please, focus!<br/><br/>I need to focus!")
@@ -1600,7 +1631,10 @@
             msg ("I'm already near Dave.")
           }
           else if (inside of the small house.letDaveOpenScroll = true) {
-            msg ("I walk towards him. He is waiting for me to give him the scroll. <br/>He looks better but still has not moved from the table where he is holding himself.")
+            msg ("And where he is?")
+          }
+          else if (inside of the small house.foundAll = true) {
+            msg ("And where should I find him?")
           }
           else {
             msg ("Should not do that now.")
@@ -1616,24 +1650,23 @@
             SetObjectFlagOn (inside of the small house, "wizardThirdTalk")
             SetObjectFlagOn (inside of the small house, "isDave")
           }
-          else if (inside of the small house.enteringHouse = true) {
-            msg ("I’m Dave.<br/><br/>As we enter this man's house, I fully understand who it is. ")
-            wait {
-              msg ("<br/>From the way he looked back outside, I was supposed to tell that he was some kind of wizard - you know, the typical long white beard, the long blue jacket, the beaked hat. Although it could not be that simple. I suppose.<br/><br/>And when we reached the main room, I could be 100% sure: there are a lot of esoteric things here.<br/><br/>\"Come here, in front of this table.\"")
-              SetObjectFlagOff (inside of the small house, "enteringHouse")
-            }
-            SetObjectFlagOn (inside of the small house, "isDave")
-          }
           else if (inside of the small house.letDaveOpenScroll = true) {
             SetObjectFlagOff (inside of the small house, "letDaveOpenScroll")
             msg ("Dave here.<br/>Excited to know what the scroll reveals.")
             SetObjectFlagOn (inside of the small house, "isDave")
+          }
+          else if (inside of the small house.foundAll = true) {
+            msg ("I don't need to swap with him right now.")
           }
         }
         else {
           msg ("Well, it would be a good idea if I could, but I'm not able to swap with myself.")
         }
       ]]></swap>
+      <release type="script"><![CDATA[
+        msg ("\"Wait for me here, okay, my love?\"<br/>\"Nothing to worry about.\"<br/>\"I know you are doing the right thing Loan.\"<br/>\"I believe in you.\"<br/>\"From the very first moment I met you.\"<br/><br/>Duuuuuuude. Calm down! I'm going to look like a tomato!")
+        SetObjectFlagOn (inside of the small house, "releasedDave")
+      ]]></release>
     </object>
     <object name="table">
       <inherit name="editor_object" />
@@ -1650,39 +1683,65 @@
           SetObjectFlagOff (inside of the small house, "nextToStatue")
           SetObjectFlagOff (inside of the small house, "nextToCandle")
           SetObjectFlagOn (inside of the small house, "nextToTable")
+          if (inside of the small house.letDaveOpenScroll = true) {
+            msg ("I walk towards him. He is waiting for me to give him the scroll. <br/>He looks better but still has not moved from the table where he is holding himself.")
+          }
+          else if (inside of the small house.foundAll = true) {
+            msg ("I walk in Dave's direction, trying to come up with a theory about the clues we've found. <br/>But nothing makes sense.")
+            wait {
+              msg ("<br/>I'm not the smart one.<br/><br/>Ok, I'm near him.")
+            }
+            if (inside of the small house.goGetKey = true) {
+              if (inside of the small house.releasedDave = true) {
+                msg ("I arrive at the table, with the magician by my side. <br/><br/>He gives me his key and wishes us all the best. <br/>I should take it fast.")
+              }
+              else if (inside of the small house.releasedDave = false) {
+                msg ("Yes, I should go to the wizard, but I don't need to bring Dave with me. Releasing him might be the best thing. ")
+              }
+            }
+          }
         }
         else {
         }
       ]]></walk>
+      <goGetKey type="boolean">false</goGetKey>
     </object>
     <command>
       <pattern>look around</pattern>
       <scope>inside of the small house</scope>
       <script><![CDATA[
-        if (inside of the small house.isDave = true) {
-          if (inside of the small house.nextToTable = true) {
-            msg ("Onions? <br/>Check. <br/>Potions? <br/>Check. <br/>Amulets? <br/>Also checked.<br/><br/>I can also see several dark candles burning. I hadn't noticed until now that this house has no electricity - it's the light from the candles that allows us to see what's around us. And they reveal a lot of glass jars with a lot of humanoid eyes. <br/>I finally realise that he is blind.<br/><br/>This is starting to get creepy.")
-            wait {
-              msg ("<br/>Oh, what the hell? What is that? ")
-              SetObjectFlagOn (inside of the small house, "daveLookedAround")
+        if (inside of the small house.justPickAnother = false) {
+          if (inside of the small house.isDave = true) {
+            if (inside of the small house.nextToTable = true) {
+              msg ("Onions? <br/>Check. <br/>Potions? <br/>Check. <br/>Amulets? <br/>Also checked.<br/><br/>I can also see several dark candles burning. I hadn't noticed until now that this house has no electricity - it's the light from the candles that allows us to see what's around us. And they reveal a lot of glass jars with a lot of humanoid eyes. <br/>I finally realise that he is blind.<br/><br/>This is starting to get creepy.")
+              wait {
+                msg ("<br/>Oh, what the hell? What is that? ")
+                SetObjectFlagOn (inside of the small house, "daveLookedAround")
+              }
+            }
+            else if (inside of the small house.nextToTable = false) {
+              msg ("First of all, it is better to walk to the table.")
+            }
+            else {
+              msg ("Not now.")
             }
           }
-          else if (inside of the small house.nextToTable = false) {
-            msg ("First of all, it is better to walk to the table.")
-          }
-          else {
-            msg ("Not now.")
+          else if (inside of the small house.isDave = false) {
+            if (inside of the small house.loanShouldLookAround = true) {
+              SetObjectFlagOff (inside of the small house, "loanShouldLookAround")
+              msg ("Hum... No doubt he was once an admirer of the Devil. The number 666 is everywhere. Even under the huge Satanic statue looking down.<br/>I can see black candles.  Nothing strange, it seems.")
+              wait {
+                msg ("<br/>Although one of them is not vertical. The one on the right, next to the window on the right wall. The only one different from the others. And there are arrows pointing to it nearby. <br/>It can't be a coincidence.")
+                SetObjectFlagOn (inside of the small house, "loanLookedAround")
+              }
+            }
+            else {
+              msg ("Not now.")
+            }
           }
         }
-        else if (inside of the small house.isDave = false) {
-          if (inside of the small house.loanShouldLookAround = true) {
-            SetObjectFlagOff (inside of the small house, "loanShouldLookAround")
-            msg ("Hum... No doubt he was once an admirer of the Devil. The number 666 is everywhere. Even under the huge Satanic statue looking down.<br/>I can see black candles.  Nothing strange, it seems.")
-            wait {
-              msg ("<br/>Although one of them is not vertical. The one on the right, next to the window on the right wall. The only one different from the others. And there are arrows pointing to it nearby. <br/>It can't be a coincidence.")
-              SetObjectFlagOn (inside of the small house, "loanLookedAround")
-            }
-          }
+        else if (inside of the sports hall.JustPickAnother = true) {
+          msg ("Don't need to look around. <br/><br/>Not anymore.")
         }
       ]]></script>
     </command>
@@ -1732,6 +1791,9 @@
             else if (inside of the small house.letLoanTalk = true) {
               msg ("Loan might want to tell something.")
             }
+            else if (inside of the small house.loanShouldLookAround = true) {
+              msg ("Not now.")
+            }
           }
           else if (inside of the small house.wizardDidPrank = false) {
             if (inside of the small house.nextToTable = true) {
@@ -1764,12 +1826,6 @@
               SetObjectFlagOn (inside of the small house, "LoanFinishedTalking")
             }
           }
-          else {
-            msg ("foda-se")
-          }
-        }
-        else {
-          msg ("´foda-se 2.")
         }
       ]]></speak>
     </object>
@@ -1857,7 +1913,8 @@
       <scope>inside of the small house</scope>
       <script><![CDATA[
         if (inside of the small house.isDave = true) {
-          msg ("It says: \"On the ___ day, God created the most precious thing - an imperfect copy of himself\".<br/>\"Right. Better get back to my research.\", says Loan.")
+          msg ("It says: \"On the ___ day, God created the most precious thing - an imperfect copy of himself\".<br/>\"Right..\", says Loan.")
+          SetObjectFlagOn (inside of the small house, "foundCandleClue")
           SetObjectFlagOn (inside of the small house, "ableToCheckSecondProtuberance")
         }
         else if (inside of the small house.isDave = false) {
@@ -1885,6 +1942,7 @@
           msg ("\"Hey, Dave! Look! It's writen 'Give up all your possessions. Everything belongs to the sea.'.\"")
           wait {
             msg ("<br/>\"What could it possibly mean?\"")
+            SetObjectFlagOn (inside of the small house, "foundStatueClue")
           }
         }
       ]]></look>
@@ -1923,6 +1981,149 @@
       <scope>inside of the small house</scope>
       <script><![CDATA[
         msg ("Done.<br/><br/>I look at the wizard and ask if I can put the scroll in my inventory.<br/>\"Absolutely not!\"<br/><br/><br/> Oh well. You are the boss.")
+        SetObjectFlagOn (inside of the small house, "tookScroll")
+        SetObjectFlagOn (inside of the small house, "letDaveOpenScroll")
+      ]]></script>
+    </command>
+    <object name="doors">
+      <inherit name="editor_object" />
+      <scenery />
+      <walk type="script"><![CDATA[
+        if (inside of the small house.foundAll = false) {
+          msg ("I pass the table that separates us from the three doors next to each other on the same wall as I go around it on the right.")
+          wait {
+            msg ("<br/>\"I'm so sure of what I'm doing,\" I think to myself. ")
+            wait {
+              msg ("<br/>When, all of a sudden, I have bumped into something. My reflex was to close my eyes, even though I didn't notice anything in front of me. When I open them, I notice that there is nothing.<br/><br/>How peculiar.<br/><br/>\"Loan!\"<br/>\"Loan, are you okay?\"<br/>\"I'm fine. Don't worry, Dave!\"<br/><br/>\"I think I should worry, to be honest. What was that?\"<br/>\"That's an impenetrable wall,\" assures the wizard, \"It guarantees that you can only cross it if you have discovered all the hints!\"<br/><br/>Oh, I see.<br/>It means that something else may have slipped through the cracks.")
+            }
+          }
+        }
+        else if (inside of the small house.foundAll = true) {
+          if (inside of the small house.justPickAnother = false) {
+            if (inside of the small house.haveKey = true) {
+              msg ("I am back in Dave's arms in a hurry.<br/><br/>And so, we say goodbye to the wizard and are capable of passing through the door. <br/><br/>Let's go!")
+            }
+            else if (inside of the small house.haveKey = false) {
+              msg ("We walk slowly.<br/>I don't want Dave to get hurt.<br/><br/>\"You could lengthen your stride, Loan.\"<br/>\"Don't worry about me. I know I can keep up.\"<br/>\"All right! Let's do it!\"<br/><br/>Together.")
+              wait {
+                msg ("<br/>I don't want him to know this, but I'm really scared about all this. My sweat covered my face, even though I was cold and shivering.<br/><br/>If this is so scary, I'm afraid I won't be able to go on to the next phase. <br/>I should be sure of myself. I should be sure of myself so that Dave does not feel alone or abandoned. <br/>I hope he does not find out.")
+                wait {
+                  msg ("<br/>I don't want him to be disappointed. To live with a man who is afraid of everything but tries so hard to hide it. To act like a real man. A virile man. <br/>But I'm not a real man.<br/><br/>I hope he never finds out. Never.<br/>If he leaves, I don't know if I could handle it. <br/><br/>He is the reason my life has a purpose.<br/>That I have found a reason to live again. <br/><br/>So please.<br/>Please.<br/>Please...<br/><br/>Don't go away.<br/>Never.<br/>I want to be with you.<br/><br/>Forever.<br/><br/>We stand near the doors.")
+                }
+              }
+            }
+          }
+          else if (inside of the small house.justPickAnother = true) {
+            msg ("We're back to the doors. <br/><br/>Time to open another one.")
+          }
+        }
+      ]]></walk>
+      <alias>to doors; three doors; to three doors</alias>
+      <look type="script"><![CDATA[
+        if (inside of the small house.foundAll = true) {
+          msg ("Just as the mage told us before: the first one, to the left of the wall in front of us, has a sign above the door that says \"Beach\". <br/>The door in the middle has a sign too, but this time it marks \"Mountain\". <br/>And the last one has \"Desert\" written above the door.")
+        }
+      ]]></look>
+    </object>
+    <command>
+      <scope>inside of the small house</scope>
+      <pattern>go to middle door; go middle door; go mountain; go to mountain; go mountain door; go to mountain door; walk to middle door; walk middle door; walk to mountain door; walk mountain door; walk to mountain; walk mountain</pattern>
+      <script><![CDATA[
+        if (inside of the small house.foundAll = true) {
+          if (inside of the small house.doorOpen = true) {
+            msg ("We walk through the door.")
+            SetObjectFlagOff (inside of the small house, "doorOpen")
+            MoveObject (player, mountain)
+          }
+          else if (inside of the small house.doorOpen = false) {
+            msg ("\"The second door is the good one,\" says Dave.<br/>Right. <br/>I should open the door.")
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>open mountain; open mountain door; open middle; open middle door; open second door; open second</pattern>
+      <scope>inside of the small house</scope>
+      <script><![CDATA[
+        if (inside of the small house.foundAll = true) {
+          if (inside of the small house.doorOpen = false) {
+            msg ("The door is open.")
+            if (inside of the small house.firstTimeOpeningADoor = true) {
+              msg ("<br/>We're about to say goodbye to the wizard when he stops us from crossing.<br/><br/>\"Wait! Come back, I should give you the key to open the door to the Street of Old Hells\".")
+              SetObjectFlagOn (inside of the small house, "goGetKey")
+              SetObjectFlagOff (inside of the small house, "firstTimeOpeningADoor")
+            }
+          }
+          else if (inside of the small house.doorOpen = true) {
+            msg ("The door is already open.")
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>take wizard key; grab wizard key; take magician key; grab magician key; take old man key; grab old man key</pattern>
+      <scope>inside of the small house</scope>
+      <script>
+        if (inside of the small house.goGetKey = true) {
+          msg ("Done. I stored it in my inventory.")
+          AddToInventory (wizard key)
+          SetObjectFlagOff (inside of the small house, "goGetKey")
+        }
+      </script>
+    </command>
+    <object name="wizard key">
+      <inherit name="editor_object" />
+      <scenery />
+    </object>
+    <object name="clues">
+      <inherit name="editor_object" />
+      <scenery />
+      <check type="script"><![CDATA[
+        msg ("\"Alright, so we found three things that could be clues, even though the wizard told us there were only two. One of them is an impostor?\"<br/><br/>I reply to Dave, \"Or maybe the wizard lied to us.")
+        wait {
+          msg ("<br/>\"That could happen, yes. I don't know what the point of lying to us would be, but anything's possible.\"<br/>\"So the scroll showed the message, 'On the ___ day, God created the most precious thing - an imperfect copy of himself.'\"<br/><br/>\"Oh, Dave, I remember looking at a lot of 666's. Is this a reference to the clue that might be incomplete?\"")
+          wait {
+            msg ("<br/>\"I don't know. It could be. But I'm not sure of its meaning yet.\"<br/><br/>To end the conversation, I start talking about the other clue: \"And then, on the statue of the devil, there was a message that said, 'Give up all things as they belong to the sea.'\"")
+            wait {
+              msg ("<br/>That's it. That's all we have.")
+            }
+          }
+        }
+      ]]></check>
+    </object>
+    <command>
+      <pattern>walk to desert; walk to right door; walk to desert door; go desert; go to desert door; go to right door; go right door</pattern>
+      <scope>inside of the small house</scope>
+      <script><![CDATA[
+        if (inside of the small house.foundAll = true) {
+          if (inside of the small house.doorOpen = true) {
+            msg ("We walk through the door.")
+            SetObjectFlagOff (inside of the small house, "doorOpen")
+            MoveObject (player, desert)
+          }
+          else if (inside of the small house.doorOpen = false) {
+            msg ("\"The third door is the good one,\" says Dave.<br/>Right. <br/>I should open the door.")
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>open desert door; open desert; open third door; open last door; open third; open last</pattern>
+      <scope>inside of the small house</scope>
+      <script><![CDATA[
+        if (inside of the small house.foundAll = true) {
+          if (inside of the small house.doorOpen = false) {
+            msg ("The door is open.")
+            if (inside of the small house.firstTimeOpeningADoor = true) {
+              msg ("<br/>We're about to say goodbye to the wizard when he stops us from crossing.<br/><br/>\"Wait! Come back, I should give you the key to open the door to the Street of Old Hells\".")
+              SetObjectFlagOn (inside of the small house, "goGetKey")
+              SetObjectFlagOff (inside of the small house, "firstTimeOpeningADoor")
+            }
+          }
+          else if (inside of the small house.doorOpen = true) {
+            msg ("The door is already open.")
+          }
+        }
       ]]></script>
     </command>
   </object>
@@ -1941,6 +2142,165 @@
     <pattern>give</pattern>
     <defaultexpression>"I can't give " + object.article + "."</defaultexpression>
   </verb>
+  <verb>
+    <property>release</property>
+    <pattern>release</pattern>
+    <defaultexpression>"You can't release " + object.article + "."</defaultexpression>
+  </verb>
+  <object name="mountain">
+    <inherit name="editor_room" />
+    <objectslistprefix>I can see</objectslistprefix>
+    <firstenter type="script"><![CDATA[
+      msg ("This must be some powerful magic. We have just teleported to a large cordillera covered in white snow.")
+      wait {
+        msg ("<br/>The door of the wizard's house we came through has disappeared.<br/><br/>This place has not been discovered by man either. Everything seems so perfect, so natural. From where we are, we can see a nearby village all the way to the bottom of the mountain. But I'm sure it would take us at least 6 days of walking to get there. ")
+        wait {
+          msg ("There is only one path ahead of us. Something is flashing at the end of it. Maybe it is some kind of light?")
+        }
+      }
+    ]]></firstenter>
+    <keyInHands type="boolean">false</keyInHands>
+    <command>
+      <pattern>go inside small house; go inside of small house; go wizard house; go wizards house: go to wizards house; got to wizard house; walk to wizard house; walk to wizards house</pattern>
+      <scope>mountain</scope>
+      <script>
+        msg ("We can no longer do that. The door disappeared.")
+      </script>
+    </command>
+    <object name="end">
+      <inherit name="editor_object" />
+      <scenery />
+      <alias>to end</alias>
+      <walk type="script"><![CDATA[
+        msg ("We decide to follow the light.")
+        wait {
+          msg ("And when we get there, a big door is waiting for us. <br/>It seems that the light comes from its lock.")
+        }
+      ]]></walk>
+    </object>
+    <command>
+      <pattern>take out key; take out wizard key; take out man key; take out  magician key</pattern>
+      <scope>mountain</scope>
+      <script><![CDATA[
+        SetObjectFlagOn (mountain, "keyInHands")
+        msg ("I hold the key in my hand. I might need to use it later.")
+        wait {
+          msg ("<br/>\"I let you do all the work! I'm sorry\", shouts Dave.<br/>I look at him beside me and kiss him on the mouth.")
+          wait {
+            msg ("<br/>\"Don't apologise. I'm here because I love you!\"<br/>\"But how can you love someone like me?\"<br/><br/>And how can you love someone like me?")
+            wait {
+              msg ("<br/>\"You are much more than you think.\"<br/><br/>\"I'm sorry for bringing this all of a sudden, Loan. We should move on.<br/>\"Don't apologise. And I'll never get tired of telling you that.\"<br/>\"And that I love you.\"<br/><br/>From the bottom of my heart.<br/><br/>OK. Let's go.")
+            }
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>use wizard key; use wizards key; use magicians key; use magician key; use man key; use mans key; use key</pattern>
+      <scope>mountain</scope>
+      <script><![CDATA[
+        if (mountain.keyInHands = false) {
+          msg ("Alright. I will have to take the key out of my inventory first.")
+        }
+        else if (mountain.keyInHands = true) {
+          msg ("I try to put the key in the lock of the door, but it does not work.<br/><br/>\"No way! We failed!\"")
+          wait {
+            msg ("Dave starts to get nervous. I am too, but I shouldn't show it to him.<br/><br/>\"What are we going to do now? Are we going to spend the rest of our lives here?\"<br/>I calm him down, even though I don't believe a single word: \"There must be a way out.\"")
+            wait {
+              msg ("Immediately a door appears on our left. It opens immediately and we recognise the wizard on the other side.")
+              MoveObject (player, inside of the small house)
+            }
+          }
+        }
+      ]]></script>
+    </command>
+  </object>
+  <command>
+    <pattern>open mountain; open mountain door; open middle; open middle door</pattern>
+    <scope>inside of the small house</scope>
+    <script><![CDATA[
+      if (inside of the small house.foundAll = true) {
+        if (inside of the small house.doorOpen = false) {
+          msg ("The door is open.")
+          if (inside of the small house.firstTimeOpeningADoor = true) {
+            msg ("<br/>We're about to say goodbye to the wizard when he stops us from crossing.<br/><br/>\"Wait! Come back, I should give you the key to open the door to the Street of Old Hells\".")
+            SetObjectFlagOn (inside of the small house, "goGetKey")
+            SetObjectFlagOff (, "")
+          }
+        }
+        else if (inside of the small house.doorOpen = true) {
+          msg ("The door is already open.")
+        }
+      }
+    ]]></script>
+  </command>
+  <command>
+    <pattern>open mountain; open mountain door; open middle; open middle door</pattern>
+    <scope>inside of the small house</scope>
+    <script><![CDATA[
+      if (inside of the small house.foundAll = true) {
+        if (inside of the small house.doorOpen = false) {
+          msg ("The door is open.")
+          if (inside of the small house.firstTimeOpeningADoor = true) {
+            msg ("<br/>We're about to say goodbye to the wizard when he stops us from crossing.<br/><br/>\"Wait! Come back, I should give you the key to open the door to the Street of Old Hells\".")
+            SetObjectFlagOn (inside of the small house, "goGetKey")
+            SetObjectFlagOff (, "")
+          }
+        }
+        else if (inside of the small house.doorOpen = true) {
+          msg ("The door is already open.")
+        }
+      }
+    ]]></script>
+  </command>
+  <object name="desert">
+    <inherit name="editor_room" />
+    <beforefirstenter type="script"><![CDATA[
+      msg ("This must be some powerful magic. We have just teleported to a desert.")
+      wait {
+        msg ("<br/>I can only see sand. <br/>Everywhere.")
+        wait {
+          msg ("The door of the wizard's house we came through has disappeared.<br/><br/>But another door awaits in front of us.")
+        }
+      }
+    ]]></beforefirstenter>
+    <command>
+      <scope>desert</scope>
+      <pattern>take out key; take out wizard key; take out man key; take out  magician key</pattern>
+      <script><![CDATA[
+        SetObjectFlagOn (mountain, "keyInHands")
+        msg ("I hold the key in my hand. I might need to use it later.")
+        wait {
+          msg ("<br/>\"I let you do all the work! I'm sorry\", shouts Dave.<br/>I look at him beside me and kiss him on the mouth.")
+          wait {
+            msg ("<br/>\"Don't apologise. I'm here because I love you!\"<br/>\"But how can you love someone like me?\"<br/><br/>And how can you love someone like me?")
+            wait {
+              msg ("<br/>\"You are much more than you think.\"<br/><br/>\"I'm sorry for bringing this all of a sudden, Loan. We should move on.<br/>\"Don't apologise. And I'll never get tired of telling you that.\"<br/>\"And that I love you.\"<br/><br/>From the bottom of my heart.<br/><br/>OK. Let's go.")
+            }
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>use wizard key; use wizards key; use magicians key; use magician key; use man key; use mans key; use key</pattern>
+      <script><![CDATA[
+        if (mountain.keyInHands = false) {
+          msg ("Alright. I will have to take the key out of my inventory first.")
+        }
+        else if (mountain.keyInHands = true) {
+          msg ("I try to put the key in the lock of the door, but it does not work.<br/><br/>\"No way! We failed!\"")
+          wait {
+            msg ("Dave starts to get nervous. I am too, but I shouldn't show it to him.<br/><br/>\"What are we going to do now? Are we going to spend the rest of our lives here?\"<br/>I calm him down, even though I don't believe a single word: \"There must be a way out.\"")
+            wait {
+              msg ("Immediately a door appears on our left. It opens immediately and we recognise the wizard on the other side.")
+              MoveObject (player, inside of the small house)
+            }
+          }
+        }
+      ]]></script>
+      <scope>desert</scope>
+    </command>
+  </object>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
     msg ("Log(ShowMenuResponse())")
@@ -1986,5 +2346,18 @@
       }
       DisableTimer (wizardPrank)
     ]]></script>
+  </timer>
+  <timer name="checkIfCluesAllDiscovered">
+    <interval>0</interval>
+    <script><![CDATA[
+      if (inside of the small house.foundStatueClue = true) {
+        if (inside of the small house.foundCandleClue = true) {
+          msg ("\"Both clues have already been discovered!\"<br/>\"It's time to make a decision.\"<br/><br/>I should join Dave again. ")
+          SetObjectFlagOn (inside of the small house, "foundAll")
+          DisableTimer (checkIfCluesAllDiscovered)
+        }
+      }
+    ]]></script>
+    <enabled />
   </timer>
 </asl>
