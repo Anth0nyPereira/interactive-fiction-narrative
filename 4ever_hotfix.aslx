@@ -1533,7 +1533,7 @@
     <enter type="script"><![CDATA[
       if (inside of the small house.firstTimeOpeningADoor = false) {
         SetObjectFlagOff (inside of the small house, "isDave")
-        msg ("We cross it and find ourselves back inside the wizard's small house. Near the table, just like him, on the opposite side of the three doors.<br/><br/>\"Wrong door, guys...\"<br/>\"Try again!\"<br/>\"Remember to check the clues when in doubt!\"")
+        msg ("We cross it and find ourselves back inside the wizard's small house. Near the table, just like him, on the opposite side of the three doors.<br/><br/>I am glad that I remembered to take the key with me.<br/><br/>\"Wrong door, guys...\"<br/>\"Try again!\"<br/>\"Remember to check the clues when in doubt!\"")
         SetObjectFlagOn (inside of the small house, "nextToTable")
         SetObjectFlagOff (inside of the small house, "nextToStatue")
         SetObjectFlagOff (inside of the small house, "nextToCandle")
@@ -2180,7 +2180,7 @@
       wait {
         msg ("<br/>The door of the wizard's house we came through has disappeared.<br/><br/>This place has not been discovered by man either. Everything seems so perfect, so natural. From where we are, we can see a nearby village all the way to the bottom of the mountain. But I'm sure it would take us at least 6 days of walking to get there. ")
         wait {
-          msg ("There is only one path ahead of us. Something is flashing at the end of it. Maybe it is some kind of light?")
+          msg ("<br/>There is only one path ahead of us. Something is flashing at the end of it. Maybe it is some kind of light?")
         }
       }
     ]]></firstenter>
