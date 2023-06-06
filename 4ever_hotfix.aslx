@@ -2626,6 +2626,7 @@
       }
     ]]></enter>
     <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <alias>toxic rain room; cauldron room</alias>
   </object>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
