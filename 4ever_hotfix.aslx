@@ -2157,6 +2157,43 @@
     <object name="wizard key">
       <inherit name="editor_object" />
     </object>
+    <command>
+      <pattern>walk to beach; walk to left door; walk to beach door; go beach; go to beach door; go to left door; go left door; walk to first door</pattern>
+      <scope>inside of the small house</scope>
+      <script><![CDATA[
+        if (inside of the small house.foundAll = true) {
+          if (inside of the small house.doorOpen = true) {
+            msg ("We walk through the door.")
+            SetObjectFlagOff (inside of the small house, "doorOpen")
+            ClearScreen
+            MoveObject (player, beach)
+          }
+          else if (inside of the small house.doorOpen = false) {
+            msg ("\"The first door is the good one,\" says Dave.<br/>Right. <br/>I should open the door.")
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>open beach door; open beach; open first door; open first</pattern>
+      <scope>inside of the small house</scope>
+      <script><![CDATA[
+        if (inside of the small house.foundAll = true) {
+          if (inside of the small house.doorOpen = false) {
+            msg ("The door is open.")
+            if (inside of the small house.firstTimeOpeningADoor = true) {
+              msg ("<br/>We're about to say goodbye to the wizard when he stops us from crossing.<br/><br/>\"Wait! Come back, I should give you the key to open the door to the Street of Old Hells\".")
+              SetObjectFlagOn (inside of the small house, "goGetKey")
+              SetObjectFlagOff (inside of the small house, "firstTimeOpeningADoor")
+            }
+            SetObjectFlagOn (inside of the small house, "doorOpen")
+          }
+          else if (inside of the small house.doorOpen = true) {
+            msg ("The door is already open.")
+          }
+        }
+      ]]></script>
+    </command>
   </object>
   <verb>
     <property>checkon</property>
@@ -2305,6 +2342,10 @@
         msg ("We can no longer do that. The door disappeared.")
       </script>
     </command>
+  </object>
+  <object name="beach">
+    <inherit name="editor_room" />
+    <keyInHands type="boolean">false</keyInHands>
   </object>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
