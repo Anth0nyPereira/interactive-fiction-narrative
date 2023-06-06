@@ -20,7 +20,7 @@
     <attr name="autodescription_youarein_useprefix" type="boolean">false</attr>
     <attr name="feature_asktell" type="boolean">false</attr>
     <start type="script">
-      MoveObject (player, inside of the small house)
+      MoveObject (player, beach)
     </start>
   </game>
   <command name="go">
@@ -586,7 +586,7 @@
   </command>
   <verb>
     <property>walk</property>
-    <pattern>walk; walk to</pattern>
+    <pattern>walk</pattern>
     <defaultexpression>"I can't walk " + object.article + "."</defaultexpression>
   </verb>
   <verb>
@@ -1494,7 +1494,7 @@
   </verb>
   <verb>
     <property>swap</property>
-    <pattern>swap; swap to</pattern>
+    <pattern>swap</pattern>
     <defaultexpression>"I can't swap " + object.article + "."</defaultexpression>
   </verb>
   <object name="inside of the small house">
@@ -2398,7 +2398,7 @@
     </object>
     <object name="palm trees">
       <inherit name="editor_object" />
-      <alias>trees; tree; palm tree</alias>
+      <alias>trees; tree; palm tree; palm trees</alias>
       <scenery />
       <look type="script">
         if (beach.isDave = true) {
@@ -2414,11 +2414,12 @@
           msg ("It's hard to focus because the sand is so bright from the sun.<br/>I have a gut feeling it's somewhere else.")
         }
       ]]></look>
+      <alias>sand</alias>
     </object>
     <object name="weeds">
       <inherit name="editor_object" />
       <scenery />
-      <alias>seaweeds; weed; seaweed</alias>
+      <alias>weed</alias>
       <look type="script"><![CDATA[
         if (beach.isDave = true) {
           msg ("Damn... They look delicious...")
@@ -2449,6 +2450,7 @@
           }
         }
       ]]></walk>
+      <alias>sea; to sea</alias>
     </object>
     <object name="Loan3">
       <inherit name="editor_object" />
@@ -2473,6 +2475,9 @@
           else if (beach.shouldWalkToSea = true) {
             msg ("I think I might do something better.")
           }
+          else {
+            msg ("Not now.")
+          }
         }
         else if (beach.isDave = false) {
           msg ("I can't swap with myself.")
@@ -2490,50 +2495,9 @@
         }
       </swap>
     </object>
-    <object name="stairs">
-      <inherit name="editor_object" />
-      <alias>stair; sea stairs; sea stair; sea staircase; to stair; to sea stairs; to sea stair; to sea staircase; towards stair; towards sea stairs; towards sea stair; towards sea staircase</alias>
-      <scenery />
-      <walk type="script"><![CDATA[
-        if (beach.isDave = true) {
-          if (beach.shouldWalkToSea = true) {
-            msg ("We are slowly on our way down the stairs. ")
-            wait {
-              msg ("<br/>It's strange. Uncomfortable at times. <br/>I don't feel very good under water.<br/><br/>I am afraid of water.")
-              wait {
-                msg ("<br/>\"I don't know if I can do this, Loan. I'm sorry, but I can't hold my breath for too long.<br/>\"I'm scared.\"<br/><br/>\"I'm scared too, Dave.\"<br/><br/>\"What if I fail? What if I don't make it?\"<br/>I don't want you to see me fail.")
-                wait {
-                  msg ("<br/>\"Then try again. And no matter what happens, I'll be by your side.\"<br/>\"Forever.\"<br/><br/>\"Okay.\"")
-                  wait {
-                    msg ("<br/>The water level begins to rise, albeit slowly. Thank God Loan has the patience to put up with me. Me and my leg. It is now about hip height. <br/><br/>I'm panicking. <br/><br/>Loan and I are now completely underwater. I wonder if it will last much longer.<br/><br/><br/>I'm floating. Not swimming. <br/>I just can't.")
-                    wait {
-                      msg ("<br/>I'm panicking. I'm panicking.<br/>Take a deep breath.<br/><br/>Wait! What the fuck? Not in here! Not now!")
-                      wait {
-                        msg ("<br/>This can't be happening! <br/>We are descending more and more vertically, but still nothing has been found.<br/>I can't hold it any longer.")
-                        wait {
-                          msg ("<br/>I feel Loan's hand holding my upper body. Then his whole left arm.<br/>The other one is still struggling. ")
-                          wait {
-                            msg ("<br/>Just when I was about to lose hope. I see the light.<br/><br/>The light revealed a new trail before our eyes.<br/><br/>\"Land at last!<br/><br/>That smile again. It feels good to see it again.<br/><br/>\"The hangar looks clean and dry. How can the water not reach here?\"<br/><br/>Good question, Loan.<br/>But it may not be our priority.")
-                            wait {
-                              msg ("<br/>I feel the weeds chasing me.<br/>The door at the end of the corridor, in front of us, is full of them, all in relief on some kind of metal that looks like iron. But it shouldn't be. The door is not even rusted. Not a single scar.")
-                              SetObjectFlagOff (beach, "shouldWalkToSea")
-                              SetObjectFlagOn (beach, "shouldWalkToEnd")
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      ]]></walk>
-    </object>
     <object name="end beach">
       <inherit name="editor_object" />
-      <alias>end; to end; end way; to end way; way end; to way end</alias>
+      <alias>end; to end; end way; to end way; way end; to way end; end beach</alias>
       <scenery />
       <walk type="script"><![CDATA[
         if (beach.isDave = true) {
@@ -2600,6 +2564,56 @@
         else {
           msg ("Not now.")
         }
+      </script>
+    </command>
+    <command>
+      <pattern>walk stair; walk sea stairs; walk sea stair; walk sea staircase; walk to stair; walk to sea stairs; walk to sea stair; walk to sea staircase; walk towards stair; walk towards sea stairs; walk towards sea stair; walk towards sea staircase; walk to stairs; walk stairs; walk to staircase; walk staircase</pattern>
+      <scope>beach</scope>
+      <script><![CDATA[
+        if (beach.isDave = true) {
+          if (beach.shouldWalkToSea = true) {
+            msg ("We are slowly on our way down the stairs. ")
+            wait {
+              msg ("<br/>It's strange. Uncomfortable at times. <br/>I don't feel very good under water.<br/><br/>I am afraid of water.")
+              wait {
+                msg ("<br/>\"I don't know if I can do this, Loan. I'm sorry, but I can't hold my breath for too long.<br/>\"I'm scared.\"<br/><br/>\"I'm scared too, Dave.\"<br/><br/>\"What if I fail? What if I don't make it?\"<br/>I don't want you to see me fail.")
+                wait {
+                  msg ("<br/>\"Then try again. And no matter what happens, I'll be by your side.\"<br/>\"Forever.\"<br/><br/>\"Okay.\"")
+                  wait {
+                    msg ("<br/>The water level begins to rise, albeit slowly. Thank God Loan has the patience to put up with me. Me and my leg. It is now about hip height. <br/><br/>I'm panicking. <br/><br/>Loan and I are now completely underwater. I wonder if it will last much longer.<br/><br/><br/>I'm floating. Not swimming. <br/>I just can't.")
+                    wait {
+                      msg ("<br/>I'm panicking. I'm panicking.<br/>Take a deep breath.<br/><br/>Wait! What the fuck? Not in here! Not now!")
+                      wait {
+                        msg ("<br/>This can't be happening! <br/>We are descending more and more vertically, but still nothing has been found.<br/>I can't hold it any longer.")
+                        wait {
+                          msg ("<br/>I feel Loan's hand holding my upper body. Then his whole left arm.<br/>The other one is still struggling. ")
+                          wait {
+                            msg ("<br/>Just when I was about to lose hope. I see the light.<br/><br/>The light revealed a new trail before our eyes.<br/><br/>\"Land at last!<br/><br/>That smile again. It feels good to see it again.<br/><br/>\"The hangar looks clean and dry. How can the water not reach here?\"<br/><br/>Good question, Loan.<br/>But it may not be our priority.")
+                            wait {
+                              msg ("<br/>I feel the weeds chasing me.<br/>The door at the end of the corridor, in front of us, is full of them, all in relief on some kind of metal that looks like iron. But it shouldn't be. The door is not even rusted. Not a single scar.")
+                              SetObjectFlagOff (beach, "shouldWalkToSea")
+                              SetObjectFlagOn (beach, "shouldWalkToEnd")
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        else {
+          msg ("Not now.")
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>take wizard key; take wizards key</pattern>
+      <scope>beach</scope>
+      <script>
+        msg ("Why? We already have the key anyway.")
       </script>
     </command>
   </object>
