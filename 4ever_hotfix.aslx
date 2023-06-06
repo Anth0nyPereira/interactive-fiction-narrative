@@ -2497,7 +2497,7 @@
     </object>
     <object name="end beach">
       <inherit name="editor_object" />
-      <alias>end; to end; end way; to end way; way end; to way end; end beach</alias>
+      <alias>end; to end; end way; to end way; way end; to way end; end beach; to corridor end; to end corridor; to end of corridor</alias>
       <scenery />
       <walk type="script"><![CDATA[
         if (beach.isDave = true) {
@@ -2517,7 +2517,7 @@
       <scope>beach</scope>
       <script><![CDATA[
         if (beach.isDave = true) {
-          if (beach.shoudTakeKey = true) {
+          if (beach.shouldTakeKey = true) {
             msg ("I'm not the one with the key.")
           }
         }
@@ -2625,6 +2625,7 @@
         msg ("<br/>Maybe that is why it is called the Street of Old Hells.<br/>It must not make sense if it was snowing or if this was all covered with hail or even a thin frost.")
       }
     ]]></enter>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
   </object>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
