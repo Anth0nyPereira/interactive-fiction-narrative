@@ -1528,6 +1528,9 @@
     <haveKey type="boolean">false</haveKey>
     <doorOpen type="boolean">false</doorOpen>
     <justPickAnother type="boolean">false</justPickAnother>
+    <releasedDave type="boolean">false</releasedDave>
+    <goGetKey type="boolean">false</goGetKey>
+    <isAlreadyNearDave type="boolean">false</isAlreadyNearDave>
     <beforefirstenter type="script">
     </beforefirstenter>
     <enter type="script"><![CDATA[
@@ -1552,9 +1555,6 @@
         }
       }
     ]]></firstenter>
-    <releasedDave type="boolean">false</releasedDave>
-    <goGetKey type="boolean">false</goGetKey>
-    <isAlreadyNearDave type="boolean">false</isAlreadyNearDave>
     <object name="Loan2">
       <inherit name="editor_object" />
       <alias>to Loan; loan; to loan</alias>
@@ -2296,6 +2296,7 @@
         }
       }
     ]]></enter>
+    <exitslistprefix>I can go</exitslistprefix>
     <command>
       <pattern>take out key; take out wizard key; take out man key; take out  magician key</pattern>
       <scope>desert</scope>
@@ -2346,6 +2347,272 @@
   <object name="beach">
     <inherit name="editor_room" />
     <keyInHands type="boolean">false</keyInHands>
+    <objectslistprefix>I can see</objectslistprefix>
+    <enter type="script"><![CDATA[
+      SetObjectFlagOff (beach, "isDave")
+      msg ("This must be powerful magic. We have just teleported to a beach.")
+      wait {
+        msg ("<br/>Although I did not expect a wild beach. It looks more like the coast of an island. <br/><br/>The sea makes such slow waves, like it was a friend of the beach and is trying to mess it up with tiny punches. I can see its soul. <br/>And all the souls of the other creatures that its soul manages to carry up.")
+        wait {
+          msg ("<br/>Near the shore, the sea reveals bright olive weeds. They are similar to the ones the waiter put on my plate the day I had sushi with Dave after the cinema. <br/><br/>\"These are special. Tastier. Healthier. And in Buddhist culture they are believed to bring good luck to those who eat them.<br/><br/>\"But why me? Why did you choose me, out of all the people around us?\"<br/>\"Why did you bring me the chance to taste these seaweeds, if they are so rare and wonderful?\"")
+          wait {
+            msg ("<br/>\"Your smile.\"<br/>\"I know you have been through a lot. In your eyes, deep inside, I see sorrow. Emptiness. Loneliness.\"<br/>\"But even though you are suffering, you still have that smile, no matter what.\"<br/>\"Keep it up. Even when life turns you upside down. Keep smiling.”<br/><br/>“Thank you.”<br/><br/>The truth is that I had never eaten anything like this before. <br/>Even Dave was jealous of me. Because I did not let him have a piece, he even stopped talking to me for 2 or 3 days.")
+            wait {
+              wait {
+                msg ("<br/>The sand is somehow darker than what people are used to seeing: it's almost black, although it's shiny. I like it though - it keeps our feet warm.<br/>Even though I'm wearing shoes.<br/><br/>Should I take them off?<br/><br/><br/>Nah. Probably sometime in the future.")
+                wait {
+                  msg ("<br/>On the other side, palm trees have taken over the land. <br/><br/>\"But I don't see anything strange here!\" exclaims Dave.<br/><br/>He's right. ")
+                  wait {
+                    msg ("<br/>\"Thanks, Loan, for letting me rest for so long. But now I think I can walk on my own.\"<br/>\"Even if I need a lot more time.\"<br/>\"At least I can do it. And that's what really counts.<br/><br/>Suddenly super-hyper-mega-confident. That's my boy!<br/><br/>\"Let me take the lead. Maybe I can find something.\"")
+                    SetObjectFlagOn (beach, "daveShouldTakeTheLead")
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]]></enter>
+    <isDave type="boolean">false</isDave>
+    <daveShouldTakeTheLead type="boolean">false</daveShouldTakeTheLead>
+    <shouldWalkToSea type="boolean">false</shouldWalkToSea>
+    <shouldWalkToEnd type="boolean">false</shouldWalkToEnd>
+    <shouldTakeKey type="boolean">false</shouldTakeKey>
+    <doorOpen type="boolean">false</doorOpen>
+    <object name="Dave3">
+      <inherit name="editor_object" />
+      <scenery />
+      <alias>dave; on dave; on Dave; to dave; to Dave</alias>
+      <swap type="script"><![CDATA[
+        if (beach.isDave = false) {
+          if (beach.daveShouldTakeTheLead = true) {
+            msg ("This is Dave.<br/>Alright. So, where do I start looking?")
+            SetObjectFlagOn (beach, "isDave")
+          }
+        }
+        else if (beach.isDave = true) {
+          msg ("Swap to myself?<br/>Stop being a dumbass.")
+        }
+        else {
+          msg ("No need to swap to Dave for now.")
+        }
+      ]]></swap>
+    </object>
+    <object name="palm trees">
+      <inherit name="editor_object" />
+      <alias>trees; tree; palm tree</alias>
+      <scenery />
+      <look type="script">
+        if (beach.isDave = true) {
+          msg ("Nothing in particular. Just ordinary palm trees.")
+        }
+      </look>
+    </object>
+    <object name="sand">
+      <inherit name="editor_object" />
+      <scenery />
+      <look type="script"><![CDATA[
+        if (beach.isDave = true) {
+          msg ("It's hard to focus because the sand is so bright from the sun.<br/>I have a gut feeling it's somewhere else.")
+        }
+      ]]></look>
+    </object>
+    <object name="weeds">
+      <inherit name="editor_object" />
+      <scenery />
+      <alias>seaweeds; weed; seaweed</alias>
+      <look type="script"><![CDATA[
+        if (beach.isDave = true) {
+          msg ("Damn... They look delicious...")
+          wait {
+            msg ("<br/>I remember Loan not letting me taste them...<br/><br/><br/>Asshole.<br/><br/>Although now I have the oppotunity to do it! The timing though... Could be better...<br/>Such a waste! They are all looking at me, screaming to be swallowed by my mouth!<br/>Maybe one day.")
+          }
+        }
+      ]]></look>
+    </object>
+    <object name="sea">
+      <inherit name="editor_object" />
+      <scenery />
+      <look type="script"><![CDATA[
+        if (beach.isDave = true) {
+          msg ("So...")
+          wait {
+            msg ("<br/>Beautiful.<br/><br/>I can't even describe it. There's too much information in my brain and I feel ecstatic.")
+            wait {
+              msg ("<br/>\"Wait a minute...\"<br/>\"Looking at the sea, are you noticing something suspicious, Loan?\"<br/><br/>\"Hum... Not really.\"<br/><br/>Better explain my point of view.")
+            }
+          }
+        }
+      ]]></look>
+      <walk type="script"><![CDATA[
+        if (beach.isDave = true) {
+          if (beach.shouldWalkToSea = true) {
+            msg ("We approach the border where the sand comes into contact with the sea.<br/><br/>\"See? It's like an underwater staircase!\"")
+          }
+        }
+      ]]></walk>
+    </object>
+    <object name="Loan3">
+      <inherit name="editor_object" />
+      <scenery />
+      <alias>to Loan; loan; to loan</alias>
+      <speak type="script"><![CDATA[
+        if (beach.isDave = true) {
+          if (beach.daveShouldTakeTheLead = true) {
+            msg ("\"There! It looks like the sea is slowly getting deeper. But it feels too, I don't know how to say it, calm? \"<br/>\"Like it was intentional...\"")
+            wait {
+              msg ("<br/>\"Hum...\"<br/>\"Do you understand now?\"")
+              wait {
+                msg ("<br/>\"...”")
+                wait {
+                  msg ("<br/>\"Not really.\"")
+                  SetObjectFlagOff (beach, "daveShouldTakeTheLead")
+                  SetObjectFlagOn (beach, "shouldWalkToSea")
+                }
+              }
+            }
+          }
+          else if (beach.shouldWalkToSea = true) {
+            msg ("I think I might do something better.")
+          }
+        }
+        else if (beach.isDave = false) {
+          msg ("I can't swap with myself.")
+        }
+        else {
+          msg ("Not now.")
+        }
+      ]]></speak>
+      <swap type="script">
+        if (beach.isDave = true) {
+          if (beach.shouldTakeKey = true) {
+            SetObjectFlagOff (beach, "isDave")
+            msg ("Loan here.")
+          }
+        }
+      </swap>
+    </object>
+    <object name="stairs">
+      <inherit name="editor_object" />
+      <alias>stair; sea stairs; sea stair; sea staircase; to stair; to sea stairs; to sea stair; to sea staircase; towards stair; towards sea stairs; towards sea stair; towards sea staircase</alias>
+      <scenery />
+      <walk type="script"><![CDATA[
+        if (beach.isDave = true) {
+          if (beach.shouldWalkToSea = true) {
+            msg ("We are slowly on our way down the stairs. ")
+            wait {
+              msg ("<br/>It's strange. Uncomfortable at times. <br/>I don't feel very good under water.<br/><br/>I am afraid of water.")
+              wait {
+                msg ("<br/>\"I don't know if I can do this, Loan. I'm sorry, but I can't hold my breath for too long.<br/>\"I'm scared.\"<br/><br/>\"I'm scared too, Dave.\"<br/><br/>\"What if I fail? What if I don't make it?\"<br/>I don't want you to see me fail.")
+                wait {
+                  msg ("<br/>\"Then try again. And no matter what happens, I'll be by your side.\"<br/>\"Forever.\"<br/><br/>\"Okay.\"")
+                  wait {
+                    msg ("<br/>The water level begins to rise, albeit slowly. Thank God Loan has the patience to put up with me. Me and my leg. It is now about hip height. <br/><br/>I'm panicking. <br/><br/>Loan and I are now completely underwater. I wonder if it will last much longer.<br/><br/><br/>I'm floating. Not swimming. <br/>I just can't.")
+                    wait {
+                      msg ("<br/>I'm panicking. I'm panicking.<br/>Take a deep breath.<br/><br/>Wait! What the fuck? Not in here! Not now!")
+                      wait {
+                        msg ("<br/>This can't be happening! <br/>We are descending more and more vertically, but still nothing has been found.<br/>I can't hold it any longer.")
+                        wait {
+                          msg ("<br/>I feel Loan's hand holding my upper body. Then his whole left arm.<br/>The other one is still struggling. ")
+                          wait {
+                            msg ("<br/>Just when I was about to lose hope. I see the light.<br/><br/>The light revealed a new trail before our eyes.<br/><br/>\"Land at last!<br/><br/>That smile again. It feels good to see it again.<br/><br/>\"The hangar looks clean and dry. How can the water not reach here?\"<br/><br/>Good question, Loan.<br/>But it may not be our priority.")
+                            wait {
+                              msg ("<br/>I feel the weeds chasing me.<br/>The door at the end of the corridor, in front of us, is full of them, all in relief on some kind of metal that looks like iron. But it shouldn't be. The door is not even rusted. Not a single scar.")
+                              SetObjectFlagOff (beach, "shouldWalkToSea")
+                              SetObjectFlagOn (beach, "shouldWalkToEnd")
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]]></walk>
+    </object>
+    <object name="end beach">
+      <inherit name="editor_object" />
+      <alias>end; to end; end way; to end way; way end; to way end</alias>
+      <scenery />
+      <walk type="script"><![CDATA[
+        if (beach.isDave = true) {
+          if (beach.shouldWalkToEnd = true) {
+            msg ("We are in front of it. <br/>The lock. It shines. ")
+            wait {
+              msg ("<br/>I hope this is the right one. <br/>We have come this far.")
+              SetObjectFlagOff (beach, "shouldWalkToEnd")
+              SetObjectFlagOn (beach, "shouldTakeKey")
+            }
+          }
+        }
+      ]]></walk>
+    </object>
+    <command>
+      <pattern>take out key; take out wizard key; take out man key; take out  magician key</pattern>
+      <scope>beach</scope>
+      <script><![CDATA[
+        if (beach.isDave = true) {
+          if (beach.shoudTakeKey = true) {
+            msg ("I'm not the one with the key.")
+          }
+        }
+        else if (beach.isDave = false) {
+          if (beach.shouldTakeKey = true) {
+            msg ("I have the key in my hand. I may need to use it later.<br/><br/>\"I let you do all the work! I'm sorry,\" Dave shouts.<br/>I look at him beside me and kiss him on the mouth.<br/><br/>\"Don't apologise. I'm here because I love you!\"<br/>\"But how can you love someone like me?\"<br/><br/>And how can you love someone like me?")
+            wait {
+              msg ("\"You are much more than you think.\"<br/><br/>\"I'm sorry for bringing this up so suddenly, Loan. We should move on.\"<br/>\"Don't apologise. And I'll never get tired of telling you that.\"<br/>\"And that I love you.\"<br/><br/>From the bottom of my heart.<br/><br/>OK. Let's go.")
+            }
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>use wizard key; use wizards key; use magicians key; use magician key; use man key; use mans key; use key</pattern>
+      <scope>beach</scope>
+      <script><![CDATA[
+        if (beach.isDave = false) {
+          if (beach.shouldTakeKey = true) {
+            msg ("It fits!<br/><br/>\"Open it, dude!\"<br/><br/>As I turn the key, the door begins to collapse.")
+            wait {
+              msg ("<br/>\"Wouldn't it have been easier to just make a normal one?\", Dave says tongue-in-cheek.<br/><br/>\"My love, my love, my love, you are worrying over something that is not necessary! Let's walk through it!\"")
+              SetObjectFlagOff (beach, "shouldTakeKey")
+              SetObjectFlagOn (beach, "doorOpen")
+            }
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>walk to door; walk door; walk to seaweed door; walk to weed door; walk seaweed door; walk weed door; go to door; go door; go to seaweed door; go to weed door; go seaweed door; go weed door</pattern>
+      <scope>beach</scope>
+      <script>
+        if (beach.isDave = false) {
+          if (beach.doorOpen = true) {
+            msg ("We walk through the door, excited to see where this road might bring us.")
+            wait {
+              SetObjectFlagOff (beach, "doorOpen")
+              ClearScreen
+              MoveObject (player, first challenge room)
+            }
+          }
+        }
+        else {
+          msg ("Not now.")
+        }
+      </script>
+    </command>
+  </object>
+  <object name="first challenge room">
+    <inherit name="editor_room" />
+    <enter type="script"><![CDATA[
+      msg ("It's hot in here.")
+      wait {
+        msg ("<br/>Maybe that is why it is called the Street of Old Hells.<br/>It must not make sense if it was snowing or if this was all covered with hail or even a thin frost.")
+      }
+    ]]></enter>
   </object>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
