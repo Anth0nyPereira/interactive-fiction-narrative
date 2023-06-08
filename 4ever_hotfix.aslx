@@ -2869,6 +2869,11 @@
               }
             }
           }
+          else if (first challenge room.nextToCorridor = true) {
+            msg ("Right. I can now use the spoon I took out of my inventory.")
+            SetObjectFlagOn (first challenge room, "spoonIsOut")
+            RemoveObject (spoon)
+          }
         }
       ]]></script>
     </command>
@@ -2941,26 +2946,24 @@
       <scenery />
     </object>
     <command>
-      <pattern>take spoon; take bone spoon</pattern>
-      <scope>first challenge room</scope>
-      <script>
-        if (first challenge room.isDave = true) {
-        }
-        else if (first challenge room.isDave = false) {
-          msg ("Right. I can now use the spoon I took out of my inventory.")
-          SetObjectFlagOn (first challenge room, "spoonIsOut")
-        }
-      </script>
-    </command>
-    <command>
       <pattern>use spoon; use bone spoon; use bone</pattern>
       <scope>first challenge room</scope>
-      <script>
+      <script><![CDATA[
         if (first challenge room.isDave = true) {
           if (first challenge room.daveUsesSpoonFirstTime = true) {
+            msg ("I put the spoon back on my nose and try to balance it.<br/>I have to concentrate.<br/><br/>Breathe in.<br/>Breathe out.<br/><br/>Breathe in.<br/>Breathe out.<br/><br/>The fan stops spinning. And the liquid stops flowing out of the holes.")
+            wait {
+              msg ("<br/>\"This is it, Loan! The spoon! It makes everything stop.\"<br/>\"Yes... That is great... I think...\"<br/>\"You don't seem very confident.\"")
+              wait {
+                msg ("<br/>\"It's just that... Why the nose? Why do you have to balance with the nose?\"<br/>\"I... I don't know. I just got lucky, that's all... I guess. Or maybe we were meant to be here and this was made for us.\"<br/>\"That makes no sense, Dave! The heat is affecting your neurons...\"<br/>\"I know... But it worked...\"<br/>\"And why you? Let me try it!\"")
+                wait {
+                  msg ("<br/>Loan grabs the spoon as quickly as he could and held it up to his nose.<br/>Instantly, the fan starts to run even faster and the liquid becomes crazier. It didn't even need time to load or anything, it started spinning at maximum speed.<br/><br/>Hurry up! I should take it as soon as possible.")
+                }
+              }
+            }
           }
         }
-      </script>
+      ]]></script>
     </command>
   </object>
   <verb>
