@@ -2637,6 +2637,10 @@
     <bothShouldRun type="boolean">false</bothShouldRun>
     <loanShouldInspectFan type="boolean">false</loanShouldInspectFan>
     <loanShouldHelpDave type="boolean">false</loanShouldHelpDave>
+    <daveShouldThink type="string"></daveShouldThink>
+    <daveHasIdea type="boolean">false</daveHasIdea>
+    <spoonIsOut type="boolean">false</spoonIsOut>
+    <daveUsesSpoonFirstTime type="boolean">false</daveUsesSpoonFirstTime>
     <object name="Dave4">
       <inherit name="editor_object" />
       <scenery />
@@ -2645,6 +2649,7 @@
       <swap type="script"><![CDATA[
         if (first challenge room.isDave = false) {
           if (first challenge room.shouldSwapDaveFirst = true) {
+            SetObjectFlagOn (first challenge room, "isDave")
             msg ("I’m Dave.<br/>We move forward and then the beach door we came through rises again.<br/>It’s locked from this side.")
             wait {
               msg ("<br/>Great. <br/>I'm so close to being stuck here forever.<br/>If we cannot go on, it is the end.<br/><br/>At least I'm with Loan.<br/>Sex all the time, here we go!")
@@ -2655,6 +2660,22 @@
           }
           else if (first challenge room.shouldSwapDaveFirst = false) {
             msg ("Should not swap to Dave now.")
+          }
+          else if (first challenge room.daveShouldThink = true) {
+            SetObjectFlagOn (first challenge room, "isDave")
+            msg ("I'm Dave.")
+            wait {
+              wait {
+                msg ("<br/>\"So something has occurred to you?\"<br/>\"Not yet. I need more time. But as far as I know, we are safe here. The poisonous green liquid does not reach us.\"<br/>\"Are you sure? Not even when spinning at high speed?\"")
+              }
+            }
+          }
+          else if (first challenge room.daveUsesSpoonFirstTime = true) {
+            SetObjectFlagOn (first challenge room, "isDave")
+            msg ("Back to Dave. I'm holding the spoon.")
+          }
+          else {
+            msg ("Not now.")
           }
         }
         else if (first challenge room.isDave = true) {
@@ -2690,6 +2711,11 @@
           }
         }
       </help>
+      <speak type="script">
+        if (first challenge room.isDave = false) {
+          msg ("He said he wanted some peace and quiet to think of something to get us out of this situation.")
+        }
+      </speak>
     </object>
     <object name="Loan4">
       <inherit name="editor_object" />
@@ -2709,6 +2735,11 @@
             }
           }
         }
+        else if (first challenge room.isDave = false) {
+          if (first challenge room.daveHasIdea = true) {
+            msg ("I don't have it right now.")
+          }
+        }
       </swap>
       <tease type="script">
         if (first challenge room.isDave = true) {
@@ -2717,6 +2748,16 @@
           }
         }
       </tease>
+      <speak type="script"><![CDATA[
+        if (first challenge room.isDave = true) {
+          if (first challenge room.daveShouldThink = true) {
+            msg ("\"I don't think so. And I may be able to prove it.\"")
+          }
+          else if (first challenge room.daveHasIdea = true) {
+            msg ("\"Give me the spoon.\"<br/>\"What for?\"<br/>\"You'll see.\"")
+          }
+        }
+      ]]></speak>
     </object>
     <command>
       <pattern>look around</pattern>
@@ -2724,7 +2765,23 @@
       <script><![CDATA[
         if (first challenge room.isDave = true) {
           if (first challenge room.nextToCorridor = true) {
-            msg ("The corridor looks clean. Almost like it was freshly painted.")
+            if (first challenge room.daveShouldThink = true) {
+              msg ("\"Look! The walls and floor here are nothing like the walls in the open room. They don't have holes in them, nor are they tinted green. The surfaces are also smooth. So I would say that the liquid will not get here.\"<br/><br/>\"How can you be so sure? Maybe the fan only ran for a short time in the past\".<br/>\"Trust me.\"")
+              wait {
+                msg ("<br/>\"...\"")
+                wait {
+                  msg ("<br/>\"...\"")
+                  wait {
+                    msg ("\"Hum...\"<br/><br/>\"Okay. Okay. I believe in you.\"")
+                    SetObjectFlagOff (first challenge room, "daveShouldThink")
+                    SetObjectFlagOn (first challenge room, "daveHasIdea")
+                  }
+                }
+              }
+            }
+            else {
+              msg ("The corridor looks clean. Almost like it was freshly painted.")
+            }
           }
           else if (first challenge room.nextToMain = true) {
             if (first challenge room.shouldSwapDaveFirst = true) {
@@ -2840,14 +2897,67 @@
     <command>
       <pattern>walk to corridor; walk to corridor hall; walk to hall</pattern>
       <scope>first challenge room</scope>
-      <script>
+      <script><![CDATA[
         if (first challenge room.isDave = false) {
           if (first challenge room.bothShouldRun = true) {
             if (first challenge room.loanShouldHelpDave = false) {
               msg ("I want to help Dave walk to the corridor. Something could go wrong at any moment. My sixth sense tells me. And he can't run as fast as I can.")
             }
             else if (first challenge room.loanShouldHelpDave = true) {
+              msg ("Dave and I are back in the corridor.<br/>\"Feeling well, Dave?\"<br/>\"I never thought a spoon would get us boiled alive...\"<br/>\"It's almost as if we were in a cauldron. But the heat is coming from above. I'm sorry, Loan...\"<br/>\"Well, well... I think you have not been paying attention in geometry class, because this has nothing to do with a cauldron.\"")
+              wait {
+                msg ("<br/>Then a green liquid starts to fall from the two openings of the fan, spilling over the main area and corroding everything it touches while the fan is still spinning.<br/>Shit. We're all going to die. In a fucking cauldron, some kind of wizard is making a corrosive potion or something.<br/><br/>We're fucked.<br/><br/>\"What are we going to do?\"<br/>\"What are we going to do?\"<br/>\"It's going to reach us and we're going to turn into liquid too!\"<br/>\"Green milk, berk!\"")
+                wait {
+                  msg ("<br/>I can't stop talking, I'm completely out of it.<br/>Dave does not say a word. Maybe because he thinks I deserve to die? I kept saying I wanted to. That I wanted to kill myself. That I wanted to meet death. But not like this!<br/><br/>\"Wait, be still, let me think. Let me think.\"")
+                  SetObjectFlagOff (first challenge room, "loanShouldHelpDave")
+                  SetObjectFlagOn (first challenge room, "daveShouldThink")
+                }
+              }
             }
+          }
+        }
+      ]]></script>
+    </command>
+    <object name="spoon">
+      <inherit name="editor_object" />
+      <give type="script"><![CDATA[
+        if (first challenge room.isDave = true) {
+          if (first challenge room.daveHasIdea = true) {
+            if (first challenge room.spoonIsOut = false) {
+              msg ("How can I give the spoon if I don't have it?")
+            }
+          }
+        }
+        else if (first challenge room.isDave = false) {
+          if (first challenge room.daveHasIdea = true) {
+            if (first challenge room.spoonIsOut = true) {
+              msg ("\"Here! Take it!\"<br/>\"Thank you, Loan. Now let's see if I'm right.\"")
+              SetObjectFlagOff (first challenge room, "daveHasIdea")
+              SetObjectFlagOn (first challenge room, "daveUsesSpoonFirstTime")
+            }
+          }
+        }
+      ]]></give>
+      <scenery />
+    </object>
+    <command>
+      <pattern>take spoon; take bone spoon</pattern>
+      <scope>first challenge room</scope>
+      <script>
+        if (first challenge room.isDave = true) {
+        }
+        else if (first challenge room.isDave = false) {
+          msg ("Right. I can now use the spoon I took out of my inventory.")
+          SetObjectFlagOn (first challenge room, "spoonIsOut")
+        }
+      </script>
+    </command>
+    <command>
+      <pattern>use spoon; use bone spoon; use bone</pattern>
+      <scope>first challenge room</scope>
+      <script>
+        if (first challenge room.isDave = true) {
+          if (first challenge room.daveUsesSpoonFirstTime = true) {
           }
         }
       </script>
