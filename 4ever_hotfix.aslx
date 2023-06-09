@@ -2280,7 +2280,7 @@
   <verb>
     <property>release</property>
     <pattern>release</pattern>
-    <defaultexpression>"You can't release " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't release " + object.article + "."</defaultexpression>
   </verb>
   <object name="desert">
     <inherit name="editor_room" />
@@ -2620,7 +2620,7 @@
   <object name="first challenge room">
     <inherit name="editor_room" />
     <usedefaultprefix type="boolean">false</usedefaultprefix>
-    <alias>toxic rain room; cauldron room</alias>
+    <nextToMain type="boolean">false</nextToMain>
     <shouldSwapDaveFirst type="boolean">false</shouldSwapDaveFirst>
     <isDave type="boolean">false</isDave>
     <nextToCorridor type="boolean">false</nextToCorridor>
@@ -2635,7 +2635,7 @@
     <spoonIsOut type="boolean">false</spoonIsOut>
     <daveUsesSpoonFirstTime type="boolean">false</daveUsesSpoonFirstTime>
     <daveUsesSpoonSecondTime type="boolean">false</daveUsesSpoonSecondTime>
-    <loanGoesExplore type="string"></loanGoesExplore>
+    <loanGoesExplore type="boolean">false</loanGoesExplore>
     <enter type="script"><![CDATA[
       msg ("It's hot in here.")
       wait {
@@ -2645,6 +2645,17 @@
     ]]></enter>
     <randomVal type="int">0</randomVal>
     <valueIsSet type="boolean">false</valueIsSet>
+    <nextToBox type="boolean">false</nextToBox>
+    <foundBox type="boolean">false</foundBox>
+    <foundMessage type="boolean">false</foundMessage>
+    <nextToDoor type="boolean">false</nextToDoor>
+    <daveHoldsSpoon type="boolean">false</daveHoldsSpoon>
+    <loanIsMain type="boolean">false</loanIsMain>
+    <allCluesFound type="boolean">false</allCluesFound>
+    <daveShouldLookAtSpoon type="boolean">false</daveShouldLookAtSpoon>
+    <daveShouldSpin type="boolean">false</daveShouldSpin>
+    <keyIsFree type="boolean">false</keyIsFree>
+    <hasKey type="boolean">false</hasKey>
     <object name="Dave4">
       <inherit name="editor_object" />
       <scenery />
@@ -2659,18 +2670,7 @@
               msg ("<br/>Great. <br/>I'm so close to being stuck here forever.<br/>If we cannot go on, it is the end.<br/><br/>At least I'm with Loan.<br/>Sex all the time, here we go!")
               wait {
                 msg ("<br/>In the new zone, we are received by a tiny corridor hall that leads to a main space ahead of us. \"It stinks here.\", mentions Loan.<br/>“Yes, you are correct.”<br/>But where could this be coming from?")
-              }
-            }
-          }
-          else if (first challenge room.shouldSwapDaveFirst = false) {
-            msg ("Should not swap to Dave now.")
-          }
-          else if (first challenge room.daveShouldThink = true) {
-            SetObjectFlagOn (first challenge room, "isDave")
-            msg ("I'm Dave.")
-            wait {
-              wait {
-                msg ("<br/>\"So something has occurred to you?\"<br/>\"Not yet. I need more time. But as far as I know, we are safe here. The poisonous green liquid does not reach us.\"<br/>\"Are you sure? Not even when spinning at high speed?\"")
+                SetObjectFlagOn (first challenge room, "nextToCorridor")
               }
             }
           }
@@ -2678,8 +2678,32 @@
             SetObjectFlagOn (first challenge room, "isDave")
             msg ("Back to Dave. I'm holding the spoon.")
           }
+          else if (first challenge room.shouldSwapDaveFirst = false) {
+            msg ("Should not swap to Dave now.")
+          }
           else {
             msg ("Not now.")
+          }
+          if (first challenge room.nextToCorridor = true) {
+            if (first challenge room.allCluesFound = true) {
+              msg ("Dave here.<br/><br/>\"Wait! I have an idea! Maybe the spoon may give us something...\"")
+              SetObjectFlagOn (first challenge room, "daveShouldLookAtSpoon")
+            }
+            else if (first challenge room.daveShouldThink = true) {
+              SetObjectFlagOn (first challenge room, "isDave")
+              msg ("I'm Dave.")
+              wait {
+                wait {
+                  msg ("<br/>\"So something has occurred to you?\"<br/>\"Not yet. I need more time. But as far as I know, we are safe here. The poisonous green liquid does not reach us.\"<br/>\"Are you sure? Not even when spinning at high speed?\"")
+                }
+              }
+            }
+            else if (first challenge room.shouldSwapDaveFirst = true) {
+              msg ("I'm dave, and I'm holding the spoon.")
+            }
+            else if (first challenge room.shouldSwapDaveFirst = false) {
+              msg ("Should not swap to Dave now.")
+            }
           }
         }
         else if (first challenge room.isDave = true) {
@@ -2732,23 +2756,28 @@
               msg ("Not now.")
             }
             else if (first challenge room.loanShouldTakeSpoon = true) {
-              msg ("I'm Loan. And the spoon is mine!")
               SetObjectFlagOff (first challenge room, "isDave")
+              msg ("I'm Loan. And the spoon is mine!")
             }
             else if (first challenge room.loanShouldTakeSpoon = true) {
               msg ("Not now.")
             }
             else if (first challenge room.loanGoesExplore = true) {
+              SetObjectFlagOff (first challenge room, "isDave")
               msg ("Loan here.<br/>\"I'll look for something else in the main room. Whatever happens to me, you stay here, in the corridor.\"<br/>Dave drops the spoon from his nose.<br/>
               \"Wait! Let me start again.\"<br/>And he places the spoon again.")
-              EnableTimer (daveDropsSpoon)
+              SetObjectFlagOn (first challenge room, "loanGoesExplore")
+              EnableTimer (getRandomvalue)
+            }
+          }
+          else if (first challenge room.nextToCorridor = true) {
+            if (first challenge room.daveHasIdea = true) {
+              msg ("I don't have it right now.")
             }
           }
         }
         else if (first challenge room.isDave = false) {
-          if (first challenge room.daveHasIdea = true) {
-            msg ("I don't have it right now.")
-          }
+          msg ("Can't swap with myself.")
         }
       ]]></swap>
       <tease type="script">
@@ -2756,6 +2785,9 @@
           if (first challenge room.nextToMain = true) {
             msg ("How could I tease him? I need something to piss him off with.")
           }
+        }
+        else {
+          msg ("How would I tease myself?")
         }
       </tease>
       <speak type="script"><![CDATA[
@@ -2766,6 +2798,12 @@
           else if (first challenge room.daveHasIdea = true) {
             msg ("\"Give me the spoon.\"<br/>\"What for?\"<br/>\"You'll see.\"")
           }
+          else {
+            msg ("Not now.")
+          }
+        }
+        else {
+          msg ("Not now.")
         }
       ]]></speak>
     </object>
@@ -2817,6 +2855,9 @@
           if (first challenge room.nextToCorridor = true) {
           }
           else if (first challenge room.nextToMain = true) {
+            if (first challenge room.loanGoesExplore = true) {
+              msg ("Hooray! There is a small box on the floor on the right.")
+            }
           }
         }
       ]]></script>
@@ -2843,6 +2884,25 @@
           }
         }
         else if (first challenge room.isDave = false) {
+          if (first challenge room.nextToCorridor = true) {
+            if (first challenge room.loanGoesExplore = true) {
+              if (first challenge room.daveHoldsSpoon = true) {
+                msg ("I enter the main room again, but this time alone.<br/>I hope the soles of my shoes don't crumble over time, when in contact with the liquid. I have to be careful. <br/>Dave is balancing the spoon in his nose to keep the fan from working.")
+                EnableTimer (getRandomvalue)
+                SetObjectFlagOn (first challenge room, "nextToMain")
+                SetObjectFlagOff (first challenge room, "nextToCorridor")
+              }
+              else {
+                msg ("I can't enter now. Dave is still not holding the spoon.")
+              }
+            }
+            else if (first challenge room.keyIsFree = true) {
+              msg ("I run as fast as possible to reenter the main area, so that I can take the key.<br/>Now I should be next to the box.")
+              EnableTimer (getRandomvalue)
+              SetObjectFlagOn (first challenge room, "nextToMain")
+              SetObjectFlagOff (first challenge room, "nextToCorridor")
+            }
+          }
         }
       ]]></walk>
     </object>
@@ -2885,9 +2945,6 @@
             }
           }
           else if (first challenge room.nextToCorridor = true) {
-            msg ("Right. I can now use the spoon I took out of my inventory.")
-            SetObjectFlagOn (first challenge room, "spoonIsOut")
-            RemoveObject (spoon)
           }
         }
       ]]></script>
@@ -2902,9 +2959,9 @@
             if (first challenge room.loanShouldInspectFan = true) {
               msg ("The fan looks like a pizza perfectly cut into four slices. The sad thing is that someone has already eaten two of them, in opposite positions... And I'm getting hungry. <br/>Maybe I need some milk. ")
               wait {
-                msg ("<br/>At the moment, when I look at it, the two blades are horizontal. Vertically, there are two holes: one on the left and one on the right.")
+                msg ("<br/>At the moment, when I look at it, the two blades are vertical. Horizontally, there are two holes: one at the top and one at the bottom.")
                 wait {
-                  msg ("<br/>As soon as I finish analysing the fan, it starts to rotate at a moderate speed, which increases steadily over time. This must be Dave's fault...<br/><br/>Jeez! It’s burning here! My brain will turn into toasted chips if I stay where I am.")
+                  msg ("<br/>As soon as I finish analysing the fan, it starts to rotate at a moderate speed, which increases steadily over time. This must be Dave's fault...<br/><br/>Jeez! It’s burning here! My brain will turn into toasted chips if I stay where I am. <br/>The noise did not stop. What is going on?")
                   SetObjectFlagOff (first challenge room, "loanShouldInspectFan")
                   SetObjectFlagOn (first challenge room, "bothShouldRun")
                 }
@@ -2933,6 +2990,55 @@
                   SetObjectFlagOn (first challenge room, "daveShouldThink")
                 }
               }
+              SetObjectFlagOn (first challenge room, "nextToCorridor")
+              SetObjectFlagOff (first challenge room, "nextToMain")
+              SetObjectFlagOff (first challenge room, "nextToBox")
+              SetObjectFlagOff (first challenge room, "nextToDoor")
+            }
+          }
+          else if (first challenge room.keyIsFree = true) {
+          }
+          else if (first challenge room.foundMessage = true) {
+            SetObjectFlagOn (first challenge room, "nextToCorridor")
+            SetObjectFlagOff (first challenge room, "nextToBox")
+            SetObjectFlagOff (first challenge room, "nextToMain")
+            SetObjectFlagOff (first challenge room, "nextToDoor")
+            SetObjectFlagOff (first challenge room, "daveHoldsSpoon")
+            DisableTimer (getRandomvalue)
+            DisableTimer (daveDropsSpoon)
+            if (first challenge room.foundBox = false) {
+              msg ("I get back to the corridor. <br/>\"Alright Loan, what did you find?\", asks Dave after dropping the spoon.<br/>\"Something written on the door.\"<br/>“Where? We can see it from here.”<br/>“The characters are very tiny.”<br/>\"What does the text say?\"<br/>“Something like ‘The spoon stirs the soup in the cauldron, from left to right, but little by little. It may be that it slowly reaches 90 degrees. Keep on spinning.’.”<br/>\"Hum... Interesting.\"")
+            }
+            else {
+              msg ("\"Alright Loan, what did you find?\", asks Dave after dropping the spoon.<br/>\"There's a box on the right.\"<br/>\"And what was in it?\"<br/>\"A key. Although I couldn't open it.\"<br/><br/>\"Oh! And I also found out something written on the door.\"Where? We can see it from here.”<br/>“The characters are very tiny.”<br/>\"What does the text say?\"<br/>“Something like ‘The spoon stirs the soup in the cauldron, from left to right, but little by little. It may be that it slowly reaches 90 degrees. Keep on spinning.’.”<br/>\"Hum... Interesting.\"")
+            }
+          }
+          else if (first challenge room.foundBox = true) {
+            SetObjectFlagOn (first challenge room, "nextToCorridor")
+            SetObjectFlagOff (first challenge room, "nextToMain")
+            SetObjectFlagOff (first challenge room, "nextToBox")
+            SetObjectFlagOff (first challenge room, "nextToDoor")
+            SetObjectFlagOff (first challenge room, "daveHoldsSpoon")
+            DisableTimer (getRandomvalue)
+            DisableTimer (daveDropsSpoon)
+            if (first challenge room.foundMessage = false) {
+              msg ("\"Alright Loan, what did you find?\", asks Dave after dropping the spoon.<br/>\"There's a box on the right.\"<br/>\"And what was in it?\"<br/>\"A key. Although I couldn't open it.\"")
+            }
+            else {
+              msg ("\"Alright Loan, what did you find?\", asks Dave after dropping the spoon.<br/>\"There's a box on the right.\"<br/>\"And what was in it?\"<br/>\"A key. Although I couldn't open it.\"<br/><br/>\"Oh! And I also found out something written on the door.\"Where? We can see it from here.”<br/>“The characters are very tiny.”<br/>\"What does the text say?\"<br/>“Something like ‘The spoon stirs the soup in the cauldron, from left to right, but little by little. It may be that it slowly reaches 90 degrees. Keep on spinning.’.”<br/>\"Hum... Interesting.\"")
+            }
+          }
+          else if (first challenge room.hasKey = true) {
+            DisableTimer (getRandomvalue)
+            DisableTimer (daveDropsSpoon)
+            msg ("I'm back in the corridor.<br/><br/>\"Dave! I have it!\"<br/>Dave smiles back at me. It's like looking at myself in the mirror.")
+            wait {
+              msg ("<br/>He drops the spoon.<br/>But, this time, the fan does not start working.<br/>The way is free!")
+              wait {
+                msg ("<br/>\"I can't believe you did it, Loan! I'm so proud of you! I wish I could have helped more...\"
+                \"You kept me alive. And I'm grateful for that!\"
+                OK. Let's go, Dave. Let me help you and let's reach the door!")
+              }
             }
           }
         }
@@ -2959,6 +3065,15 @@
           }
         }
       ]]></give>
+      <spin type="script">
+        if (first challenge room.isDave = true) {
+          if (first challenge room.daveShouldSpin = true) {
+            if (first challenge room.daveHoldsSpoon = false) {
+              msg ("Should take the spoon first.")
+            }
+          }
+        }
+      </spin>
     </object>
     <command>
       <pattern>use spoon; use bone spoon; use bone</pattern>
@@ -2966,7 +3081,7 @@
       <script><![CDATA[
         if (first challenge room.isDave = true) {
           if (first challenge room.daveUsesSpoonFirstTime = true) {
-            msg ("I put the spoon back on my nose and try to balance it.<br/>I have to concentrate.<br/><br/>Breathe in.<br/>Breathe out.<br/><br/>Breathe in.<br/>Breathe out.<br/><br/>The fan stops spinning. And the liquid stops flowing out of the holes.")
+            msg ("I put the spoon back on my nose and try to balance it.<br/>I have to concentrate.<br/><br/>Breathe in.<br/>Breathe out.<br/><br/>Breathe in.<br/>Breathe out.<br/><br/>The fan stops spinning. And the liquid stops flowing out of the holes.<br/>Right now, while looking at it, the blades are horizontal, and vertically, there are two holes: one on the left and one on the right.")
             wait {
               msg ("<br/>\"This is it, Loan! The spoon! It makes everything stop.\"<br/>\"Yes... That is great... I think...\"<br/>\"You don't seem very confident.\"")
               wait {
@@ -2978,7 +3093,7 @@
             }
           }
           else if (first challenge room.daveUsesSpoonSecondTime = true) {
-            msg ("I quickly put in on my nose, and the machine turns off again.<br/>\"Why?...\"")
+            msg ("I quickly put in on my nose, and the machine turns off again.<br/><br/>Right now, while looking at it, the blades are horizontal, and vertically, there are two holes: one on the left and one on the right.<br/><br/>\"Why?...\"")
             wait {
               msg ("<br/>\"I don't know, Loan... But don't make me talk too much, I'm still balancing the spoon on my nose. I'll try to say as little as possible from now on.\"<br/><br/>\"Why am I such a burden? Why?\"<br/><br/>You're not, Loan. Not at all.<br/>And you'll never be.<br/><br/><br/>I wanted to tell him that, but it's better not to. I'm afraid of dropping the spoon, because I don't think I can talk and hold it for a long period at the same time.")
               wait {
@@ -2988,23 +3103,217 @@
               }
             }
           }
+          else if (first challenge room.daveHoldsSpoon = false) {
+            if (first challenge room.daveShouldSpin = true) {
+              msg ("I spin the spoon 90 degrees to the right.<br/><br/>\"Dave! That's it! I can see the box melting! I might be able to take the key now!\"")
+              SetObjectFlagOn (first challenge room, "daveHoldsSpoon")
+              SetObjectFlagOff (first challenge room, "daveShouldSpin")
+              SetObjectFlagOn (first challenge room, "keyIsFree")
+            }
+            else {
+              msg ("I put the spoon on my nose, making the fan and liquid stop.<br/><br/>Right now, while looking at it, the blades are horizontal, and vertically, there are two holes: one on the left and one on the right.")
+              SetObjectFlagOn (first challenge room, "daveHoldsSpoon")
+            }
+          }
+          else if () {
+            if (first challenge room.daveShouldSpin = true) {
+              if (first challenge room.daveHoldsSpoon = false) {
+              }
+            }
+          }
         }
       ]]></script>
     </command>
+    <command>
+      <pattern>walk to box; walk box; walk to small box; walk small box</pattern>
+      <scope>first challenge room</scope>
+      <script>
+        if (first challenge room.isDave = false) {
+          if (first challenge room.nextToMain = true) {
+            if (first challenge room.loanGoesExplore = true) {
+              msg ("The box is in front of me. ")
+              SetObjectFlagOn (first challenge room, "nextToBox")
+            }
+            else if (first challenge room.keyIsFree = true) {
+              msg ("Hurry! Take it!")
+              SetObjectFlagOn (first challenge room, "nextToBox")
+            }
+          }
+        }
+      </script>
+    </command>
+    <command>
+      <pattern>look at box; look at the box; look at small box; look at the small box</pattern>
+      <scope>first challenge room</scope>
+      <script><![CDATA[
+        if (first challenge room.isDave = false) {
+          if (first challenge room.nextToBox = true) {
+            msg ("It looks like it's made out of some kind of charcoal, just like the walls, because the surface has very abrasions all over. Although this one is transparent. <br/>Oh! There is a key inside.")
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>take box; take small box</pattern>
+      <scope>first challenge room</scope>
+      <script><![CDATA[
+        if (first challenge room.isDave = false) {
+          if (first challenge room.nextToBox = true) {
+            msg ("Not a good idea. I don't have gloves and I don't want to lose my hands or anything. <br/>Maybe if I kick it? The soles of my shoes are thick, so I don't think my feet will be in danger.")
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>kick box; kick small box</pattern>
+      <scope>first challenge room</scope>
+      <script><![CDATA[
+        if (first challenge room.isDave = false) {
+          if (first challenge room.nextToBox = true) {
+            msg ("Fuck! It hurts! <br/>Oh my God! The sole is melting!<br/>Fuck! Fuck. Fuck.<br/>All right. It stopped. And I can still use my shoes.<br/><br/>The box has not moved an inch.")
+            SetObjectFlagOn (first challenge room, "foundBox")
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>walk to door</pattern>
+      <scope>first challenge room</scope>
+      <script>
+        if (first challenge room.isDave = false) {
+          if (first challenge room.nextToMain = true) {
+            if (first challenge room.loanGoesExplore = true) {
+              msg ("I'm standing in front of the door that will lead us to the next stage.")
+              SetObjectFlagOn (first challenge room, "nextToDoor")
+            }
+            else {
+              msg ("Not now.")
+            }
+          }
+        }
+        else {
+          msg ("Not now.")
+        }
+      </script>
+    </command>
+    <command>
+      <pattern>look at door</pattern>
+      <scope>first challenge room</scope>
+      <script><![CDATA[
+        if (first challenge room.isDave = false) {
+          if (first challenge room.nextToMain = true) {
+            if (first challenge room.loanGoesExplore = true) {
+              if (first challenge room.nextToDoor = true) {
+                msg ("The door has a lock.<br/>Dude! There's something written on it! It's so small, no wonder we didn't notice it before. It says: \"The spoon stirs the soup in the cauldron, from left to right, but little by little. It may be that it slowly reaches 90 degrees. Keep on spinning.\"")
+                SetObjectFlagOn (first challenge room, "foundMessage")
+              }
+            }
+          }
+          else {
+            msg ("Not now.")
+          }
+        }
+        else {
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>take out spoon; take out bone spoon; take out bone</pattern>
+      <scope>first challenge room</scope>
+      <script>
+        if (first challenge room.isDave = false) {
+          if (first challenge room.nextToCorridor = true) {
+            if (first challenge room.daveHasIdea = true) {
+              msg ("Right. I can now use the spoon I took out of my inventory.")
+              SetObjectFlagOn (first challenge room, "spoonIsOut")
+              RemoveObject (spoon)
+            }
+          }
+        }
+      </script>
+    </command>
+    <command>
+      <pattern>drop spoon; drop bone spoon; release spoon; release bone spoon</pattern>
+      <scope>first challenge room</scope>
+      <script><![CDATA[
+        if (first challenge room.isDave = true) {
+          if (first challenge room.nextToCorridor = true) {
+            msg ("I drop the spoon.")
+            if (first challenge room.loanIsMain = true) {
+              msg ("Oh no! The fan is working again, and the liquid killed my love!<br/><br/>I can't live without you...<br/><br/>I'm coming. Just wait for me...")
+              wait {
+                msg ("<br/>No! This can't end up like this!<br/><br/>...<br/><br/>Loan is right here, next to me, in the corridor.")
+                SetObjectFlagOn (first challenge room, "nextToCorridor")
+                SetObjectFlagOff (first challenge room, "nextToMain")
+                SetObjectFlagOff (first challenge room, "nextToBox")
+                SetObjectFlagOff (first challenge room, "nextToDoor")
+              }
+            }
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>look at spoon; look at bone spoon; look at bone</pattern>
+      <scope>first challenge room</scope>
+      <script><![CDATA[
+        if (first challenge room.isDave = true) {
+          if (first challenge room.daveHoldsSpoon = false) {
+            if (first challenge room.daveShouldLookAtSpoon = true) {
+              msg ("\"Here, Loan! It says 'Spin me. And you will be able to control the fan, while the liquid still keeps dropping.'\".<br/><br/>\"Alright! I remember the door's message talked about a spoon, so this must be it! Try to spin it by 90 degrees!\"")
+              SetObjectFlagOff (first challenge room, "daveShouldLookAtSpoon")
+              SetObjectFlagOn (first challenge room, "daveShouldSpin")
+            }
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>take key</pattern>
+      <scope>first challenge room</scope>
+      <script>
+        if (first challenge room.isDave = true) {
+          if (first challenge room.nextToMain = true) {
+            if (first challenge room.nextToBox = true) {
+              msg ("Done! The key is in my inventory.")
+              AddToInventory (key)
+              SetObjectFlagOn (first challenge room, "hasKey")
+            }
+            else {
+              OutputTextNoBr ("I'm not nearby the box.")
+            }
+          }
+          else {
+            msg ("I can't now.")
+          }
+        }
+        else {
+          msg ("I cannot now.")
+        }
+      </script>
+    </command>
+    <object name="key">
+      <inherit name="editor_object" />
+      <scenery />
+    </object>
   </object>
   <verb>
     <property>tease</property>
     <pattern>tease</pattern>
-    <defaultexpression>"You can't tease " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't tease " + object.article + "."</defaultexpression>
   </verb>
   <verb>
     <property>help</property>
     <pattern>help</pattern>
-    <defaultexpression>"You can't help " + object.article + "."</defaultexpression>
+    <defaultexpression>"I can't help " + object.article + "."</defaultexpression>
+  </verb>
+  <verb>
+    <property>spin</property>
+    <pattern>spin</pattern>
+    <defaultexpression>"You can't spin " + object.article + "."</defaultexpression>
   </verb>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
-    msg ("Log(ShowMenuResponse())")
   </function>
   <timer name="swallowCum">
     <interval>15</interval>
@@ -3090,6 +3399,7 @@
         }
         DisableTimer (daveDropsSpoon)
         SetObjectFlagOff (first challenge room, "valueIsSet")
+        SetObjectFlagOff (first challenge room, "daveHoldsSpoon")
       }
     </script>
     <enabled type="boolean">false</enabled>
@@ -3100,6 +3410,37 @@
       first challenge room.randomVal = GetRandomInt (5, 10)
       DisableTimer (getRandomvalue)
       EnableTimer (daveDropsSpoon)
+    </script>
+    <enabled type="boolean">false</enabled>
+  </timer>
+  <timer name="checkIfLoanIsInsideRoom">
+    <interval>1</interval>
+    <enabled />
+    <script><![CDATA[
+      if (first challenge room.isDave = false) {
+        if (first challenge room.daveHoldsSpoon = false) {
+          if (first challenge room.loanIsMain = true) {
+            SetObjectFlagOn (first challenge room, "isDave")
+            msg ("Oh no! The fan is working again, and the liquid killed Loan, my love!<br/><br/>I can't live without you...<br/><br/>I'm coming. Just wait for me...")
+            wait {
+              msg ("<br/>No! This can't end up like this!<br/><br/>...<br/><br/>Loan is right here, next to me, in the corridor.")
+              SetObjectFlagOn (first challenge room, "nextToCorridor")
+              SetObjectFlagOff (first challenge room, "nextToMain")
+              SetObjectFlagOff (first challenge room, "nextToBox")
+              SetObjectFlagOff (first challenge room, "nextToDoor")
+            }
+          }
+        }
+      }
+    ]]></script>
+  </timer>
+  <timer name="foundAllCluesToxic">
+    <interval>1</interval>
+    <script>
+      if (first challenge room.foundBox and first challenge room.foundMessage) {
+        SetObjectFlagOn (first challenge room, "allCluesFound")
+        SetObjectFlagOff (first challenge room, "loanGoesExplore")
+      }
     </script>
     <enabled />
   </timer>
