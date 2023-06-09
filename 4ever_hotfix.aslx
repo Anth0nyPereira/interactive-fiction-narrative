@@ -3399,6 +3399,77 @@
   </verb>
   <object name="second challenge room">
     <inherit name="editor_room" />
+    <enter type="script"><![CDATA[
+      msg ("We enter and, suddenly, a baby’s scream was heard.<br/>“Wait, we are not alone?”, I say.<br/><br/>The gate closes. And the scream, as well. <br/><br/>“Don’t worry, Dave! Whatever is waiting for us, I will protect you at all costs.”, reassures Loan, not realizing that, somehow, his voice shifted; it is the first time that I see Loan nervous, I can feel that he is afraid, although he is trying to hide it with that speech. <br/>“I am still able to shield myself. C’mon, it’s just a child!”<br/>“Now you’re one-legged.”<br/>“I lost a leg, not a brain. I’m not dumb.”<br/><br/>“I told you I could give you a piggyback ride. Let me do it for you. For your safety.”<br/>“Let it be! I’m still worth it. I’m not an irrelevant piece of junk. I’m still useful. I’m much more than a one-legged man. So, please, let me prove to myself that I am right.”")
+      wait {
+        msg ("<br/>We both start to walk on this odd pathway. <br/>“You know what, I thought about something kind of weird, even though it may have sense.”<br/>“Oh, really? Go for it, Loan!.”<br/>“Well…”<br/>“Hum…”<br/>“…”<br/>“Nevermind.”<br/>“Wait, what?”<br/>“It was a joke since the beginning… How I did not get that.”<br/>“No!”<br/>“Then, go for it! It can’t be that bad. And no matter how much stupid it can be, I would never blame you. You did so much for me. And…”<br/>“… I love you.”<br/>“So, you know that child noise we heard?”<br/>“Yes?”<br/>“It is connected to the door from the fan chamber. I’m sure of it.”<br/>“Why?”<br/>“Intuition. Just like a baby cries when they are woken up, the door cried because we ‘woke it up’. And after screaming, it came back to sleep. Just like a little one.”<br/>“I have lost a leg, but it seems that you are the one with more after-effects. It's probably because of the liquid.”<br/>“You might be right. All that blood! I wonder who is gonna clean all that shit.”<br/>\"Hahaha! The child must have drink it all! Something different, not always that green fluid!\"<br/><br/>We both laugh so hard. It feels good to see Dave so happy. Does he feel any pain? Why is he so content if he just lost his leg? <br/>It's just like - all bad things remained with it and got out of his remainings.")
+        wait {
+          msg ("We reach another large room.<br/>There is a door at the end of it.")
+          SetObjectFlagOn (second challenge room, "shouldGoDoorFirst")
+        }
+      }
+    ]]></enter>
+    <shouldGoDoorFirst type="boolean">false</shouldGoDoorFirst>
+    <isDave type="boolean">false</isDave>
+    <daveSaysBrown type="boolean">false</daveSaysBrown>
+    <command>
+      <pattern>walk to door</pattern>
+      <scope>second challenge room</scope>
+      <script>
+        if (second challenge room.isDave = false) {
+          if (second challenge room.shouldGoDoorFirst = true) {
+            msg ("Dave and I are in front of it.")
+          }
+        }
+      </script>
+    </command>
+    <object name="door1">
+      <inherit name="editor_object" />
+      <alias>door</alias>
+      <scenery />
+      <look type="script"><![CDATA[
+        if (second challenge room.isDave = false) {
+          if (second challenge room.shouldGoDoorFirst = true) {
+            msg ("The door has a lock in it. But... is looks circular. And so small. <br/><br/>\"So, what do you think, Dave?\"")
+          }
+        }
+        else if (second challenge room.isDave = true) {
+          if (second challenge room.daveSaysBrown = true) {
+            msg ("The door...<br/><br/>It's so,,,<br/>Peculiar.<br/><br/>\"Did you notice, Loan?\"<br/>\"What?\"<br/>\"The door. Its brown tone. It's the same as yours.\"<br/>\"Oh, right. My hair, that's cool!\"<br/>\"And your body hair as well...\"<br/>\"So coky, my Dave!\"<br/>\"I know you like it...\"<br/><br/>\"Oh, and what about the lock?\"<br/>\"Yeah... It seems that it was made to put a marbles inside. Like a vending machine waiting to receive the coins. Oh! And it even has an exit for the change! \"<br/><br/>And, I don't even know how - as someone greater than me, probably God (or the wizard?) makes me glance the ground near the door.<br/><br/>\"Look, Loan! Marbles!\"<br/>\"That must be it! The door must open when you put these marbles in! And if it does not accept them, it returns them through the exit! This challenge seems a lot easier than the previous one...\"
+            Perhaps because it's unlikely anyone will survive the fan room. Why bother making a more complicated challenge if no one is going to play it?")
+            SetObjectFlagOff (second challenge room, "daveSaysBrown")
+            wait {
+              msg ("\"Loan, could you please bend and take the marbles for me?\"<br/><br/>\"Absolutely, my love!\"")
+            }
+          }
+        }
+      ]]></look>
+    </object>
+    <object name="Dave5">
+      <inherit name="editor_object" />
+      <alias>Dave</alias>
+      <scenery />
+      <swap type="script">
+        if (second challenge room.isDave = false) {
+          if (second challenge room.shouldGoDoorFirst = true) {
+            msg ("I'm Dave.")
+            SetObjectFlagOff (second challenge room, "shouldGoDoorFirst")
+            SetObjectFlagOn (second challenge room, "daveSaysBrown")
+          }
+        }
+      </swap>
+    </object>
+    <object name="Loan5">
+      <inherit name="editor_object" />
+      <scenery />
+    </object>
+    <command>
+      <pattern>look around</pattern>
+      <scope>second challenge room</scope>
+      <script>
+        msg ("Nothing to look around.")
+      </script>
+    </command>
   </object>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
