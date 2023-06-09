@@ -2636,13 +2636,6 @@
     <daveUsesSpoonFirstTime type="boolean">false</daveUsesSpoonFirstTime>
     <daveUsesSpoonSecondTime type="boolean">false</daveUsesSpoonSecondTime>
     <loanGoesExplore type="boolean">false</loanGoesExplore>
-    <enter type="script"><![CDATA[
-      msg ("It's hot in here.")
-      wait {
-        msg ("<br/>Maybe that is why it is called the Street of Old Hells.<br/>It must not make sense if it was snowing or if this was all covered with hail or even a thin frost.<br/><br/>\"Loan, I want to help!\"<br/>\"Alright, alright.\"")
-        SetObjectFlagOn (first challenge room, "shouldSwapDaveFirst")
-      }
-    ]]></enter>
     <randomVal type="int">0</randomVal>
     <valueIsSet type="boolean">false</valueIsSet>
     <nextToBox type="boolean">false</nextToBox>
@@ -2656,6 +2649,17 @@
     <daveShouldSpin type="boolean">false</daveShouldSpin>
     <keyIsFree type="boolean">false</keyIsFree>
     <hasKey type="boolean">false</hasKey>
+    <enter type="script"><![CDATA[
+      msg ("It's hot in here.")
+      wait {
+        msg ("<br/>Maybe that is why it is called the Street of Old Hells.<br/>It must not make sense if it was snowing or if this was all covered with hail or even a thin frost.<br/><br/>\"Loan, I want to help!\"<br/>\"Alright, alright.\"")
+        SetObjectFlagOn (first challenge room, "shouldSwapDaveFirst")
+      }
+    ]]></enter>
+    <bothGoMain type="boolean">false</bothGoMain>
+    <daveIsReleased type="boolean">false</daveIsReleased>
+    <ready type="boolean">false</ready>
+    <goGetLeg type="boolean">false</goGetLeg>
     <object name="Dave4">
       <inherit name="editor_object" />
       <scenery />
@@ -2681,10 +2685,7 @@
           else if (first challenge room.shouldSwapDaveFirst = false) {
             msg ("Should not swap to Dave now.")
           }
-          else {
-            msg ("Not now.")
-          }
-          if (first challenge room.nextToCorridor = true) {
+          else if (first challenge room.nextToCorridor = true) {
             if (first challenge room.allCluesFound = true) {
               msg ("Dave here.<br/><br/>\"Wait! I have an idea! Maybe the spoon may give us something...\"")
               SetObjectFlagOn (first challenge room, "daveShouldLookAtSpoon")
@@ -2701,9 +2702,14 @@
             else if (first challenge room.shouldSwapDaveFirst = true) {
               msg ("I'm dave, and I'm holding the spoon.")
             }
-            else if (first challenge room.shouldSwapDaveFirst = false) {
-              msg ("Should not swap to Dave now.")
-            }
+          }
+          else if (first challenge room.shouldSwapDaveFirst = false) {
+          }
+          else {
+            msg ("Not now.")
+          }
+          if (first challenge room.nextToCorridor = true) {
+            msg ("Should not swap to Dave now.")
           }
         }
         else if (first challenge room.isDave = true) {
@@ -2737,6 +2743,13 @@
               }
             }
           }
+          else if (first challenge room.nextToCorridor = true) {
+            if (first challenge room.hasKey = true) {
+              msg ("I'm holding Dave. We're ready to quit.")
+              SetObjectFlagOff (first challenge room, "hasKey")
+              SetObjectFlagOn (first challenge room, "bothGoMain")
+            }
+          }
         }
       </help>
       <speak type="script">
@@ -2744,6 +2757,22 @@
           msg ("He said he wanted some peace and quiet to think of something to get us out of this situation.")
         }
       </speak>
+      <release type="script"><![CDATA[
+        if (first challenge room.isDave = false) {
+          if (first challenge room.bothGoMain = true) {
+            if (first challenge room.daveIsReleased = false) {
+              msg ("Done.<br/><br/>\"Don't move, ok!\"<br/>\"You're the boss, Loan.\"<br/>\"That's rright. Even in bed :)\"<br/>\"Stop it...\"")
+              SetObjectFlagOn (first challenge room, "daveIsReleased")
+            }
+            else {
+              msg ("I can't.")
+            }
+          }
+        }
+        else {
+          msg ("I won't do that to myself.")
+        }
+      ]]></release>
     </object>
     <object name="Loan4">
       <inherit name="editor_object" />
@@ -2902,6 +2931,11 @@
               SetObjectFlagOn (first challenge room, "nextToMain")
               SetObjectFlagOff (first challenge room, "nextToCorridor")
             }
+            else if (first challenge room.bothGoMain = true) {
+              msg ("\"We're almost near the door, Dave! Just hold on a little more!\"<br/>\"I'm... Tired... My leg is burning and I don't understand why... It keeps getting even more rigid.\"<br/>\"I... know. But you're gonna make it. I believe in you.\"")
+              SetObjectFlagOff (first challenge room, "nextToCorridor")
+              SetObjectFlagOn (first challenge room, "nextToMain")
+            }
           }
         }
       ]]></walk>
@@ -3031,13 +3065,15 @@
           else if (first challenge room.hasKey = true) {
             DisableTimer (getRandomvalue)
             DisableTimer (daveDropsSpoon)
+            SetObjectFlagOn (first challenge room, "nextToCorridor")
+            SetObjectFlagOff (first challenge room, "nextToMain")
+            SetObjectFlagOff (first challenge room, "nextToBox")
+            SetObjectFlagOff (first challenge room, "nextToDoor")
             msg ("I'm back in the corridor.<br/><br/>\"Dave! I have it!\"<br/>Dave smiles back at me. It's like looking at myself in the mirror.")
             wait {
               msg ("<br/>He drops the spoon.<br/>But, this time, the fan does not start working.<br/>The way is free!")
               wait {
-                msg ("<br/>\"I can't believe you did it, Loan! I'm so proud of you! I wish I could have helped more...\"
-                \"You kept me alive. And I'm grateful for that!\"
-                OK. Let's go, Dave. Let me help you and let's reach the door!")
+                msg ("<br/>\"I can't believe you did it, Loan! I'm so proud of you! I wish I could have helped more...\"<br/>\"You kept me alive. And I'm grateful for that!\"<br/><br/>OK. Let's go, Dave. Let me help you and let's reach the door!")
               }
             }
           }
@@ -3179,11 +3215,15 @@
     <command>
       <pattern>walk to door</pattern>
       <scope>first challenge room</scope>
-      <script>
+      <script><![CDATA[
         if (first challenge room.isDave = false) {
           if (first challenge room.nextToMain = true) {
             if (first challenge room.loanGoesExplore = true) {
               msg ("I'm standing in front of the door that will lead us to the next stage.")
+              SetObjectFlagOn (first challenge room, "nextToDoor")
+            }
+            else if (first challenge room.bothGoMain = true) {
+              msg ("We did it! The door is in front of us...<br/><br/>\"Alright, Dave, I'm going to release you so I can take the key, ok?\"<br/>\"Just do it, for God's sake! I almost can no longer feel my leg.\"")
               SetObjectFlagOn (first challenge room, "nextToDoor")
             }
             else {
@@ -3194,7 +3234,7 @@
         else {
           msg ("Not now.")
         }
-      </script>
+      ]]></script>
     </command>
     <command>
       <pattern>look at door</pattern>
@@ -3272,15 +3312,25 @@
       <pattern>take key</pattern>
       <scope>first challenge room</scope>
       <script>
-        if (first challenge room.isDave = true) {
+        if (first challenge room.isDave = false) {
           if (first challenge room.nextToMain = true) {
             if (first challenge room.nextToBox = true) {
               msg ("Done! The key is in my inventory.")
               AddToInventory (key)
               SetObjectFlagOn (first challenge room, "hasKey")
             }
+            else if (first challenge room.nextToDoor = true) {
+              if (first challenge room.daveIsReleased = true) {
+                msg ("Nice! I have the key in my hand.")
+                RemoveObject (key)
+                SetObjectFlagOn (first challenge room, "ready")
+              }
+              else {
+                msg ("Should releae Dave first.")
+              }
+            }
             else {
-              OutputTextNoBr ("I'm not nearby the box.")
+              OutputTextNoBr ("I can't now.")
             }
           }
           else {
@@ -3296,6 +3346,41 @@
       <inherit name="editor_object" />
       <scenery />
     </object>
+    <command>
+      <pattern>use key</pattern>
+      <scope>first challenge room</scope>
+      <script><![CDATA[
+        if (first challenge room.isDave = false) {
+          if (first challenge room.ready = true) {
+            msg ("The door... Is open.<br/>Finally,<br/><br/>And Dave is still alive.<br/>I'm so glad we made it.")
+            wait {
+              msg ("<br/>And suddenly, just after I opened the door, the fan starts spinning around even faster, with the liquid dropped all over the main room.<br/><br/>\"C'mon, Dave, hold me tight, ok? We need to go before the fluid gets us!\"<br/>\"Yes...\"<br/><br/>I pick him up, but something is not letting his maimed leg move.<br/>\"What's happening, Dave?\"<br/>\"I... Don't know...I no longer can feel my leg...\"<br/><br/>I immediately touch it and it feels like rock. Like bone...<br/><br/>\"Just hold on tight, Dave!\"<br/><br/>I begin to push him towards the newly opened door, when somehow the liquid catches his leg.<br/>It was separated from his body within seconds.")
+              wait {
+                msg ("<br/>I'm finally able to leave Dave in a safe place, at the entrance to the new chamber.
+                \"Where are you going, Loan?\"
+                I'm going to get it. It sounds disgusting, even though I feel I should do it.<br/><br/>Alright. It's here, I'm gonna save his leg in my inventory.")
+                SetObjectFlagOn (first challenge room, "goGetLeg")
+                SetObjectFlagOff (first challenge room, "ready")
+              }
+            }
+          }
+        }
+      ]]></script>
+    </command>
+    <object name="leg">
+      <inherit name="editor_object" />
+      <scenery />
+    </object>
+    <command>
+      <pattern>take leg; take daves leg; take dave leg; take daves leg; take Dave leg</pattern>
+      <scope>first challenge room</scope>
+      <script><![CDATA[
+        if (first challenge room.goGetLeg = true) {
+          msg ("Done. I have the leg in the inventory,<br/><br/>\"I'm coming!!\"<br/><br/>I make a final run towards the door.<br/><br/>\"We fucking did it!\", I exclaim, with such a big smile.<br/>\"I can't say the same about my right leg...\"")
+          MoveObject (player, second challenge room)
+        }
+      ]]></script>
+    </command>
   </object>
   <verb>
     <property>tease</property>
@@ -3312,6 +3397,9 @@
     <pattern>spin</pattern>
     <defaultexpression>"You can't spin " + object.article + "."</defaultexpression>
   </verb>
+  <object name="second challenge room">
+    <inherit name="editor_room" />
+  </object>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
   </function>
@@ -3385,6 +3473,7 @@
   </timer>
   <timer name="daveDropsSpoon">
     <interval>1</interval>
+    <enabled type="boolean">false</enabled>
     <script>
       if (first challenge room.valueIsSet = false) {
         SetTimerInterval (daveDropsSpoon, first challenge room.randomVal)
@@ -3402,16 +3491,15 @@
         SetObjectFlagOff (first challenge room, "daveHoldsSpoon")
       }
     </script>
-    <enabled type="boolean">false</enabled>
   </timer>
   <timer name="getRandomvalue">
     <interval>1</interval>
+    <enabled type="boolean">false</enabled>
     <script>
       first challenge room.randomVal = GetRandomInt (5, 10)
       DisableTimer (getRandomvalue)
       EnableTimer (daveDropsSpoon)
     </script>
-    <enabled type="boolean">false</enabled>
   </timer>
   <timer name="checkIfLoanIsInsideRoom">
     <interval>1</interval>
@@ -3436,12 +3524,12 @@
   </timer>
   <timer name="foundAllCluesToxic">
     <interval>1</interval>
+    <enabled />
     <script>
       if (first challenge room.foundBox and first challenge room.foundMessage) {
         SetObjectFlagOn (first challenge room, "allCluesFound")
         SetObjectFlagOff (first challenge room, "loanGoesExplore")
       }
     </script>
-    <enabled />
   </timer>
 </asl>
