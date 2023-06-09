@@ -20,7 +20,7 @@
     <attr name="autodescription_youarein_useprefix" type="boolean">false</attr>
     <attr name="feature_asktell" type="boolean">false</attr>
     <start type="script">
-      MoveObject (player, beach)
+      MoveObject (player, first challenge room)
     </start>
   </game>
   <command name="go">
@@ -2625,6 +2625,17 @@
     <isDave type="boolean">false</isDave>
     <nextToCorridor type="boolean">false</nextToCorridor>
     <loanShouldTakeSpoon type="boolean">false</loanShouldTakeSpoon>
+    <isDavePrank type="boolean">false</isDavePrank>
+    <isLoanPrank type="boolean">false</isLoanPrank>
+    <bothShouldRun type="boolean">false</bothShouldRun>
+    <loanShouldInspectFan type="boolean">false</loanShouldInspectFan>
+    <loanShouldHelpDave type="boolean">false</loanShouldHelpDave>
+    <daveShouldThink type="boolean">false</daveShouldThink>
+    <daveHasIdea type="boolean">false</daveHasIdea>
+    <spoonIsOut type="boolean">false</spoonIsOut>
+    <daveUsesSpoonFirstTime type="boolean">false</daveUsesSpoonFirstTime>
+    <daveUsesSpoonSecondTime type="boolean">false</daveUsesSpoonSecondTime>
+    <loanGoesExplore type="string"></loanGoesExplore>
     <enter type="script"><![CDATA[
       msg ("It's hot in here.")
       wait {
@@ -2632,15 +2643,8 @@
         SetObjectFlagOn (first challenge room, "shouldSwapDaveFirst")
       }
     ]]></enter>
-    <isDavePrank type="boolean">false</isDavePrank>
-    <isLoanPrank type="boolean">false</isLoanPrank>
-    <bothShouldRun type="boolean">false</bothShouldRun>
-    <loanShouldInspectFan type="boolean">false</loanShouldInspectFan>
-    <loanShouldHelpDave type="boolean">false</loanShouldHelpDave>
-    <daveShouldThink type="string"></daveShouldThink>
-    <daveHasIdea type="boolean">false</daveHasIdea>
-    <spoonIsOut type="boolean">false</spoonIsOut>
-    <daveUsesSpoonFirstTime type="boolean">false</daveUsesSpoonFirstTime>
+    <randomVal type="int">0</randomVal>
+    <valueIsSet type="boolean">false</valueIsSet>
     <object name="Dave4">
       <inherit name="editor_object" />
       <scenery />
@@ -2721,7 +2725,7 @@
       <inherit name="editor_object" />
       <scenery />
       <alias>to loan; to Loan; loan; Loan</alias>
-      <swap type="script">
+      <swap type="script"><![CDATA[
         if (first challenge room.isDave = true) {
           if (first challenge room.nextToMain = true) {
             if (first challenge room.shouldSwapDaveFirst = true) {
@@ -2729,9 +2733,15 @@
             }
             else if (first challenge room.loanShouldTakeSpoon = true) {
               msg ("I'm Loan. And the spoon is mine!")
+              SetObjectFlagOff (first challenge room, "isDave")
             }
             else if (first challenge room.loanShouldTakeSpoon = true) {
               msg ("Not now.")
+            }
+            else if (first challenge room.loanGoesExplore = true) {
+              msg ("Loan here.<br/>\"I'll look for something else in the main room. Whatever happens to me, you stay here, in the corridor.\"<br/>Dave drops the spoon from his nose.<br/>
+              \"Wait! Let me start again.\"<br/>And he places the spoon again.")
+              EnableTimer (daveDropsSpoon)
             }
           }
         }
@@ -2740,7 +2750,7 @@
             msg ("I don't have it right now.")
           }
         }
-      </swap>
+      ]]></swap>
       <tease type="script">
         if (first challenge room.isDave = true) {
           if (first challenge room.nextToMain = true) {
@@ -2856,6 +2866,11 @@
             else if (first challenge room.loanShouldTakeSpoon = true) {
               msg ("Loan wants to do it.")
             }
+            else if (first challenge room.daveUsesSpoonFirstTime = true) {
+              msg ("I take the spoon immediately. Now, the last part.")
+              SetObjectFlagOff (first challenge room, "daveUsesSpoonFirstTime")
+              SetObjectFlagOn (first challenge room, "daveUsesSpoonSecondTime")
+            }
           }
         }
         else if (first challenge room.isDave = false) {
@@ -2880,6 +2895,7 @@
     <object name="fan">
       <inherit name="editor_object" />
       <scenery />
+      <alias>the fan; ceiling; the ceiling</alias>
       <look type="script"><![CDATA[
         if (first challenge room.isDave = false) {
           if (first challenge room.nextToMain = true) {
@@ -2897,7 +2913,6 @@
           }
         }
       ]]></look>
-      <alias>the fan; ceiling; the ceiling</alias>
     </object>
     <command>
       <pattern>walk to corridor; walk to corridor hall; walk to hall</pattern>
@@ -2925,6 +2940,7 @@
     </command>
     <object name="spoon">
       <inherit name="editor_object" />
+      <scenery />
       <give type="script"><![CDATA[
         if (first challenge room.isDave = true) {
           if (first challenge room.daveHasIdea = true) {
@@ -2943,7 +2959,6 @@
           }
         }
       ]]></give>
-      <scenery />
     </object>
     <command>
       <pattern>use spoon; use bone spoon; use bone</pattern>
@@ -2959,6 +2974,17 @@
                 wait {
                   msg ("<br/>Loan grabs the spoon as quickly as he could and held it up to his nose.<br/>Instantly, the fan starts to run even faster and the liquid becomes crazier. It didn't even need time to load or anything, it started spinning at maximum speed.<br/><br/>Hurry up! I should take it as soon as possible.")
                 }
+              }
+            }
+          }
+          else if (first challenge room.daveUsesSpoonSecondTime = true) {
+            msg ("I quickly put in on my nose, and the machine turns off again.<br/>\"Why?...\"")
+            wait {
+              msg ("<br/>\"I don't know, Loan... But don't make me talk too much, I'm still balancing the spoon on my nose. I'll try to say as little as possible from now on.\"<br/><br/>\"Why am I such a burden? Why?\"<br/><br/>You're not, Loan. Not at all.<br/>And you'll never be.<br/><br/><br/>I wanted to tell him that, but it's better not to. I'm afraid of dropping the spoon, because I don't think I can talk and hold it for a long period at the same time.")
+              wait {
+                msg ("<br/>\"Why don't you use your hands? The spoon is still on your nose, but you're able to balance it for longer\".<br/>I try and somehow what happened to Loan starts all over again. I take my hands off it immediately.<br/><br/>\"Oh. Sorry, Dave. It's not working... I just thought it would be a good idea...\"<br/>It was, Loan. It was.<br/><br/>\"We've got to find a solution to this. I'll show you that I'm no longer a burden.\"<br/><br/>You never were.")
+                SetObjectFlagOff (first challenge room, "daveUsesSpoonSecondTime")
+                SetObjectFlagOn (first challenge room, "loanGoesExplore")
               }
             }
           }
@@ -3047,5 +3073,34 @@
         }
       }
     ]]></script>
+  </timer>
+  <timer name="daveDropsSpoon">
+    <interval>1</interval>
+    <script>
+      if (first challenge room.valueIsSet = false) {
+        SetTimerInterval (daveDropsSpoon, first challenge room.randomVal)
+        SetObjectFlagOn (first challenge room, "valueIsSet")
+      }
+      else {
+        SetTimeout (first challenge room.randomVal - 3) {
+          msg ("Hurry, Loan! I'm almost dropping the spoon!")
+        }
+        SetTimeout (first challenge room.randomVal) {
+          msg ("I let the spoon fall, I could no longer hold it.")
+        }
+        DisableTimer (daveDropsSpoon)
+        SetObjectFlagOff (first challenge room, "valueIsSet")
+      }
+    </script>
+    <enabled type="boolean">false</enabled>
+  </timer>
+  <timer name="getRandomvalue">
+    <interval>1</interval>
+    <script>
+      first challenge room.randomVal = GetRandomInt (5, 10)
+      DisableTimer (getRandomvalue)
+      EnableTimer (daveDropsSpoon)
+    </script>
+    <enabled />
   </timer>
 </asl>
