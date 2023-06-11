@@ -20,7 +20,7 @@
     <attr name="autodescription_youarein_useprefix" type="boolean">false</attr>
     <attr name="feature_asktell" type="boolean">false</attr>
     <start type="script">
-      MoveObject (player, second challenge room)
+      MoveObject (player, third challenge room)
     </start>
   </game>
   <command name="go">
@@ -3597,6 +3597,216 @@
         }
       ]]></script>
     </command>
+  </object>
+  <object name="third challenge room">
+    <inherit name="editor_room" />
+    <exitslistprefix>Ican go</exitslistprefix>
+    <enter type="script"><![CDATA[
+      msg ("I help Dave towards the door and when we reach the new chamber it closes behind us.")
+      wait {
+        msg ("<br/>\"This one is so small, I can hardly move...\"<br/>\"Not that you could move much by yourself, Dave...\"<br/>\"Shut up. Asshole.\"<br/>\"I know you love me.\"<br/>\"And I know you love me too!\" says Dave with a grin from ear to ear. I don't know how he manages to keep going. <br/><br/>He is such a fighter. <br/>I fall in love with him again and again, surprised by all the new sheets I discover.")
+        SetObjectFlagOn (third challenge room, "justEntered")
+      }
+    ]]></enter>
+    <isDave type="boolean">false</isDave>
+    <justEntered type="boolean">false</justEntered>
+    <daveShouldLookAround type="boolean">false</daveShouldLookAround>
+    <daveFinishedLookingAround type="boolean">false</daveFinishedLookingAround>
+    <loanJustDoIt type="boolean">false</loanJustDoIt>
+    <letDaveCommand type="boolean">false</letDaveCommand>
+    <daveGoesExplore type="boolean">false</daveGoesExplore>
+    <goodKey type="boolean">false</goodKey>
+    <boxDestroyed type="boolean">false</boxDestroyed>
+    <hasKey type="boolean">false</hasKey>
+    <object name="Dave6">
+      <inherit name="editor_object" />
+      <inherit name="male" />
+      <scenery />
+      <swap type="script"><![CDATA[
+        if (third challenge room.isDave = false) {
+          if (third challenge room.justEntered = true) {
+            msg ("Not now.")
+          }
+          else if (third challenge room.daveShouldLookAround = true) {
+            msg ("Dave here.<br/>So, what do I do now?")
+            SetObjectFlagOn (third challenge room, "isDave")
+          }
+          else if (third challenge room.letDaveCommand = true) {
+            msg ("I'm Dave.")
+            SetObjectFlagOn (third challenge room, "isDave")
+          }
+          else {
+            msg ("Not now.")
+          }
+        }
+        else {
+          msg ("I won't swap with myself.")
+        }
+      ]]></swap>
+      <speak type="script"><![CDATA[
+        if (third challenge room.isDave = false) {
+          if (third challenge room.justEntered = true) {
+            msg ("\"But you're right. There is only one room in this chamber and the floor is all covered with boxes.\"<br/>\"We... I mean, I can barely walk.\"<br/>\"What about me, Loan?\"<br/>\"Well... You'll be limping. Oh wait - you can't even do that!\"")
+            wait {
+              msg ("<br/>\"Sit down, bish! I'll show you what I'm made of!\"")
+              wait {
+                msg ("<br/>I'm so pleased. This trip is changing him. For the better. <br/>It's so nice to see him happy. Because when he's happy, I'm happy.<br/>He's all I have.")
+                SetObjectFlagOff (third challenge room, "justEntered")
+                SetObjectFlagOn (third challenge room, "daveShouldLookAround")
+              }
+            }
+          }
+        }
+      ]]></speak>
+      <alias>to dave; to Dave; dave; Dave</alias>
+    </object>
+    <object name="Loan6">
+      <inherit name="editor_object" />
+      <inherit name="male" />
+      <swap type="script">
+        if (third challenge room.isDave = true) {
+          if (third challenge room.daveFinishedLookingAround = true) {
+            msg ("Not right now.")
+          }
+          else if (third challenge room.loanJustDoIt = true) {
+            msg ("This is Loan, and I'm willing to just do it.")
+            SetObjectFlagOff (third challenge room, "isDave")
+          }
+          else {
+            msg ("Not now.")
+          }
+        }
+        else if (third challenge room.isDave = false) {
+          msg ("I am Loan!")
+        }
+      </swap>
+      <speak type="script"><![CDATA[
+        if (third challenge room.isDave = true) {
+          if (third challenge room.daveFinishedLookingAround = true) {
+            msg ("\"A key to open the door, even though there are hundreds of them...\"<br/>\"Of doors? I can only see one. Well, we won't talk about the one we came from, so yes. Just one, in front of us...\"<br/>\"I'm talking about keys, Loan...\"<br/>\"I know, Dave. I just love it when you get angry.\"<br/>\"It would be better at night.\"")
+            wait {
+              msg ("<br/>\"You shouldn't be so hard on yourself, Dave. You just got hurt.\"<br/>\"I know. But don't you see something strange about me?\"<br/><br/>\"Um... I guess not...\"")
+              wait {
+                msg ("<br/>\"I took my shirt off... To stop the bleeding.\"<br/>\"Oh, that's right, hell yes! I'm so tired I didn't even notice you getting naked...\"<br/>\"I'm just shirtless, Loan. Come on, don't tease me. We can't right now...\"<br/><br/>\"Yes.\"<br/>\"We can, Dave.\"")
+                SetObjectFlagOff (third challenge room, "daveFinishedLookingAround")
+                SetObjectFlagOn (third challenge room, "loanJustDoIt")
+              }
+            }
+          }
+        }
+      ]]></speak>
+      <scenery />
+      <alias>to loan; to Loan; Loan; loan</alias>
+    </object>
+    <command>
+      <pattern>look around</pattern>
+      <scope>third challenge room</scope>
+      <script><![CDATA[
+        if (third challenge room.isDave = false) {
+          if (third challenge room.justEntered = true) {
+            msg ("Not now.")
+          }
+        }
+        else if (third challenge room.isDave = true) {
+          if (third challenge room.daveShouldLookAround = true) {
+            msg ("Boxes, boxes and more boxes... You'll have to walk on some of them to get around, they're everywhere. There are even towers of them. <br/><br/>The door is nearby. It has a lock, but a \"normal\" one this time. So I have to find a key.<br/><br/>Yes, now that I look more closely, all the boxes are transparent and have a key inside. I just have to choose the right one. Seems simple, right?<br/><br/>But there are a lot of them. Hundreds of them, I bet. This could take a while.")
+            SetObjectFlagOn (third challenge room, "daveFinishedLookingAround")
+            SetObjectFlagOff (third challenge room, "daveShouldLookAround")
+          }
+          else if (third challenge room.letDaveCommand = true) {
+            msg ("Boxes. <br/>One of them must be the good one. <br/><br/>Which one should I walk towards? Box 1? Box 1000? One of them has to make it. <br/><br/>I know for sure.")
+            SetObjectFlagOff (third challenge room, "letDaveCommand")
+            SetObjectFlagOn (third challenge room, "daveGoesExplore")
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>just do it</pattern>
+      <scope>thir challenge room</scope>
+      <script><![CDATA[
+        if (third challenge room.isDave = false) {
+          if (third challenge room.loanJustDoIt = true) {
+            msg ("I start by taking off my shirt and his jeans. <br/><br/>\"What are you doing, Loan... Don't take them off, you'll hurt my leg...\"<br/>\"More like your spooky leg, right?\"")
+            wait {
+              msg ("<br/>He stares at me. He looks like a titan from down here. I had to break a couple of box towers to get to a decent depth. <br/>It is not long before that it is my turn to start to blow off his dick.  But this time I'm not completely naked.  We're equal - both of us showing our pale skin, damaged by weather and bad feelings, but still as smooth as silk.<br/><br/>I missed his huge chest mane, which keeps my head warm in the winter.")
+              wait {
+                msg ("<br/>\"Dave, have you seen anything strange?\", I ask him, both of us wearing our clothes.<br/>\"There was a letter just behind the door we passed earlier.<br/>\"What the hell? And you are only telling me now?\"<br/>\"Yes. Because I want to feel useful.”<br/>“But you already are. You make me feel the luckiest guy of the world! And it has something written on it?”<br/><br/>Dave takes the letter out of the left pocket of his trousers (what if he lost it when he took them off when we made some nasty jokes?...). <br/><br/>\"The only clue you'll find here. Trust me and pay attention.<br/>\"...\"<br/>\"...\"<br/>\"...\"<br/>\"...\"<br/>\"Hum... There it is! It says, 'There are 1000 boxes in this room. Only one will open the door. You must find the right one, and for that - you already know the answer.'\"<br/>\"That's it?\"<br/>\"Yes, Loan...\"")
+                wait {
+                  msg ("<br/>\"Hum... OK. Although I still did not get it.”<br/>“Then I'll find the right one.\"<br/>I’m so worried about him: \"Don't. Let me do it for you. You might make it worse.\"<br/><br/>Not only he lost his right leg, but his right arm is starting to get hard. I roll up the sleeve of his shirt and notice that the bruise next to his elbow is getting bigger. I can also feel something hard under his skin. And he can bend his arm less and less.<br/><br/>\"You'll take up too much space if you walk on two legs!\"<br/>\"I can do it.”<br/>\"I know I can.\"<br/><br/>Alright, alright. I’m gonna let you lead this time.")
+                  SetObjectFlagOff (third challenge room, "loanJustDoIt")
+                  SetObjectFlagOn (third challenge room, "letDaveCommand")
+                }
+              }
+            }
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>walk to box #text#</pattern>
+      <scope>third challenge room</scope>
+      <script><![CDATA[
+        if (third challenge room.isDave = true) {
+          if (third challenge room.daveGoesExplore = true) {
+            if (IsInt(text)) {
+              text = ToInt(text)
+              if (text = 666) {
+                SetObjectFlagOn (third challenge room, "goodKey")
+              }
+              msg ("I'm next to the box. <br/><br/>First, I smash it against the wall.<br/>I should take the key now.")
+              SetObjectFlagOff (third challenge room, "daveGoesExplore")
+              SetObjectFlagOn (third challenge room, "boxDestroyed")
+            }
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>take key</pattern>
+      <scope>third challenge room</scope>
+      <script><![CDATA[
+        if (third challenge room.isDave = true) {
+          if (third challenge room.boxDestroyed = true) {
+            msg ("The key is in my hand and I walk towards the door.<br/><br/><br/>I'm near the door. <br/>I'll see if I can open it.")
+            SetObjectFlagOff (third challenge room, "boxDestroyed")
+            SetObjectFlagOn (third challenge room, "hasKey")
+          }
+          else {
+            msg ("Not now.")
+          }
+        }
+      ]]></script>
+    </command>
+    <command>
+      <pattern>use key</pattern>
+      <scope>third challenge room</scope>
+      <script><![CDATA[
+        if (third challenge room.isDave = true) {
+          if (third challenge room.hasKey = true) {
+            if (third challenge room.goodKey = false) {
+              msg ("\"Did you succeed, Dave?\"<br/><br/>I try to turn the key in all directions, but it doesn't work. The door does not open. At least not yet.<br/><br/>I should walk to another box.")
+              SetObjectFlagOff (third challenge room, "hasKey")
+              SetObjectFlagOn (third challenge room, "daveGoesExplore")
+            }
+            else {
+              msg ("\"Did you succeed, Dave?\"<br/>I try to turn the key in all directions. And out of nowhere, a click sound is heard.")
+              wait {
+                msg ("<br/>“You did it, Dave! I’m so proud of you.”<br/><br/>Thank you.<br/><br/>Asshole.<br/><br/>Thank you.<br/><br/>I… Feel weak. I should celebrate this accomplishment. I did it alone, all by myself. But I can’t move. I can’t…")
+                wait {
+                  msg ("“Dave! Dave, wake up! Dave, please, stay with me!”<br/>“I’m coming, Dave!”")
+                  ClearScreen
+                  MoveObject (player, last challenge room)
+                }
+              }
+            }
+          }
+        }
+      ]]></script>
+    </command>
+  </object>
+  <object name="last challenge room">
+    <inherit name="editor_room" />
   </object>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
