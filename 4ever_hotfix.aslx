@@ -20,7 +20,7 @@
     <attr name="autodescription_youarein_useprefix" type="boolean">false</attr>
     <attr name="feature_asktell" type="boolean">false</attr>
     <start type="script">
-      MoveObject (player, third challenge room)
+      MoveObject (player, last challenge room)
     </start>
   </game>
   <command name="go">
@@ -3820,6 +3820,7 @@
           msg (" <br/>I immediately start to cry, holding him in my arms and giving him some warmth.<br/>\"Dave... Where... Where are we?\"<br/>\"In the next room, Dave! We're getting closer! I can feel it!\"<br/>\"Your sixth sense in action, I hope it's right.\"<br/>\"It will be! Have faith! You'll get out of here!\"<br/>\"With me!\"<br/>\"Together!\"<br/>\"And I know, oh Lord, kill me now if I'm lying... I know I want to be next to you for the rest of my life.\"<br/>\"Forever.\"<br/>\"Right, right, Loan... You're sweet, but I don't think this is the best time...\"<br/>\"Right, right, Dave! Don't move and rest, I'm going to open the new door!\"")
           wait {
             msg ("<br/>Okay. I'm ready.<br/>Wait for me, Dave. Just wait a little more.")
+            SetObjectFlagOn (last challenge room, "loanLooksAroundFirst")
           }
         }
       }
@@ -3839,13 +3840,15 @@
     <foundClue type="boolean">false</foundClue>
     <shouldTakeFloorLeg type="boolean">false</shouldTakeFloorLeg>
     <shouldEnterWord type="boolean">false</shouldEnterWord>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
+    <shouldCheckDoor type="boolean">false</shouldCheckDoor>
     <command>
       <pattern>look around</pattern>
       <scope>last challenge room</scope>
       <script><![CDATA[
         if (last challenge room.isDave = false) {
           if (last challenge room.loanLooksAroundFirst = true) {
-            msg ("The walls remind me of the Kukulcan pyramid and its square patterns. They look like a giant stone jigsaw puzzle, all around us. The ceiling and the floor follow the same pattern.<br/><br/>The door was different this time. I should have a look.<br/><br/>I wonder if there is a button on the walls. I should take a walk.")
+            msg ("The walls remind me of the Kukulcan pyramid and its square patterns. They look like a giant stone jigsaw puzzle, all around us. The ceiling and the floor follow the same pattern.<br/><br/>The door is different this time. I should have a look.<br/><br/>I wonder if there is a button on the walls. I should take a walk.")
             SetObjectFlagOn (last challenge room, "loanGoesExplore")
           }
           else if (last challenge room.loanLooksAroundSecond = true) {
@@ -3863,11 +3866,22 @@
           if (last challenge room.loanGoesExplore = true) {
             if (last challenge room.loanLooksAroundFirst = true) {
               msg ("I walk near all the walls, but there's nothing suspicious. ")
+              SetObjectFlagOff (last challenge room, "loanLooksAroundFirst")
+              SetObjectFlagOn (last challenge room, "loanLooksAroundSecond")
             }
             else if (last challenge room.loanLooksAroundSecond = true) {
               msg ("I already did that.")
             }
+            else {
+              msg ("Not now.")
+            }
           }
+          else {
+            msg ("Not now.")
+          }
+        }
+        else {
+          msg ("Not now.")
         }
       </walk>
     </object>
@@ -3881,6 +3895,12 @@
             SetObjectFlagOff (last challenge room, "nextToDoor")
             SetObjectFlagOn (last challenge room, "goingNextToFloorCircle")
           }
+          else {
+            msg ("Not now.")
+          }
+        }
+        else {
+          msg ("Not now.")
         }
       ]]></look>
     </object>
@@ -3891,17 +3911,26 @@
       <walk type="script"><![CDATA[
         if (last challenge room.isDave = false) {
           if (last challenge room.loanGoesExplore = true) {
-            msg ("I'm at the door.")
-            SetObjectFlagOn (last challenge room, "nextToDoor")
             if (last challenge room.hasLeg = true) {
               msg ("I still have the leg in my hand.")
             }
-            else if (last challenge room.hasLeg = false) {
+            else if (last challenge room.shouldCheckDoor = true) {
               msg ("I walk towards the door, still looking at the circle on the ceiling. <br/>I'm surprised it didn't close automatically. That's good news!<br/><br/>I'm at the door.")
               SetObjectFlagOn (last challenge room, "nextToDoor")
               SetObjectFlagOn (last challenge room, "messageDidNotDisappear")
+              SetObjectFlagOff (last challenge room, "shouldCheckDoor")
+            }
+            else {
+              msg ("I'm at the door.")
+              SetObjectFlagOn (last challenge room, "nextToDoor")
             }
           }
+          else {
+            msg ("Not now.")
+          }
+        }
+        else {
+          msg ("Not now.")
         }
       ]]></walk>
       <look type="script">
@@ -3923,6 +3952,9 @@
             msg ("Can't do that.")
           }
         }
+        else {
+          msg ("Not now.")
+        }
       </look>
     </object>
     <object name="ceiling">
@@ -3931,15 +3963,20 @@
       <alias>to ceiling</alias>
       <look type="script">
         if (last challenge room.isDave = false) {
-          if (last challenge room.loanGoesExplore = true) {
-            if (last challenge room.firstTimeCeiling = true) {
-              msg ("Nothing strange, it seems.")
-              SetObjectFlagOff (last challenge room, "firstTimeCeiling")
-            }
-            else if (last challenge room.secondTimeCeiling = true) {
-              msg ("Wait! There is also a circle similar to the one I found on the floor. I need to get closer to it.")
-            }
+          if (last challenge room.firstTimeCeiling = true) {
+            msg ("Nothing strange, it seems.")
+            SetObjectFlagOff (last challenge room, "firstTimeCeiling")
           }
+          else if (last challenge room.secondTimeCeiling = true) {
+            msg ("Wait! There is also a circle similar to the one I found on the floor. I need to get closer to it.")
+            SetObjectFlagOn (last challenge room, "goingNextToCeilingCircle")
+          }
+          else {
+            msg ("Not now.")
+          }
+        }
+        else {
+          msg ("Not now.")
         }
       </look>
     </object>
@@ -3963,7 +4000,16 @@
                 msg ("Hum... The outline seems thicker than the others.")
               }
             }
+            else {
+              msg ("Not now.")
+            }
           }
+          else {
+            msg ("Not now.")
+          }
+        }
+        else {
+          msg ("Not now.")
         }
       </walk>
       <press type="script"><![CDATA[
@@ -3981,7 +4027,16 @@
               SetObjectFlagOn (last challenge room, "shouldTellDave")
               SetObjectFlagOff (last challenge room, "goingNextToFloorCircle")
             }
+            else {
+              msg ("Not now.")
+            }
           }
+          else {
+            msg ("Not now.")
+          }
+        }
+        else {
+          msg ("Not now.")
         }
       ]]></press>
     </object>
@@ -4009,7 +4064,14 @@
             SetObjectFlagOn (last challenge room, "loanLooksAroundSecond")
             SetObjectFlagOn (last challenge room, "secondTimeCeiling")
             SetObjectFlagOff (last challenge room, "firstTimeCeiling")
+            SetObjectFlagOn (last challenge room, "loanGoesExplore")
           }
+          else {
+            msg ("Not now.")
+          }
+        }
+        else {
+          msg ("Not now.")
         }
       ]]></walk>
       <alias>to dave; to Dave; Dave; dave</alias>
@@ -4027,9 +4089,11 @@
             SetObjectFlagOff (last challenge room, "shouldTakeLeg")
             SetObjectFlagOn (last challenge room, "hasLeg")
             SetObjectFlagOn (last challenge room, "shouldOpenCeiling")
+            RemoveObject (daves leg)
           }
           else if (last challenge room.shouldTakeFloorLeg = true) {
             msg ("If I put his leg on the circle, the door will lift again. And then all we have to do is crawl to get out.<br/><br/>Let's use it.")
+            RemoveObject (daves leg)
           }
         }
       ]]></script>
@@ -4042,6 +4106,7 @@
           if (last challenge room.hasLeg = true) {
             SetObjectFlagOff (last challenge room, "shouldOpenCeiling")
             msg ("I use Dave's leg to press the circle and a message appears on the surface of the door.<br/>I hope I can move from here. I'm afraid the circle will return to its original position.")
+            SetObjectFlagOn (last challenge room, "shouldCheckDoor")
           }
           else if (last challenge room.shouldTakeFloorLeg = true) {
             msg ("I place the leg on the surface of the circle. The door lifts.<br/><br/>\"Dave, it's open! Look!\"<br/><br/>\"You're right! Please, come here and help me! I no longer have strengths...\"<br/><br/>Don't worry, Dave! I'm coming!")
@@ -4060,6 +4125,8 @@
       <scope>last challenge room</scope>
       <script>
         if (last challenge room.isDave = false) {
+          msg ("Done. Back in my inventory.")
+          AddToInventory
         }
       </script>
     </command>
@@ -4119,6 +4186,10 @@
         }
       ]]></script>
     </command>
+    <object name="daves leg">
+      <inherit name="editor_object" />
+      <scenery />
+    </object>
   </object>
   <object name="the cloaking stone room">
     <inherit name="editor_room" />
