@@ -3842,6 +3842,7 @@
     <shouldEnterWord type="boolean">false</shouldEnterWord>
     <usedefaultprefix type="boolean">false</usedefaultprefix>
     <shouldCheckDoor type="boolean">false</shouldCheckDoor>
+    <nextToDoor type="boolean">false</nextToDoor>
     <command>
       <pattern>look around</pattern>
       <scope>last challenge room</scope>
@@ -3989,7 +3990,6 @@
           if (last challenge room.loanGoesExplore = true) {
             if (last challenge room.goingNextToCeilingCircle = true) {
               msg ("Ok. It is beyond me.")
-              SetObjectFlagOff (last challenge room, "goingNextToCeilingCircle")
             }
             else if (last challenge room.goingNextToFloorCircle = true) {
               if (last challenge room.foundClue = true) {
@@ -4018,7 +4018,7 @@
           if (last challenge room.loanGoesExplore = true) {
             if (last challenge room.goingNextToCeilingCircle = true) {
               msg ("I can't reach it. Maybe I need to grab something. But there is nothing in this room...")
-              SetObjectFlagOff (last challenge room, "goingNextToFloorCircle")
+              SetObjectFlagOff (last challenge room, "goingNextToCeilingCircle")
               SetObjectFlagOn (last challenge room, "shouldTakeLeg")
             }
             else if (last challenge room.goingNextToFloorCircle = true) {
@@ -4126,7 +4126,8 @@
       <script>
         if (last challenge room.isDave = false) {
           msg ("Done. Back in my inventory.")
-          AddToInventory
+          AddToInventory (daves leg)
+          SetObjectFlagOff (last challenge room, "hasLeg")
         }
       </script>
     </command>
