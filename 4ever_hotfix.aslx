@@ -3414,6 +3414,14 @@
       <value>black</value>
       <value>red</value>
     </colors>
+    <right type="stringlist">
+      <value>yellow</value>
+      <value>blue</value>
+      <value>red</value>
+    </right>
+    <correct type="int">0</correct>
+    <count type="int">3</count>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
     <enter type="script"><![CDATA[
       msg ("We enter and, suddenly, a baby’s scream was heard.<br/>“Wait, we are not alone?”, I say.<br/><br/>The gate closes. And the scream, as well. <br/><br/>“Don’t worry, Dave! Whatever is waiting for us, I will protect you at all costs.”, reassures Loan, not realizing that, somehow, his voice shifted; it is the first time that I see Loan nervous, I can feel that he is afraid, although he is trying to hide it with that speech. <br/>“I am still able to shield myself. C’mon, it’s just a child!”<br/>“Now you’re one-legged.”<br/>“I lost a leg, not a brain. I’m not dumb.”<br/><br/>“I told you I could give you a piggyback ride. Let me do it for you. For your safety.”<br/>“Let it be! I’m still worth it. I’m not an irrelevant piece of junk. I’m still useful. I’m much more than a one-legged man. So, please, let me prove to myself that I am right.”")
       wait {
@@ -3424,14 +3432,6 @@
         }
       }
     ]]></enter>
-    <right type="stringlist">
-      <value>yellow</value>
-      <value>blue</value>
-      <value>red</value>
-    </right>
-    <correct type="int">0</correct>
-    <count type="int">3</count>
-    <usedefaultprefix type="boolean">false</usedefaultprefix>
     <command>
       <pattern>walk to door</pattern>
       <scope>second challenge room</scope>
@@ -3601,13 +3601,6 @@
   <object name="third challenge room">
     <inherit name="editor_room" />
     <exitslistprefix>Ican go</exitslistprefix>
-    <enter type="script"><![CDATA[
-      msg ("I help Dave towards the door and when we reach the new chamber it closes behind us.")
-      wait {
-        msg ("<br/>\"This one is so small, I can hardly move...\"<br/>\"Not that you could move much by yourself, Dave...\"<br/>\"Shut up. Asshole.\"<br/>\"I know you love me.\"<br/>\"And I know you love me too!\" says Dave with a grin from ear to ear. I don't know how he manages to keep going. <br/><br/>He is such a fighter. <br/>I fall in love with him again and again, surprised by all the new sheets I discover.")
-        SetObjectFlagOn (third challenge room, "justEntered")
-      }
-    ]]></enter>
     <isDave type="boolean">false</isDave>
     <justEntered type="boolean">false</justEntered>
     <daveShouldLookAround type="boolean">false</daveShouldLookAround>
@@ -3623,10 +3616,18 @@
     <nextToCircle type="boolean">false</nextToCircle>
     <firstTimeCeiling type="boolean">false</firstTimeCeiling>
     <secondTimeCeiling type="boolean">false</secondTimeCeiling>
+    <enter type="script"><![CDATA[
+      msg ("I help Dave towards the door and when we reach the new chamber it closes behind us.")
+      wait {
+        msg ("<br/>\"This one is so small, I can hardly move...\"<br/>\"Not that you could move much by yourself, Dave...\"<br/>\"Shut up. Asshole.\"<br/>\"I know you love me.\"<br/>\"And I know you love me too!\" says Dave with a grin from ear to ear. I don't know how he manages to keep going. <br/><br/>He is such a fighter. <br/>I fall in love with him again and again, surprised by all the new sheets I discover.")
+        SetObjectFlagOn (third challenge room, "justEntered")
+      }
+    ]]></enter>
     <object name="Dave6">
       <inherit name="editor_object" />
       <inherit name="male" />
       <scenery />
+      <alias>to dave; to Dave; dave; Dave</alias>
       <swap type="script"><![CDATA[
         if (third challenge room.isDave = false) {
           if (third challenge room.justEntered = true) {
@@ -3663,11 +3664,12 @@
           }
         }
       ]]></speak>
-      <alias>to dave; to Dave; dave; Dave</alias>
     </object>
     <object name="Loan6">
       <inherit name="editor_object" />
       <inherit name="male" />
+      <scenery />
+      <alias>to loan; to Loan; Loan; loan</alias>
       <swap type="script">
         if (third challenge room.isDave = true) {
           if (third challenge room.daveFinishedLookingAround = true) {
@@ -3700,8 +3702,6 @@
           }
         }
       ]]></speak>
-      <scenery />
-      <alias>to loan; to Loan; Loan; loan</alias>
     </object>
     <command>
       <pattern>look around</pattern>
@@ -3812,19 +3812,6 @@
   </object>
   <object name="last challenge room">
     <inherit name="editor_room" />
-    <enter type="script"><![CDATA[
-      msg ("\"We did it, Dave! We are in the new chamber!\"<br/><br/>\"Dave?\"")
-      wait {
-        msg ("<br/>His skin is getting colder. His bare torso is having goosepimples.<br/>I give him small slaps on the face to bring him to consciousness. <br/><br/>\"Ahh... It hurts... My arm hurts so much!\"<br/>\"Dave! Oh, my Dave!\"")
-        wait {
-          msg (" <br/>I immediately start to cry, holding him in my arms and giving him some warmth.<br/>\"Dave... Where... Where are we?\"<br/>\"In the next room, Dave! We're getting closer! I can feel it!\"<br/>\"Your sixth sense in action, I hope it's right.\"<br/>\"It will be! Have faith! You'll get out of here!\"<br/>\"With me!\"<br/>\"Together!\"<br/>\"And I know, oh Lord, kill me now if I'm lying... I know I want to be next to you for the rest of my life.\"<br/>\"Forever.\"<br/>\"Right, right, Loan... You're sweet, but I don't think this is the best time...\"<br/>\"Right, right, Dave! Don't move and rest, I'm going to open the new door!\"")
-          wait {
-            msg ("<br/>Okay. I'm ready.<br/>Wait for me, Dave. Just wait a little more.")
-            SetObjectFlagOn (last challenge room, "loanLooksAroundFirst")
-          }
-        }
-      }
-    ]]></enter>
     <isDave type="boolean">false</isDave>
     <loanLooksAroundFirst type="boolean">false</loanLooksAroundFirst>
     <shouldTellDave type="boolean">false</shouldTellDave>
@@ -3843,6 +3830,19 @@
     <usedefaultprefix type="boolean">false</usedefaultprefix>
     <shouldCheckDoor type="boolean">false</shouldCheckDoor>
     <nextToDoor type="boolean">false</nextToDoor>
+    <enter type="script"><![CDATA[
+      msg ("\"We did it, Dave! We are in the new chamber!\"<br/><br/>\"Dave?\"")
+      wait {
+        msg ("<br/>His skin is getting colder. His bare torso is having goosepimples.<br/>I give him small slaps on the face to bring him to consciousness. <br/><br/>\"Ahh... It hurts... My arm hurts so much!\"<br/>\"Dave! Oh, my Dave!\"")
+        wait {
+          msg (" <br/>I immediately start to cry, holding him in my arms and giving him some warmth.<br/>\"Dave... Where... Where are we?\"<br/>\"In the next room, Dave! We're getting closer! I can feel it!\"<br/>\"Your sixth sense in action, I hope it's right.\"<br/>\"It will be! Have faith! You'll get out of here!\"<br/>\"With me!\"<br/>\"Together!\"<br/>\"And I know, oh Lord, kill me now if I'm lying... I know I want to be next to you for the rest of my life.\"<br/>\"Forever.\"<br/>\"Right, right, Loan... You're sweet, but I don't think this is the best time...\"<br/>\"Right, right, Dave! Don't move and rest, I'm going to open the new door!\"")
+          wait {
+            msg ("<br/>Okay. I'm ready.<br/>Wait for me, Dave. Just wait a little more.")
+            SetObjectFlagOn (last challenge room, "loanLooksAroundFirst")
+          }
+        }
+      }
+    ]]></enter>
     <command>
       <pattern>look around</pattern>
       <scope>last challenge room</scope>
@@ -4055,6 +4055,7 @@
       <inherit name="editor_object" />
       <inherit name="male" />
       <scenery />
+      <alias>to dave; to Dave; Dave; dave</alias>
       <walk type="script"><![CDATA[
         if (last challenge room.isDave = false) {
           if (last challenge room.shouldTellDave = true) {
@@ -4065,6 +4066,7 @@
             SetObjectFlagOn (last challenge room, "secondTimeCeiling")
             SetObjectFlagOff (last challenge room, "firstTimeCeiling")
             SetObjectFlagOn (last challenge room, "loanGoesExplore")
+            SetObjectFlagOn (last challenge room, "shouldTakeFloorLeg")
           }
           else {
             msg ("Not now.")
@@ -4074,7 +4076,6 @@
           msg ("Not now.")
         }
       ]]></walk>
-      <alias>to dave; to Dave; Dave; dave</alias>
       <swap type="script">
         msg ("Not now.")
       </swap>
@@ -4111,8 +4112,7 @@
           else if (last challenge room.shouldTakeFloorLeg = true) {
             msg ("I place the leg on the surface of the circle. The door lifts.<br/><br/>\"Dave, it's open! Look!\"<br/><br/>\"You're right! Please, come here and help me! I no longer have strengths...\"<br/><br/>Don't worry, Dave! I'm coming!")
             wait {
-              msg ("<br/>I quickly walk over and help him go to the door.
-              \"Last effort, Dave! I know it's going to hurt your leg and arm, but you have to crawl, OK?\"")
+              msg ("<br/>I quickly walk over and help him go to the door.<br/>\"Last effort, Dave! I know it's going to hurt your leg and arm, but you have to crawl, OK?\"")
               ClearScreen
               MoveObject (player, the cloaking stone room)
             }
@@ -4149,16 +4149,16 @@
       <scope>last challenge room</scope>
       <script><![CDATA[
         if (last challenge room.isDave = false) {
-          if (last challenge room.nextToDoor = true) {
+          if (last challenge room.foundClue = true) {
+            msg ("Let's try to enter a four-letter word.")
+            SetObjectFlagOn (last challenge room, "shouldEnterWord")
+          }
+          else if (last challenge room.nextToDoor = true) {
             if (last challenge room.messageDidNotDisappear = true) {
               msg ("I start pressing random keys and the corresponding letter appears on the surface of the door. I also notice that I can only press 4 keys at a time. After that, the area where the output is displayed goes blank.<br/><br/>Hum... This means that the answer is a four-letter word... That must be it. Letters. This keyboard only has letters after all.")
               SetObjectFlagOff (last challenge room, "messageDidNotDisappear")
               SetObjectFlagOn (last challenge room, "foundClue")
             }
-          }
-          else if (last challenge room.foundClue = true) {
-            msg ("Let's try to enter a four-letter word.")
-            SetObjectFlagOn (last challenge room, "shouldEnterWord")
           }
         }
       ]]></script>
