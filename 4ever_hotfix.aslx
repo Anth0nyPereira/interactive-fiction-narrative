@@ -4194,6 +4194,87 @@
   </object>
   <object name="the cloaking stone room">
     <inherit name="editor_room" />
+    <enter type="script"><![CDATA[
+      msg ("In no time, we are on the other side. And in front of us, the Cloaking Stone.")
+      wait {
+        msg ("<br/>We both walk towards it, and I lift Dave's arm to get him to grab the stone. He deserves it, for all his efforts.")
+        ClearScreen
+        MoveObject (player, back inside of the small house)
+      }
+    ]]></enter>
+  </object>
+  <object name="back inside of the small house">
+    <inherit name="editor_room" />
+    <enter type="script"><![CDATA[
+      msg ("Suddenly, we are back in the wizard's house.")
+      wait {
+        msg ("<br/>\"What happened?\"<br/>Dave does not answer me.<br/>\"Hum... Maybe the wizard has enchanted the stone so that if we find it, we will come back to his house... So it was him all along? He was the one who created it and placed it in the Street of Old Hells? But why? Why all this Where is he?\"")
+        wait {
+          msg ("<br/>Nevermind. Dave is getting worse. <br/>He is my priority now.<br/>And always.<br/><br/>\"Dave, can you hear me?\"<br/>\"Loan... I... I'm hungry...\"<br/>I look at the table and there is a bowl of chips.<br/>I help him to approach the table and prepare to take one to put in his mouth.")
+          wait {
+            msg ("<br/>Is this some kind of joke? Like when the wizard tried to kill us both?<br/><br/>\"I'm so sorry, this is so humiliating... The devil came here to visit me and we played chess and talked about Eurovision. You know, that song festival that takes place in Europe every year in May? I'm a huge fan. And so is the Devil.”")
+            wait {
+              msg ("<br/>\"We started talking about which is the best entry Spain has sent to Eurovision over the years. The Devil really likes Chanel Terrero and her entry \"SloMo\" - it even came third in the Grand Final! But when I told him that my favourite Spanish entry was \"Dancing in the Rain\" by Ruth Lorenzo - he went mad, so mad that he turned me into this bowl of chips, so that when someone passes by, they will eat me alive! And I don't even like Barbies, for Devil's Sake!\"")
+              wait {
+                msg ("<br/>\"I... I'm hungry...\"<br/><br/>\"So I can't even take one for Dave?\"<br/><br/>\"Absolutely not! The bowl and each chip are part of me. What if he ends up eating my cock?\"<br/><br/>\"It wouldn't be the first time he did that to someone.\"<br/><br/>\"Please! I need the stone!\"<br/><br/>\"Why, Wizard? Why do you need it when you were the one who created it and took it to the Street of Old Hells?\"")
+                wait {
+                  msg ("<br/>\"I had to make sure you really deserved my help... So I created the stone using my ultimate powers, which I no longer have, and placed it in the labyrinth. And if it was true love, you would find it in the end.\"<br/>\"Please... I need it to return to human form... There is not much time left before I become a bowl of chips for eternity! Give it to me!\"<br/><br/>\"But what about Dave? You can still help him, right?\"<br/><br/>\"Why?\"<br/><br/>\"It's complicated to explain.\"<br/><br/>\"Then there is no stone for you.\"<br/><br/>\"All right, all right. His condition. Is deeper than you find. It has to do with his genes. Not just the injuries he suffered.\"<br/><br/>\"But, but...\"")
+                  wait {
+                    msg ("<br/>\"He doesn't have traumatic myositis ossificans. It's worse than that - he has Stone Man Syndrome. He could not have any more wounds in his life that would cause his body to build a new skeleton on its own, and he would slowly die of asphyxiation\".<br/><br/>I start to cry like a baby. My poor Dave!<br/><br/>\"I am terribly sorry. The stone - it had the power to hide the mistake in his genes. But I ended up like this. I did not expect this...\"<br/><br/>\"I guess no one can hide from the devil,\" I say with tears in my eyes.")
+                    wait {
+                      msg ("<br/>\"Look. There is still hope. I can't help like this, but back as a human being, I can make Dave's life last for many more years. Even though he would no longer be human himself.”<br/><br/>\"What do you mean?\"<br/><br/>\"Do you have a laptop?\"<br/><br/>\"Yes. I have...\"<br/><br/>\"I can turn Dave into it. And create an avatar that would live inside of him in a virtual world. He would still be alive and cured, but not in the real world. Although you would still be able to talk to him.\"<br/><br/>\"How?\"<br/><br/>\"By writing on the keyboard. And he will respond to you.\"<br/><br/>\"What if I say no?\"<br/><br/>\"I would lose my mind and become lifeless, and later Dave would die. Both would lose. Think well. Although it's Dave's decision.\"<br/><br/>Yes. Dave. I had completely forgotten about him. I was so absorbed in the conversation that I neglected to look after him.")
+                      wait {
+                        msg ("<br/>\"Loan... Please. It's the only way.\"<br/><br/>...<br/>...<br/>...<br/>...")
+                        wait {
+                          PrintCentered ("<br/>L04n, my l0v3! I'm 4l1v3! Th1s w0rld 1s s0 b34ut1ful! I m34n, h4nds0m3?<br/><br/>But n0t 4s h4nds0m3 4s y0u, my 3t3rnal l0v3!")
+                          msg ("<br/>I immediately melt into tears. ")
+                          wait {
+                            msg ("<br/>I did not even say goodbye to him. Not even kissed him. I miss his smell, his face, the way he looked at me when he was angry... His... smile. Because he smiles too. <br/>I don't know what to write. I'm afraid he'll worry too much about me.")
+                            wait {
+                              PrintCentered ("<br/>D0nt w0rry! 1 w1ll b3 h3r3 f0r y0u, s0 d0nt b3 4fr41d!")
+                              wait {
+                                PrintCentered ("I w1ll b3 h3r3, my l0v3. 1m g0nn4 s33 y0u gr0w, m4k3 4 f4m1ly 0f y0ur 0wn, g3t 0ld, wh3r34s 1ll b3 th1s 4g3 f0r3v3r. But 1ts 0k4y.")
+                                wait {
+                                  PrintCentered ("4s l0ng 4s 1m w1th y0u. 3v3ryth1ng 1s g0nn4 w0rk.")
+                                  wait {
+                                    PrintCentered ("1 l0v3 y0u L04n fr0m th3 b0tt0m 0f my h34rt.")
+                                    wait {
+                                      PrintCentered ("4nd 1 w1ll l0v3 y0u.")
+                                      wait {
+                                        PrintCentered ("4ever.")
+                                        wait {
+                                          msg ("<br/>“Thank you, Loan. Thank you for everything.”<br/>“I love you so much. And I’m not going anywhere.”")
+                                          ClearScreen
+                                          PrintCentered ("64 YEARS LATER")
+                                          wait {
+                                            msg ("<br/>The house is empty. <br/>My father has just passed away.")
+                                            wait {
+                                              msg ("<br/>I look at the laptop he never let me or Mum touch. He even stuck a piece of tape on it with a note saying “Don't touch until I am gone'. If that's the case, unplug the charger and the laptop will shut down.”.")
+                                              wait {
+                                                msg ("<br/>And so I did.")
+                                                PrintCentered ("THE END")
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]]></enter>
   </object>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
