@@ -20,7 +20,7 @@
     <attr name="autodescription_youarein_useprefix" type="boolean">false</attr>
     <attr name="feature_asktell" type="boolean">false</attr>
     <start type="script">
-      MoveObject (player, last challenge room)
+      MoveObject (player, the cloaking stone room)
     </start>
   </game>
   <command name="go">
@@ -4194,17 +4194,21 @@
   </object>
   <object name="the cloaking stone room">
     <inherit name="editor_room" />
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
     <enter type="script"><![CDATA[
       msg ("In no time, we are on the other side. And in front of us, the Cloaking Stone.")
       wait {
         msg ("<br/>We both walk towards it, and I lift Dave's arm to get him to grab the stone. He deserves it, for all his efforts.")
-        ClearScreen
-        MoveObject (player, back inside of the small house)
+        wait {
+          ClearScreen
+          MoveObject (player, back inside of the small house)
+        }
       }
     ]]></enter>
   </object>
   <object name="back inside of the small house">
     <inherit name="editor_room" />
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
     <enter type="script"><![CDATA[
       msg ("Suddenly, we are back in the wizard's house.")
       wait {
@@ -4244,17 +4248,9 @@
                                         PrintCentered ("4ever.")
                                         wait {
                                           msg ("<br/>“Thank you, Loan. Thank you for everything.”<br/>“I love you so much. And I’m not going anywhere.”")
-                                          ClearScreen
-                                          PrintCentered ("64 YEARS LATER")
                                           wait {
-                                            msg ("<br/>The house is empty. <br/>My father has just passed away.")
-                                            wait {
-                                              msg ("<br/>I look at the laptop he never let me or Mum touch. He even stuck a piece of tape on it with a note saying “Don't touch until I am gone'. If that's the case, unplug the charger and the laptop will shut down.”.")
-                                              wait {
-                                                msg ("<br/>And so I did.")
-                                                PrintCentered ("THE END")
-                                              }
-                                            }
+                                            ClearScreen
+                                            MoveObject (player, final room)
                                           }
                                         }
                                       }
@@ -4275,6 +4271,23 @@
         }
       }
     ]]></enter>
+  </object>
+  <object name="final room">
+    <inherit name="editor_room" />
+    <enter type="script"><![CDATA[
+      PrintCentered ("64 YEARS LATER")
+      wait {
+        msg ("<br/>The house is empty. <br/>My father has just passed away.")
+        wait {
+          msg ("<br/>I look at the laptop he never let me or Mum touch. He even stuck a piece of tape on it with a note saying “Don't touch until I am gone. If that's the case, unplug the charger and the laptop will shut down.”.")
+          wait {
+            msg ("<br/>And so I did.")
+            PrintCentered ("THE END")
+          }
+        }
+      }
+    ]]></enter>
+    <usedefaultprefix type="boolean">false</usedefaultprefix>
   </object>
   <function name="ShowMenuResponse" parameters="option">
     msg ("I was a little ambiguous now. I know I can do better.")
