@@ -1,8 +1,0 @@
-look at arrowtails; look at arrows tails; look at arrow extremities; look at arrows extremities; look at arrow end; look at arrows end; look at arrow edge; look at arrows edge; look arrowtails; look arrows tails; look arrow extremities; look arrows extremities; look arrow end; look arrows end; look arrow edge; look arrows edge
-
-
-if (inside of the small house.isDave = false) {
-  if (inside of the small house.nextToCandle = true) {
-    msg ("Look! They converge from the same point! It is almost on the ground, it is better to bend a little. ")
-  }
-}

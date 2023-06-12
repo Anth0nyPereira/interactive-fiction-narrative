@@ -1,8 +1,0 @@
-if (inside of the small house.isDave = false) {
-  if (inside of the small house.nextToCandle = true) {
-    msg ("Near the bottom of the window where the black candle is, I'm able to see a protuberance.")
-  }
-  else if (inside of the small house.nextToStatue = true) {
-    msg ("Done.<br/><br/>There is a protuberance here.")
-  }
-}

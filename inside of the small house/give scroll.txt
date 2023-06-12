@@ -1,1 +1,0 @@
-msg ("\"Thank you, Loan!\"<br/>Let's see what we've got.")
