@@ -20,7 +20,7 @@
     <attr name="autodescription_youarein_useprefix" type="boolean">false</attr>
     <attr name="feature_asktell" type="boolean">false</attr>
     <start type="script">
-      MoveObject (player, the cloaking stone room)
+      MoveObject (player, first challenge room)
     </start>
   </game>
   <command name="go">
@@ -2682,9 +2682,6 @@
             SetObjectFlagOn (first challenge room, "isDave")
             msg ("Back to Dave. I'm holding the spoon.")
           }
-          else if (first challenge room.shouldSwapDaveFirst = false) {
-            msg ("Should not swap to Dave now.")
-          }
           else if (first challenge room.nextToCorridor = true) {
             if (first challenge room.allCluesFound = true) {
               msg ("Dave here.<br/><br/>\"Wait! I have an idea! Maybe the spoon may give us something...\"")
@@ -2700,16 +2697,14 @@
               }
             }
             else if (first challenge room.shouldSwapDaveFirst = true) {
-              msg ("I'm dave, and I'm holding the spoon.")
+              msg ("I'm Dave, and I'm holding the spoon.")
             }
           }
           else if (first challenge room.shouldSwapDaveFirst = false) {
+            msg ("Should not swap to Dave now.")
           }
           else {
             msg ("Not now.")
-          }
-          if (first challenge room.nextToCorridor = true) {
-            msg ("Should not swap to Dave now.")
           }
         }
         else if (first challenge room.isDave = true) {
@@ -2793,15 +2788,15 @@
             }
             else if (first challenge room.loanGoesExplore = true) {
               SetObjectFlagOff (first challenge room, "isDave")
-              msg ("Loan here.<br/>\"I'll look for something else in the main room. Whatever happens to me, you stay here, in the corridor.\"<br/>Dave drops the spoon from his nose.<br/>
-              \"Wait! Let me start again.\"<br/>And he places the spoon again.")
+              msg ("Loan here.<br/>\"I'll look for something else in the main room. Whatever happens to me, you stay here, in the corridor.\"<br/>Dave drops the spoon from his nose.<br/><br/>\"Wait! Let me start again.\"<br/>And he places the spoon again.")
               SetObjectFlagOn (first challenge room, "loanGoesExplore")
               EnableTimer (getRandomvalue)
             }
           }
           else if (first challenge room.nextToCorridor = true) {
             if (first challenge room.daveHasIdea = true) {
-              msg ("I don't have it right now.")
+              msg ("Loan here.")
+              SetObjectFlagOff (first challenge room, "isDave")
             }
           }
         }
@@ -3097,6 +3092,9 @@
               msg ("\"Here! Take it!\"<br/>\"Thank you, Loan. Now let's see if I'm right.\"")
               SetObjectFlagOff (first challenge room, "daveHasIdea")
               SetObjectFlagOn (first challenge room, "daveUsesSpoonFirstTime")
+            }
+            else {
+              msg ("I don't have it right now.")
             }
           }
         }
